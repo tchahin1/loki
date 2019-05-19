@@ -6,6 +6,4 @@ npm-debug.*
 *.key
 *.mobileprovision
 /package-lock.json
-/__tests__/__snapshots__/
-/components/__tests__/__snapshots__/
 /yarn.lock
