@@ -4,47 +4,46 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { bindActionCreators } from 'redux';
 import api from '../../network.config';
 import createStyles from './Home.styles';
+import { receivedTextFromServerAction, serverUnavailableAction, waitingForServerAction } from '../../actions/ServerTextActions';
 
 const styles = createStyles();
 
-export default class HomeScreen extends React.Component {
+class HomeScreen extends React.Component {
     static navigationOptions = {
       header: null,
     };
 
-    constructor(props) {
-      super(props);
-      this.state = {
-        textFromServer: 'Waiting for the response ...',
-      };
-    }
+    static propTypes = {
+      serverText: PropTypes.shape({}).isRequired,
+      serverUnavailable: PropTypes.func.isRequired,
+      waitingForServer: PropTypes.func.isRequired,
+      receivedTextFromServer: PropTypes.func.isRequired,
+    };
 
     componentWillMount() {
       this.fetchServerText();
     }
 
     fetchServerText = () => {
-      this.setState({
-        textFromServer: 'Waiting for the response ...',
-      }, () => {
-        fetch(`${api}/hello`).then((response) => {
-          response.text().then((text) => {
-            this.setState({
-              textFromServer: text,
-            });
-          });
-        }).catch(() => {
-          this.setState({
-            textFromServer: 'Server not reachable!',
-          });
+      const { waitingForServer, receivedTextFromServer, serverUnavailable } = this.props;
+      waitingForServer();
+      fetch(`${api}/hello`).then((response) => {
+        response.text().then((text) => {
+          receivedTextFromServer(text);
         });
+      }).catch(() => {
+        serverUnavailable();
       });
     };
 
     render() {
-      const { textFromServer } = this.state;
+      const { serverText } = this.props;
+      const { current } = serverText;
       return (
         <View style={styles.container}>
           <View style={styles.contentContainer}>
@@ -53,7 +52,7 @@ export default class HomeScreen extends React.Component {
               <Text style={styles.getStartedText}>
                       Server response:
                 {' '}
-                {textFromServer}
+                {current}
               </Text>
             </View>
             <View style={styles.helpContainer}>
@@ -66,3 +65,18 @@ export default class HomeScreen extends React.Component {
       );
     }
 }
+
+const mapStateToProps = (state) => {
+  const { serverText } = state;
+  return { serverText };
+};
+
+const mapDispatchToProps = dispatch => (
+  bindActionCreators({
+    serverUnavailable: serverUnavailableAction,
+    waitingForServer: waitingForServerAction,
+    receivedTextFromServer: receivedTextFromServerAction,
+  }, dispatch)
+);
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);

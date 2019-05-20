@@ -6,11 +6,16 @@ import {
 import {
   AppLoading, Font, Icon,
 } from 'expo';
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
+import serverTextReducer from './reducers/ServerTextReducer';
 import SpaceMonoFont from './assets/fonts/SpaceMono-Regular.ttf';
 import createStyles from './App.styles';
 import HomeScreen from './screens/Home';
 
 const styles = createStyles();
+
+const store = createStore(serverTextReducer);
 
 export default class App extends React.Component {
   state = {
@@ -48,10 +53,12 @@ export default class App extends React.Component {
       );
     }
     return (
-      <View style={styles.container}>
-        {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-        <HomeScreen />
-      </View>
+      <Provider store={store}>
+        <View style={styles.container}>
+          {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+          <HomeScreen />
+        </View>
+      </Provider>
     );
   }
 }

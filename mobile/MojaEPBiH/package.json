@@ -29,7 +29,9 @@
     "react": "16.5.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",
     "react-navigation": "^3.0.9",
-    "react-test-renderer": "^16.8.6"
+    "react-redux": "^6.0.1",
+    "react-test-renderer": "^16.8.6",
+    "redux": "^4.0.1"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.1",
@@ -41,8 +43,7 @@
     "eslint-plugin-jsx-a11y": "6.1.1",
     "eslint-plugin-react": "7.11.0",
     "jest": "^24.8.0",
-    "jest-expo": "^32.0.0",
-    "react-dom": "^16.8.6"
+    "jest-expo": "^32.0.0"
   },
   "private": true
 }
