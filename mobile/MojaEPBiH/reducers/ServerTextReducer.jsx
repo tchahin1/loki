@@ -1,20 +1,21 @@
 import { combineReducers } from 'redux';
+import ServerTextEnum from '../assets/enum/ServerTextEnum';
 
 const changeServerText = text => ({
   current: text,
 });
 
 const INITIAL_STATE = {
-  current: 'App loading...',
+  current: ServerTextEnum.WAITING.text,
 };
 
 const serverTextReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case 'RECEIVED_TEXT':
+    case ServerTextEnum.RECEIVED.type:
       return changeServerText(action.payload);
-    case 'SERVER_UNAVAILABLE':
+    case ServerTextEnum.UNAVAILABLE.type:
       return changeServerText(action.payload);
-    case 'WAITING':
+    case ServerTextEnum.WAITING.type:
       return changeServerText(action.payload);
     default:
       return state;
