@@ -12,6 +12,8 @@
     <properties>
         <version.wildfly.maven.plugin>1.0.2.Final</version.wildfly.maven.plugin>
         <version.war.plugin>3.0.0</version.war.plugin>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
         <failOnMissingWebXml>false</failOnMissingWebXml>
     </properties>
 
