@@ -5,6 +5,10 @@ const styles = {
     flex: 1,
     backgroundColor: '#fff',
   },
+  icon: {
+    width: 24,
+    height: 24,
+  },
   getStartedContainer: {
     alignItems: 'center',
     marginHorizontal: 50,

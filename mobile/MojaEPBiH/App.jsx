@@ -1,20 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  Platform, StatusBar, View,
-} from 'react-native';
-import {
   AppLoading, Font, Icon,
 } from 'expo';
+import { createAppContainer } from 'react-navigation';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import serverTextReducer from './reducers/ServerTextReducer';
 import SpaceMonoFont from './assets/fonts/SpaceMono-Regular.ttf';
-import createStyles from './App.styles';
-import HomeScreen from './screens/Home';
+import createRootNavigator from './router';
 
-const styles = createStyles();
-
+const AppContainer = createAppContainer(createRootNavigator());
 const store = createStore(serverTextReducer);
 
 export default class App extends React.Component {
@@ -54,10 +50,7 @@ export default class App extends React.Component {
     }
     return (
       <Provider store={store}>
-        <View style={styles.container}>
-          {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-          <HomeScreen />
-        </View>
+        <AppContainer />
       </Provider>
     );
   }

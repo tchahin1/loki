@@ -7,17 +7,13 @@ import {
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
-import api from '../../network.config';
+import api from '../../../network.config';
 import createStyles from './Home.styles';
-import { receivedTextFromServerAction, serverUnavailableAction, waitingForServerAction } from '../../actions/ServerTextActions';
+import { receivedTextFromServerAction, serverUnavailableAction, waitingForServerAction } from '../../../actions/ServerTextActions';
 
 const styles = createStyles();
 
 class HomeScreen extends React.Component {
-    static navigationOptions = {
-      header: null,
-    };
-
     static propTypes = {
       serverText: PropTypes.shape({}).isRequired,
       serverUnavailable: PropTypes.func.isRequired,

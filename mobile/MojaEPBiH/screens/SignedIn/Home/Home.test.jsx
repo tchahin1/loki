@@ -5,7 +5,7 @@ import NavigationTestUtils from 'react-navigation/NavigationTestUtils';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import HomeScreen from '.';
-import serverTextReducer from '../../reducers/ServerTextReducer';
+import serverTextReducer from '../../../reducers/ServerTextReducer';
 
 const store = createStore(serverTextReducer);
 
