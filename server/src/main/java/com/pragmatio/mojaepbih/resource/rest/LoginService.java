@@ -1,6 +1,4 @@
 package com.pragmatio.mojaepbih.resource.rest;
-
-import com.pragmatio.mojaepbih.annotation.JwtCustomToken;
 import com.pragmatio.mojaepbih.helper.JwtTokenHelper;
 
 import javax.ws.rs.POST;
@@ -15,7 +13,6 @@ public class LoginService {
 
     @POST
     @Path(value = "login")
-    @JwtCustomToken
     @Produces(MediaType.APPLICATION_JSON)
     public Response authorizationService(@QueryParam("username") String userName, @QueryParam("password") String password) {
         if (userName.isEmpty())

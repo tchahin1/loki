@@ -1,8 +1,13 @@
 package com.pragmatio.mojaepbih.util;
 
+import org.glassfish.jersey.server.ResourceConfig;
+
 import javax.ws.rs.ApplicationPath;
-import javax.ws.rs.core.Application;
 
 @ApplicationPath("/")
-public class RestApplicationUtil extends Application {
+public class RestApplicationUtil extends ResourceConfig {
+
+    public RestApplicationUtil() {
+        packages("com.pragmatio.mojaepbih");
+    }
 }

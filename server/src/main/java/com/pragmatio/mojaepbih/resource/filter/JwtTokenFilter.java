@@ -1,6 +1,5 @@
 package com.pragmatio.mojaepbih.resource.filter;
 
-import com.pragmatio.mojaepbih.annotation.JwtCustomToken;
 import com.pragmatio.mojaepbih.helper.JwtTokenHelper;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
@@ -15,7 +14,6 @@ import javax.ws.rs.ext.Provider;
 import javax.ws.rs.Priorities;
 
 @Provider
-@JwtCustomToken
 @Priority(Priorities.AUTHENTICATION)
 public class JwtTokenFilter implements ContainerRequestFilter {
     private static final String AUTHORIZATION_SERVICE_PATH = "/login";
