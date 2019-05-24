@@ -1,4 +1,6 @@
-package com.pragmatio.mojaepbih;
+package com.pragmatio.mojaepbih.resource.rest;
+
+
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
