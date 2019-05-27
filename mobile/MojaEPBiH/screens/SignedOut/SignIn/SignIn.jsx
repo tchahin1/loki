@@ -19,10 +19,6 @@ import createStyles from './SignIn.styles';
 const styles = createStyles();
 
 export default class SignIn extends React.Component {
-    static navigationOptions = {
-      header: null,
-      title: 'SIGN IN',
-    };
 
     static propTypes = {
       navigation: PropTypes.shape({}).isRequired,
