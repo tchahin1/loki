@@ -16,14 +16,15 @@ import javax.ws.rs.Priorities;
 @Provider
 @Priority(Priorities.AUTHENTICATION)
 public class JwtTokenFilter implements ContainerRequestFilter {
-    private static final String AUTHORIZATION_SERVICE_PATH = "/login";
+    private static final String AUTHORIZATION_SERVICE_PATH = "/auth";
+    private static final String REGISTRATION_SERVICE_PATH = "/register";
     private static final String PRIVATE_KEY = "privateKey";
     private JwtTokenHelper jwtTokenHelper = JwtTokenHelper.getInstance();
 
     @Override
     public void filter(ContainerRequestContext request) {
         String path = request.getUriInfo().getPath();
-        if(path.equals(AUTHORIZATION_SERVICE_PATH))
+        if(path.equals(AUTHORIZATION_SERVICE_PATH) || path.equals(REGISTRATION_SERVICE_PATH))
             return;
         String privateKeyHeaderValue = request.getHeaderString(PRIVATE_KEY);
         if (privateKeyHeaderValue == null || privateKeyHeaderValue.isEmpty())

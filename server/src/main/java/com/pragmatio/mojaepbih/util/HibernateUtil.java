@@ -3,7 +3,7 @@ package com.pragmatio.mojaepbih.util;
 
 import java.util.Properties;
 
-import com.pragmatio.mojaepbih.entity.User;
+import com.pragmatio.mojaepbih.hibernate.entity.User;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;

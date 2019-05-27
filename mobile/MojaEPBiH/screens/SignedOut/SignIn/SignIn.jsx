@@ -4,7 +4,7 @@ import {
   Text,
   ImageBackground,
   KeyboardAvoidingView,
-  Keyboard,
+  ScrollView,
   Platform,
 } from 'react-native';
 import { Button } from 'react-native-elements';
@@ -32,12 +32,11 @@ export default class SignIn extends React.Component {
       const { navigation } = this.props;
       return (
         <ImageBackground source={Background} style={styles.wrapper}>
-
-          <KeyboardAvoidingView
-            style={styles.wrapper}
-            behavior={Platform.OS === 'ios' ? 'padding' : null}
-          >
-            <View style={{ justifyContent: 'flex-end', flex: 1 }}>
+          <View style={styles.wrapper}>
+            <KeyboardAvoidingView
+              behavior="position"
+              style={styles.keyboard}
+            >
               <View style={styles.titleWrapper}>
                 <Text style={styles.title}>Moja EP</Text>
               </View>
@@ -74,9 +73,9 @@ export default class SignIn extends React.Component {
                   onPress={() => navigation.navigate('SignedIn')}
                 />
               </View>
-              <View style={{ flex: 1 }} />
-            </View>
-          </KeyboardAvoidingView>
+              <View />
+            </KeyboardAvoidingView>
+          </View>
           <View style={{ justifyContent: 'flex-end' }}>
             <Button
               type="clear"
