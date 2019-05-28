@@ -4,10 +4,15 @@ import {
   KeyboardAvoidingView,
   View,
   Alert,
+  ActivityIndicator,
+  Keyboard,
+  Text,
 } from 'react-native';
 import { Button } from 'react-native-elements';
 import { TextField } from 'react-native-material-textfield';
 import PropTypes from 'prop-types';
+
+import api from '../../../network.config';
 
 import Background from '../../../assets/images/epbih.jpg';
 import Colors from '../../../assets/colors/AppColorsEnum';
@@ -36,11 +41,14 @@ export default class SignUp extends React.Component {
         password: '',
         confirmPass: '',
       },
-      btnSignUpDisabled: true,
+      isLoading: false,
+      userExistsErr: '',
     };
   }
 
   changeAndValidateValues = (input, value) => {
+    this.setState({ userExistsErr: '' });
+
     const { password, error } = this.state;
     const { ERRORS, LABELS } = Inputs;
     const errors = {
@@ -49,10 +57,6 @@ export default class SignUp extends React.Component {
       password: error.password,
       confirmPass: error.confirmPass,
     };
-
-    if (error.username || error.email || error.password || error.confirmPass) {
-      this.setState({ btnSignUpDisabled: true });
-    }
 
     switch (input) {
       case LABELS.USERNAME:
@@ -99,15 +103,35 @@ export default class SignUp extends React.Component {
 
   registerUser = () => {
     const { navigation } = this.props;
+    const { username, email, password } = this.state;
+    const { ERRORS } = Inputs;
 
-    Alert.alert(
-      'INFO',
-      'Uspješno ste registrovani na MOJAEP!',
-      [
-        { text: 'UREDU', onPress: () => navigation.navigate('SignedIn') },
-      ],
-      { cancelable: false },
-    );
+    this.setState({ isLoading: true });
+
+    fetch(`${api}/`, {
+      method: 'POST',
+      body: JSON.stringify({
+        username,
+        email,
+        password,
+      }),
+    }).then((response) => {
+      this.setState({ isLoading: false });
+
+      if (response.ok) {
+        Alert.alert(
+          'INFO',
+          'Uspješno ste registrovani na MOJAEP!',
+          [
+            { text: 'UREDU', onPress: () => navigation.navigate('SignedIn') },
+          ],
+          { cancelable: false },
+        );
+      } else {
+        Keyboard.dismiss();
+        this.setState({ userExistsErr: ERRORS.USER_EXISTS_ERR });
+      }
+    });
   };
 
   render() {
@@ -119,7 +143,8 @@ export default class SignUp extends React.Component {
       email,
       confirmPass,
       error,
-      btnSignUpDisabled,
+      isLoading,
+      userExistsErr,
     } = this.state;
 
     return (
@@ -194,11 +219,24 @@ export default class SignUp extends React.Component {
               />
             </View>
             <View style={styles.btnWrapper}>
+              {isLoading
+                ? <ActivityIndicator size="small" color={Colors.PRIMARY_WHITE} /> : null
+              }
+              <Text style={styles.error}>{userExistsErr}</Text>
               <Button
                 buttonStyle={styles.btnSignUp}
                 title="REGISTRUJ SE"
                 titleStyle={{ fontSize: 18 }}
-                disabled={btnSignUpDisabled || !username || !password || !email || !confirmPass}
+                disabled={
+                  error.username !== ''
+                  || error.email !== ''
+                  || error.password !== ''
+                  || error.confirmPass !== ''
+                  || username === ''
+                  || password === ''
+                  || email === ''
+                  || confirmPass === ''
+                }
                 onPress={this.registerUser}
               />
             </View>

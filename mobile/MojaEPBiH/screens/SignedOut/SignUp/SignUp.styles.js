@@ -19,10 +19,12 @@ const styles = {
     backgroundColor: Colors.PRIMARY_BLUE,
     marginTop: hp('5%'),
     height: hp('8%'),
+    width: wp('92%'),
   },
   btnWrapper: {
     marginRight: wp('4%'),
     marginLeft: wp('4%'),
+    alignItems: 'center',
   },
   title: {
     fontSize: 60,
@@ -35,6 +37,11 @@ const styles = {
   titleWrapper: {
     alignItems: 'center',
     marginTop: hp('15%'),
+  },
+  error: {
+    color: Colors.NOTICE_COLOR,
+    fontWeight: 'bold',
+    fontSize: 18,
   },
 };
 
