@@ -13,9 +13,9 @@ const styles = {
   inputsWrapper: {
     marginRight: wp('4%'),
     marginLeft: wp('4%'),
-    marginTop: hp('10%'),
+    marginTop: hp('13%'),
   },
-  btnSignIn: {
+  btnSignUp: {
     backgroundColor: Colors.PRIMARY_BLUE,
     marginTop: hp('5%'),
     height: hp('8%'),
@@ -28,7 +28,7 @@ const styles = {
     fontSize: 60,
     color: Colors.PRIMARY_WHITE,
   },
-  btnSignUpTitle: {
+  btnSignInTitle: {
     fontSize: 20,
     color: Colors.NOTICE_COLOR,
   },

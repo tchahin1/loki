@@ -16,4 +16,8 @@ public class HelloWorld {
     public String getMessage(@HeaderParam("privateKey") String privateKey) {
         return "Hello world!";
     }
+
+    public String getMessage() {
+        return "Hello world!";
+    }
 }
