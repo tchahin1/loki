@@ -58,6 +58,8 @@ export default class SignUp extends React.Component {
       confirmPass: error.confirmPass,
     };
 
+    this.setState({ userExistsErr: '' });
+
     switch (input) {
       case LABELS.USERNAME:
         this.setState({ username: value });
@@ -103,17 +105,27 @@ export default class SignUp extends React.Component {
 
   registerUser = () => {
     const { navigation } = this.props;
-    const { username, email, password } = this.state;
+    const {
+      username,
+      email,
+      password,
+      confirmPass,
+    } = this.state;
     const { ERRORS } = Inputs;
 
     this.setState({ isLoading: true });
 
-    fetch(`${api}/`, {
+    fetch(`${api}/register`, {
       method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({
         username,
         email,
         password,
+        passwordRepeated: confirmPass,
       }),
     }).then((response) => {
       this.setState({ isLoading: false });
@@ -123,7 +135,7 @@ export default class SignUp extends React.Component {
           'INFO',
           'Uspješno ste registrovani na MOJAEP!',
           [
-            { text: 'UREDU', onPress: () => navigation.navigate('SignedIn') },
+            { text: 'UREDU', onPress: () => navigation.navigate('SignIn') },
           ],
           { cancelable: false },
         );

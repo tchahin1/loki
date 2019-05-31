@@ -1,4 +1,4 @@
-import {createSwitchNavigator} from 'react-navigation';
+import { createSwitchNavigator } from 'react-navigation';
 
 import SignUpScreen from './SignUp';
 import SignInScreen from './SignIn';

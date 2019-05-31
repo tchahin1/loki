@@ -6,16 +6,19 @@ import {
 import { createAppContainer } from 'react-navigation';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
+
 import serverTextReducer from './reducers/ServerTextReducer';
 import SpaceMonoFont from './assets/fonts/SpaceMono-Regular.ttf';
 import createRootNavigator from './router';
+import { isSignedIn } from './Auth';
 
-const AppContainer = createAppContainer(createRootNavigator());
 const store = createStore(serverTextReducer);
 
 export default class App extends React.Component {
   state = {
     isLoadingComplete: false,
+    checkedSignIn: false,
+    signedIn: false,
   };
 
   static propTypes = {
@@ -25,6 +28,13 @@ export default class App extends React.Component {
   static defaultProps = {
     skipLoadingScreen: false,
   };
+
+  componentDidMount() {
+    isSignedIn().then(res => this.setState({
+      signedIn: res,
+      checkedSignIn: true,
+    }));
+  }
 
   loadResourcesAsync = async () => Promise.all([
     Font.loadAsync({
@@ -38,9 +48,12 @@ export default class App extends React.Component {
   };
 
   render() {
-    const { isLoadingComplete } = this.state;
+    const { isLoadingComplete, checkedSignIn, signedIn } = this.state;
     const { skipLoadingScreen } = this.props;
-    if (!isLoadingComplete && !skipLoadingScreen) {
+
+    const AppContainer = createAppContainer(createRootNavigator(signedIn));
+
+    if (!isLoadingComplete && !skipLoadingScreen && !checkedSignIn) {
       return (
         <AppLoading
           startAsync={this.loadResourcesAsync}
