@@ -3,6 +3,7 @@ package com.pragmatio.mojaepbih.util;
 
 import java.util.Properties;
 
+import com.pragmatio.mojaepbih.hibernate.entity.PlaceOfMeasurement;
 import com.pragmatio.mojaepbih.hibernate.entity.User;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
@@ -28,6 +29,7 @@ public class HibernateUtil {
                 settings.put(Environment.HBM2DDL_AUTO, "create-drop");
                 configuration.setProperties(settings);
                 configuration.addAnnotatedClass(User.class);
+                configuration.addAnnotatedClass(PlaceOfMeasurement.class);
                 ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
                         .applySettings(configuration.getProperties()).build();
                 sessionFactory = configuration.buildSessionFactory(serviceRegistry);
