@@ -45,7 +45,7 @@ const styles = {
   placeOfMeasurementMod: {
     alignSelf: 'center',
     backgroundColor: Colors.PRIMARY_WHITE,
-    height: hp('45%'),
+    height: hp('48%'),
     width: wp('70%'),
     flexDirection: 'column',
     alignItems: 'center',
@@ -53,7 +53,7 @@ const styles = {
   },
   btnContainer: {
     width: wp('70%'),
-    marginTop: hp('2%'),
+    marginTop: hp('1%'),
     flexDirection: 'row',
     justifyContent: 'space-around',
     paddingVertical: wp('2%'),
@@ -87,11 +87,10 @@ const styles = {
   modalTitle: {
     fontSize: 17,
     fontWeight: 'bold',
-    width: wp('70%'),
-    backgroundColor: Colors.PRIMARY_BLUE,
-    color: Colors.PRIMARY_WHITE,
-    height: hp('5%'),
     textAlign: 'center',
+  },
+  err: {
+    color: Colors.NOTICE_COLOR,
   },
 
 };

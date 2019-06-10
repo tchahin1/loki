@@ -11,11 +11,6 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { Icon } from 'react-native-elements';
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
-
 
 import api from '../../../network.config';
 import createStyles from './Home.styles';
@@ -49,7 +44,8 @@ class HomeScreen extends React.Component {
       openPlaceOfMeasurementMod: true,
       name: '',
       reference: '',
-      number: null,
+      number: '',
+      errorText: '',
     };
   }
 
@@ -80,6 +76,33 @@ class HomeScreen extends React.Component {
     });
   };
 
+  validateFields = () => {
+    const { reference, number } = this.state;
+    const refCopy = reference;
+    const reg = new RegExp('^[0-9]+$');
+    const text = 'Polja nisu ipravno popunjena';
+    refCopy.replace('-', '');
+    const res = reference.split('-');
+    if (res.length !== 3 || reference.length !== 19) {
+      this.setState({ errorText: text });
+      return;
+    }
+    if (res[0].length !== 5 || res[1].length !== 7 || res[2].length !== 5) {
+      this.setState({ errorText: text });
+      return;
+    }
+    if (!res[0].match(reg) || !res[1].match(reg) || !res[2].match(reg)) {
+      this.setState({ errorText: text });
+      return;
+    }
+    if (number.length !== 6 || !number.match(reg)) {
+      this.setState({ errorText: text });
+      return;
+    }
+    this.setState({ reference: refCopy, errorText: '' });
+    this.setState({ openPlaceOfMeasurementMod: false });
+  };
+
   render() {
     const { serverText, navigation } = this.props;
     const { current } = serverText;
@@ -89,6 +112,7 @@ class HomeScreen extends React.Component {
       name,
       reference,
       number,
+      errorText,
     } = this.state;
     if (current === ServerTextEnum.WAITING.text) {
       return <ActivityIndicator size="small" color={Colors.PRIMARY_WHITE} />;
@@ -151,6 +175,7 @@ class HomeScreen extends React.Component {
                 style={styles.txtInput}
                 placeholder="xxxxx-xxxxxxx-xxxxx"
                 value={reference}
+                maxLength={19}
                 onChangeText={text => this.setState({ reference: text })}
               />
               <Text style={styles.label}>Broj mjernog mjesta:</Text>
@@ -158,12 +183,17 @@ class HomeScreen extends React.Component {
                 style={styles.txtInput}
                 placeholder="xxxxxx"
                 value={number}
-                onChangeText={text => this.setState({ number: Number(text) })}
+                keyboardType="numeric"
+                maxLength={6}
+                onChangeText={text => this.setState({ number: text })}
               />
+              <Text style={styles.err}>{errorText}</Text>
               <View style={styles.btnContainer}>
                 <TouchableOpacity
                   style={styles.modalBtn}
-                  onPress={() => this.setState({ openPlaceOfMeasurementMod: false })}
+                  onPress={() => {
+                    this.validateFields();
+                  }}
                 >
                   <Text style={{ fontSize: 16 }}>Dodaj</Text>
                 </TouchableOpacity>
