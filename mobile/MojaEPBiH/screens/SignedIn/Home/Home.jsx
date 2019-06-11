@@ -5,7 +5,6 @@ import {
   View,
   ActivityIndicator,
   Modal,
-  TextInput,
 } from 'react-native';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -85,6 +84,7 @@ class HomeScreen extends React.Component {
       openNotMod,
       openPlaceOfMeasurementMod,
     } = this.state;
+
     if (current === ServerTextEnum.WAITING.text) {
       return <ActivityIndicator size="small" color={Colors.PRIMARY_WHITE} />;
     }
@@ -102,8 +102,12 @@ class HomeScreen extends React.Component {
         </View>
         <View style={styles.btnsWrapper}>
           {MainMenuOptions.map((option, index) => (
-            <TouchableOpacity key={index.toString()} style={styles.btn}>
-              <Text style={styles.btnTxt}>{option}</Text>
+            <TouchableOpacity
+              key={index.toString()}
+              style={styles.btn}
+              onPress={() => navigation.navigate(option.key)}
+            >
+              <Text style={styles.btnTxt}>{option.value}</Text>
             </TouchableOpacity>
           ))}
         </View>

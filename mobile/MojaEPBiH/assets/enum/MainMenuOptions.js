@@ -1,10 +1,10 @@
 export const MainMenuOptions = [
-  'Očitanje brojila',
-  'Prijava kvara',
-  'Upiti i reklamacije',
-  'Pregled potrošnje',
-  'Pregled računa',
-  'E-Usluge',
-  'Kalkulator',
-  'Ostale informacije',
+  { key: 'ElectricMeter', value: 'Očitanje brojila' },
+  { key: 'FailureReport', value: 'Prijava kvara' },
+  { key: 'QuestionsAndComplaints', value: 'Upiti i reklamacije' },
+  { key: 'ConsumptionReview', value: 'Pregled potrošnje' },
+  { key: 'Account', value: 'Pregled računa' },
+  { key: 'EService', value: 'E-Usluge' },
+  { key: 'Calculator', value: 'Kalkulator' },
+  { key: 'Information', value: 'Ostale informacije' },
 ];
