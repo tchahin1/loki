@@ -23,6 +23,7 @@ import ServerTextEnum from '../../../assets/enum/ServerTextEnum';
 import { MainMenuOptions } from '../../../assets/enum/MainMenuOptions';
 import Colors from '../../../assets/colors/AppColorsEnum';
 import { getToken, onSignOut } from '../../../Auth';
+import PlaceOfMeasurementModal from '../../../components/helpers/PlaceOfMeasurementModal';
 
 const styles = createStyles();
 
@@ -42,10 +43,6 @@ class HomeScreen extends React.Component {
       token: '',
       openNotMod: false,
       openPlaceOfMeasurementMod: true,
-      name: '',
-      reference: '',
-      number: '',
-      errorText: '',
     };
   }
 
@@ -76,31 +73,9 @@ class HomeScreen extends React.Component {
     });
   };
 
-  validateFields = () => {
-    const { reference, number } = this.state;
-    const refCopy = reference;
-    const reg = new RegExp('^[0-9]+$');
-    const text = 'Polja nisu ipravno popunjena';
-    refCopy.replace('-', '');
-    const res = reference.split('-');
-    if (res.length !== 3 || reference.length !== 19) {
-      this.setState({ errorText: text });
-      return;
-    }
-    if (res[0].length !== 5 || res[1].length !== 7 || res[2].length !== 5) {
-      this.setState({ errorText: text });
-      return;
-    }
-    if (!res[0].match(reg) || !res[1].match(reg) || !res[2].match(reg)) {
-      this.setState({ errorText: text });
-      return;
-    }
-    if (number.length !== 6 || !number.match(reg)) {
-      this.setState({ errorText: text });
-      return;
-    }
-    this.setState({ reference: refCopy, errorText: '' });
-    this.setState({ openPlaceOfMeasurementMod: false });
+  togglePlaceOfMeasurementModal = () => {
+    const { openPlaceOfMeasurementMod } = this.state;
+    this.setState({ openPlaceOfMeasurementMod: !openPlaceOfMeasurementMod });
   };
 
   render() {
@@ -109,10 +84,6 @@ class HomeScreen extends React.Component {
     const {
       openNotMod,
       openPlaceOfMeasurementMod,
-      name,
-      reference,
-      number,
-      errorText,
     } = this.state;
     if (current === ServerTextEnum.WAITING.text) {
       return <ActivityIndicator size="small" color={Colors.PRIMARY_WHITE} />;
@@ -142,7 +113,7 @@ class HomeScreen extends React.Component {
           visible={openNotMod}
           onRequestClose={() => this.setState({ openNotMod: false })}
         >
-          <View style={[styles.container, { backgroundColor: 'rgba(0, 0, 0, 0.6)' }]}>
+          <View style={styles.modalContainer}>
             <View style={styles.notificationsMod}>
               <TouchableOpacity
                 style={styles.signOutbtn}
@@ -153,60 +124,11 @@ class HomeScreen extends React.Component {
             </View>
           </View>
         </Modal>
-        <Modal
-          onRequestClose={() => this.setState({ openPlaceOfMeasurementMod: false })}
-          animationType="fade"
-          transparent
+        <PlaceOfMeasurementModal
           visible={openPlaceOfMeasurementMod}
-        >
-          <View style={[styles.container, { backgroundColor: 'rgba(0, 0, 0, 0.6)' }]}>
-            <View style={styles.placeOfMeasurementMod}>
-              <Text style={styles.modalTitle}>Dodaj mjerno mjesto</Text>
-              <Text style={styles.label}>Naziv:</Text>
-              <TextInput
-                style={styles.txtInput}
-                placeholder="npr. kuća, vikendica"
-                value={name}
-                onChangeText={text => this.setState({ name: text })}
-
-              />
-              <Text style={styles.label}>Broj računa/Referenca:</Text>
-              <TextInput
-                style={styles.txtInput}
-                placeholder="xxxxx-xxxxxxx-xxxxx"
-                value={reference}
-                maxLength={19}
-                onChangeText={text => this.setState({ reference: text })}
-              />
-              <Text style={styles.label}>Broj mjernog mjesta:</Text>
-              <TextInput
-                style={styles.txtInput}
-                placeholder="xxxxxx"
-                value={number}
-                keyboardType="numeric"
-                maxLength={6}
-                onChangeText={text => this.setState({ number: text })}
-              />
-              <Text style={styles.err}>{errorText}</Text>
-              <View style={styles.btnContainer}>
-                <TouchableOpacity
-                  style={styles.modalBtn}
-                  onPress={() => {
-                    this.validateFields();
-                  }}
-                >
-                  <Text style={{ fontSize: 16 }}>Dodaj</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.modalBtn}
-                  onPress={() => this.setState({ openPlaceOfMeasurementMod: false })}
-                >
-                  <Text style={{ fontSize: 16 }}>Zatvori</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-        </Modal>
+          onRequestClose={() => {}}
+          toggle={this.togglePlaceOfMeasurementModal}
+        />
       </View>
     );
   }

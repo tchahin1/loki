@@ -42,22 +42,6 @@ const styles = {
     width: wp('70%'),
     flexDirection: 'column',
   },
-  placeOfMeasurementMod: {
-    alignSelf: 'center',
-    backgroundColor: Colors.PRIMARY_WHITE,
-    height: hp('48%'),
-    width: wp('70%'),
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  btnContainer: {
-    width: wp('70%'),
-    marginTop: hp('1%'),
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    paddingVertical: wp('2%'),
-  },
   signOutbtn: {
     alignSelf: 'flex-end',
     width: wp('70%'),
@@ -67,32 +51,12 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'center',
   },
-  txtInput: {
-    borderBottomWidth: 1,
-    height: hp('5%'),
-    width: wp('68%'),
-    fontSize: 16,
-  },
-  label: {
-    marginTop: hp('2%'),
-    fontSize: 16,
-  },
-  modalBtn: {
-    height: hp('5%'),
-    width: wp('30%'),
-    borderWidth: 1,
-    alignItems: 'center',
+  modalContainer: {
+    flex: 1,
     justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
   },
-  modalTitle: {
-    fontSize: 17,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  err: {
-    color: Colors.NOTICE_COLOR,
-  },
-
 };
 
 export default function createStyles(overrides = {}) {
