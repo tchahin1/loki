@@ -29,7 +29,7 @@ class PlaceOfMeasurementModal extends React.Component {
   }
 
   validateFields = () => {
-    const { reference, number } = this.state;
+    const { name, reference, number } = this.state;
     const { toggle } = this.props;
     const refCopy = reference;
     const reg = new RegExp('^[0-9]+$');
@@ -37,6 +37,10 @@ class PlaceOfMeasurementModal extends React.Component {
     const res = reference.split('-');
     refCopy.replace('-', '');
 
+    if (name.length === 0) {
+      this.setState({ errorText: text });
+      return;
+    }
     if (res.length !== 3 || reference.length !== 19) {
       this.setState({ errorText: text });
       return;
