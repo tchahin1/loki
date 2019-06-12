@@ -1,10 +1,37 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { View, Text } from 'react-native';
+import { Header } from 'react-native-elements';
+import PropTypes from 'prop-types';
 
-const InfoScreen = () => (
-  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-    <Text>InfoScreen</Text>
-  </View>
-);
+import MenuButton from '../../../components/helpers/MenuButton';
+
+import createStyles from './Information.styles';
+
+const styles = createStyles();
+
+class InfoScreen extends React.Component {
+  static navigationOptions = {
+    title: 'Ostale informacije',
+  };
+
+  static propTypes = {
+    navigation: PropTypes.shape({}).isRequired,
+  };
+
+  render() {
+    const { navigation } = this.props;
+    return (
+      <View style={{ flex: 1 }}>
+        <Header
+          containerStyle={styles.header}
+          leftComponent={<MenuButton onPress={() => navigation.openDrawer()} />}
+        />
+        <View style={styles.container}>
+          <Text>InfoScreen</Text>
+        </View>
+      </View>
+    );
+  }
+}
 
 export default InfoScreen;

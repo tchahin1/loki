@@ -27,6 +27,10 @@ import PlaceOfMeasurementModal from '../../../components/helpers/PlaceOfMeasurem
 const styles = createStyles();
 
 class HomeScreen extends React.Component {
+  static navigationOptions = {
+    title: 'Početna',
+  };
+
   static propTypes = {
     serverText: PropTypes.shape({}).isRequired,
     serverUnavailable: PropTypes.func.isRequired,
