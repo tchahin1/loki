@@ -6,6 +6,9 @@ const styles = {
   header: {
     backgroundColor: Colors.PRIMARY_BLUE,
   },
+  title: {
+    color: Colors.PRIMARY_WHITE,
+  },
   container: {
     flex: 1,
     justifyContent: 'center',

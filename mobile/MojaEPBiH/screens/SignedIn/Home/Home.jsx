@@ -4,12 +4,11 @@ import {
   TouchableOpacity,
   View,
   ActivityIndicator,
-  Modal,
 } from 'react-native';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
-import { Icon } from 'react-native-elements';
+import { Header } from 'react-native-elements';
 
 import api from '../../../network.config';
 import createStyles from './Home.styles';
@@ -23,6 +22,8 @@ import { MainMenuOptions } from '../../../assets/enum/MainMenuOptions';
 import Colors from '../../../assets/colors/AppColorsEnum';
 import { getToken, onSignOut } from '../../../Auth';
 import PlaceOfMeasurementModal from '../../../components/helpers/PlaceOfMeasurementModal';
+import NotificationsButton from '../../../components/helpers/NotificationsButton';
+import NotificationsModal from '../../../components/helpers/NotificationsModal';
 
 const styles = createStyles();
 
@@ -93,50 +94,40 @@ class HomeScreen extends React.Component {
       return <ActivityIndicator size="small" color={Colors.PRIMARY_WHITE} />;
     }
     return (
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <TouchableOpacity onPress={() => this.setState({ openNotMod: true })}>
-            <Icon
-              type="ionicon"
-              name="ios-notifications"
-              color={Colors.NOTICE_COLOR}
-              size={50}
+      <View style={styles.wrapper}>
+        <Header
+          containerStyle={styles.header}
+          rightComponent={(
+            <NotificationsButton
+              onPress={() => this.setState({ openNotMod: true })}
             />
-          </TouchableOpacity>
-        </View>
-        <View style={styles.btnsWrapper}>
-          {MainMenuOptions.map((option, index) => (
-            <TouchableOpacity
-              key={index.toString()}
-              style={styles.btn}
-              onPress={() => navigation.navigate(option.key)}
-            >
-              <Text style={styles.btnTxt}>{option.value}</Text>
-            </TouchableOpacity>
-          ))}
-        </View>
-        <Modal
-          animationType="fade"
-          transparent
-          visible={openNotMod}
-          onRequestClose={() => this.setState({ openNotMod: false })}
-        >
-          <View style={styles.modalContainer}>
-            <View style={styles.notificationsMod}>
-              <TouchableOpacity
-                style={styles.signOutbtn}
-                onPress={() => onSignOut().then(navigation.navigate('SignedOut'))}
-              >
-                <Text>Sign out</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </Modal>
-        <PlaceOfMeasurementModal
-          visible={openPlaceOfMeasurementMod}
-          onRequestClose={() => {}}
-          toggle={this.togglePlaceOfMeasurementModal}
+          )}
         />
+        <View style={styles.container}>
+          <View style={styles.btnsWrapper}>
+            {MainMenuOptions.map((option, index) => (
+              <TouchableOpacity
+                key={index.toString()}
+                style={styles.btn}
+                onPress={() => navigation.navigate(option.key)}
+              >
+                <Text style={styles.btnTxt}>{option.value}</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+          <NotificationsModal
+            animationType="fade"
+            transparent
+            visible={openNotMod}
+            onRequestClose={() => this.setState({ openNotMod: false })}
+            onSignOutPress={() => onSignOut().then(navigation.navigate('SignedOut'))}
+          />
+          <PlaceOfMeasurementModal
+            visible={openPlaceOfMeasurementMod}
+            onRequestClose={() => {}}
+            toggle={this.togglePlaceOfMeasurementModal}
+          />
+        </View>
       </View>
     );
   }
