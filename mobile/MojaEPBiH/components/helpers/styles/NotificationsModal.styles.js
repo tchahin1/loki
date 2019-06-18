@@ -4,7 +4,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 
-import Colors from '../../assets/colors/AppColorsEnum';
+import Colors from '../../../assets/colors/AppColorsEnum';
 
 const styles = {
   notificationsMod: {
@@ -19,7 +19,6 @@ const styles = {
     width: wp('70%'),
     height: hp('10%'),
     borderWidth: 1,
-    borderColor: Colors.PRIMARY_BLUE,
     alignItems: 'center',
     justifyContent: 'center',
   },

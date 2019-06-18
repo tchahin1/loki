@@ -4,7 +4,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 
-import Colors from '../../assets/colors/AppColorsEnum';
+import Colors from '../../../assets/colors/AppColorsEnum';
 
 const styles = {
   label: {
@@ -14,9 +14,13 @@ const styles = {
   modalBtn: {
     height: hp('5%'),
     width: wp('30%'),
-    borderWidth: 1,
-    alignItems: 'center',
+    borderWidth: 2,
+    backgroundColor: 'white',
+    borderColor: Colors.PRIMARY_BLUE,
+    borderRadius: 1,
+    elevation: 3,
     justifyContent: 'center',
+    alignItems: 'center',
   },
   modalTitle: {
     fontSize: 17,
@@ -34,15 +38,15 @@ const styles = {
   },
   placeOfMeasurementMod: {
     alignSelf: 'center',
-    backgroundColor: Colors.PRIMARY_WHITE,
+    backgroundColor: 'white',
     height: hp('48%'),
-    width: wp('70%'),
+    width: wp('85%'),
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
   },
   btnContainer: {
-    width: wp('70%'),
+    width: wp('85%'),
     marginTop: hp('1%'),
     flexDirection: 'row',
     justifyContent: 'space-around',
@@ -51,7 +55,7 @@ const styles = {
   txtInput: {
     borderBottomWidth: 1,
     height: hp('5%'),
-    width: wp('68%'),
+    width: wp('80%'),
     fontSize: 16,
   },
 };

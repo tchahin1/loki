@@ -1,18 +1,14 @@
 import { StyleSheet } from 'react-native';
 
-import Colors from '../../../assets/colors/AppColorsEnum';
-
 const styles = {
-  header: {
-    backgroundColor: Colors.PRIMARY_BLUE,
-  },
-  title: {
-    color: Colors.PRIMARY_WHITE,
-  },
-  container: {
+  wrapper: {
     flex: 1,
+  },
+  cameraContainer: {
+    flex: 1,
+    backgroundColor: 'transparent',
+    flexDirection: 'row',
     justifyContent: 'center',
-    alignItems: 'center',
   },
 };
 

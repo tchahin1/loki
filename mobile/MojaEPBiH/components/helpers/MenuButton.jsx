@@ -7,7 +7,12 @@ import Colors from '../../assets/colors/AppColorsEnum';
 
 const MenuButton = props => (
   <TouchableOpacity onPress={() => props.onPress()}>
-    <Icon name="menu" type="entypo" color={Colors.PRIMARY_WHITE} />
+    <Icon
+      name="ios-menu"
+      type="ionicon"
+      color={Colors.PRIMARY_WHITE}
+      size={30}
+    />
   </TouchableOpacity>
 );
 

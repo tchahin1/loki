@@ -24,7 +24,7 @@ const styles = {
     justifyContent: 'center',
     alignItems: 'center',
   },
-  btn: {
+  btnIcon: {
     height: hp('10%'),
     width: wp('92%'),
     justifyContent: 'center',

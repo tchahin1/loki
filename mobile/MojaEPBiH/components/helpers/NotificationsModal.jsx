@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 
-import createStyles from './NotificationsModal.styles';
+import createStyles from './styles/NotificationsModal.styles';
 
 const styles = createStyles();
 
@@ -29,7 +29,7 @@ const NotificationsModal = (props) => {
             style={styles.signOutbtn}
             onPress={() => onSignOutPress()}
           >
-            <Text>Sign out</Text>
+            <Text>Odjavi se</Text>
           </TouchableOpacity>
         </View>
       </View>

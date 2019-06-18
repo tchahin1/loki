@@ -108,7 +108,7 @@ class HomeScreen extends React.Component {
             {MainMenuOptions.map((option, index) => (
               <TouchableOpacity
                 key={index.toString()}
-                style={styles.btn}
+                style={styles.btnIcon}
                 onPress={() => navigation.navigate(option.key)}
               >
                 <Text style={styles.btnTxt}>{option.value}</Text>

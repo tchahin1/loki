@@ -1,12 +1,14 @@
 import React from 'react';
 import {
   Modal,
-  Text, TextInput, TouchableOpacity,
+  Text,
+  TextInput,
+  TouchableOpacity,
   View,
 } from 'react-native';
 import PropTypes from 'prop-types';
 
-import createStyles from './PlaceOfMeasurementModal.styles';
+import createStyles from './styles/PlaceOfMeasurementModal.styles';
 
 const styles = createStyles();
 
