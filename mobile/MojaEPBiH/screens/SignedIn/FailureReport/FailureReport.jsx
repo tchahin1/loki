@@ -13,10 +13,6 @@ import createStyles from './FailureReport.styles';
 const styles = createStyles();
 
 class FailureReportScreen extends React.Component {
-  static navigationOptions = {
-    title: 'Prijava kvara',
-  };
-
   static propTypes = {
     navigation: PropTypes.shape({}).isRequired,
   };

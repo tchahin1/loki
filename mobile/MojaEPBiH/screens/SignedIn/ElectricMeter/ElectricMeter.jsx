@@ -13,10 +13,6 @@ import createStyles from './ElectricMeter.styles';
 const styles = createStyles();
 
 class ElectricMeterScreen extends React.Component {
-  static navigationOptions = {
-    title: 'Očitanje brojila',
-  };
-
   static propTypes = {
     navigation: PropTypes.shape({}).isRequired,
   };

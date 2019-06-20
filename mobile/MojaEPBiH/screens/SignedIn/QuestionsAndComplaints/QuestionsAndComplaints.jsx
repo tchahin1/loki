@@ -13,10 +13,6 @@ import createStyles from './QuestionsAndComplaints.styles';
 const styles = createStyles();
 
 class QuestionsAndComplaintsScreen extends React.Component {
-  static navigationOptions = {
-    title: 'Upiti i reklamacije',
-  };
-
   static propTypes = {
     navigation: PropTypes.shape({}).isRequired,
   };

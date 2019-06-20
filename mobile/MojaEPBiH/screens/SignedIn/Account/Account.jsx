@@ -13,10 +13,6 @@ import createStyles from './Account.styles';
 const styles = createStyles();
 
 class AccountScreen extends React.Component {
-  static navigationOptions = {
-    title: 'Pregled računa',
-  };
-
   static propTypes = {
     navigation: PropTypes.shape({}).isRequired,
   };
