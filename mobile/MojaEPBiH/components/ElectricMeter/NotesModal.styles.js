@@ -15,7 +15,7 @@ const styles = {
   },
   placeOfMeasurementModal: {
     alignSelf: 'center',
-    backgroundColor: 'white',
+    backgroundColor: Colors.PRIMARY_WHITE,
     height: hp('45%'),
     width: wp('85%'),
     flexDirection: 'column',
@@ -53,7 +53,7 @@ const styles = {
     height: hp('6%'),
     width: wp('30%'),
     borderWidth: 2,
-    backgroundColor: 'white',
+    backgroundColor: Colors.PRIMARY_WHITE,
     borderColor: Colors.PRIMARY_BLUE,
     borderRadius: 1,
     elevation: 3,

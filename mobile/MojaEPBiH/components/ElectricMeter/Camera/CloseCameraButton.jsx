@@ -9,7 +9,7 @@ const styles = createStyles();
 
 const CloseCameraButton = ({ closeCamera }) => (
   <TouchableOpacity style={styles.closeBtn} onPress={closeCamera}>
-    <Icon name="close" type="antdesign" size={35} iconStyle={styles.closeIcon} />
+    <Icon name="ios-close" type="ionicon" size={45} iconStyle={styles.closeIcon} />
   </TouchableOpacity>
 );
 

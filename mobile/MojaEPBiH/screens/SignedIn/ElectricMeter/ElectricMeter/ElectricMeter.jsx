@@ -25,9 +25,6 @@ const styles = createStyles();
 const dummyData = ['Mjerno mjesto 1', 'Mjerno mjesto 2'];
 
 class ElectricMeterScreen extends React.Component {
-  static navigationOptions = {
-    title: 'Očitanje brojila',
-  };
 
   static propTypes = {
     navigation: PropTypes.shape({}).isRequired,
@@ -123,7 +120,7 @@ class ElectricMeterScreen extends React.Component {
         )}
         <MetricLocationData
           flexStyle={flexStyle}
-          onOpenNotesIconPress={this.onOpenNotesIconPress}
+          navigation={navigation}
         />
         <NotificationsModal
           animationType="fade"

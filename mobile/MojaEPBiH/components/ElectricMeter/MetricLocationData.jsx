@@ -5,11 +5,13 @@ import {
   TextInput,
   TouchableOpacity,
   Alert,
+  Keyboard,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { Icon } from 'react-native-elements';
 
 import NotesModal from './NotesModal';
+import Colors from '../../assets/colors/AppColorsEnum';
 
 import createStyles from './MetricLocationData.styles';
 
@@ -18,6 +20,7 @@ const styles = createStyles();
 class MetricLocationData extends React.Component {
   static propTypes = {
     flexStyle: PropTypes.number,
+    navigation: PropTypes.shape({}).isRequired,
   };
 
   static defaultProps = {
@@ -33,6 +36,8 @@ class MetricLocationData extends React.Component {
       saveBtnDisabledOpacity: 0.4,
       err: '',
       openNotesModal: false,
+      note: '',
+      currentPhoto: null,
     };
   }
 
@@ -53,13 +58,55 @@ class MetricLocationData extends React.Component {
 
   saveData = () => {
     // save data to database
+    Keyboard.dismiss();
     Alert.alert('INFO', 'Brojilo uspješno očitano!');
   };
 
-  saveNote = () => {
-    this.setState({ openNotesModal: false });
+  saveNote = (note) => {
+    this.setState({ openNotesModal: false, note });
     // save data to database
   };
+
+  savePhoto = (photo) => {
+    const { navigation } = this.props;
+
+    this.setState({ currentPhoto: photo });
+    navigation.navigate('ElectricMeter');
+    // save data to database
+  };
+
+  checkPhotoAndNoteIconColors() {
+    const { note, currentPhoto } = this.state;
+    let noteColor = Colors.PRIMARY_WHITE;
+    let cameraColor = Colors.PRIMARY_WHITE;
+    let noteIconColor = 'black';
+    let cameraIconColor = 'black';
+
+    if (note !== '' && currentPhoto !== null) {
+      noteColor = Colors.PRIMARY_BLUE;
+      cameraColor = Colors.PRIMARY_BLUE;
+      noteIconColor = Colors.PRIMARY_WHITE;
+      cameraIconColor = Colors.PRIMARY_WHITE;
+    } else if (note === '' && currentPhoto !== null) {
+      noteColor = Colors.PRIMARY_WHITE;
+      cameraColor = Colors.PRIMARY_BLUE;
+      noteIconColor = 'black';
+      cameraIconColor = Colors.PRIMARY_WHITE;
+    } else if (note !== '' && currentPhoto === null) {
+      noteColor = Colors.PRIMARY_BLUE;
+      cameraColor = Colors.PRIMARY_WHITE;
+      noteIconColor = Colors.PRIMARY_WHITE;
+      cameraIconColor = 'black';
+    }
+
+    return {
+      noteColor,
+      cameraColor,
+      noteIconColor,
+      cameraIconColor,
+    };
+  }
+
 
   render() {
     const { flexStyle, navigation } = this.props;
@@ -69,6 +116,7 @@ class MetricLocationData extends React.Component {
       saveBtnDisabledOpacity,
       err,
       openNotesModal,
+      currentPhoto,
     } = this.state;
     return (
       <View style={[styles.container, { flex: flexStyle }]}>
@@ -105,27 +153,30 @@ class MetricLocationData extends React.Component {
         </View>
         <View style={styles.btnsWrapper}>
           <TouchableOpacity
-            style={styles.btnIcon}
-            onPress={() => navigation.navigate('Camera')}
+            style={[styles.btnIcon, { backgroundColor: this.checkPhotoAndNoteIconColors().cameraColor }]}
+            onPress={() => navigation.navigate('Camera', { savePhoto: this.savePhoto })}
           >
             <Icon
               type="ionicon"
               name="ios-camera"
               size={30}
+              color={this.checkPhotoAndNoteIconColors().cameraIconColor}
             />
           </TouchableOpacity>
           <TouchableOpacity
-            style={styles.btnIcon}
+            style={[styles.btnIcon, { backgroundColor: this.checkPhotoAndNoteIconColors().noteColor }]}
+            onPress={() => this.setState({ openNotesModal: true })}
           >
             <Icon
               type="ionicon"
               name="ios-chatboxes"
               size={25}
+              color={this.checkPhotoAndNoteIconColors().noteIconColor}
             />
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.btnSave, { opacity: saveBtnDisabledOpacity }]}
-            disabled={largeTariff === '' || smallTariff === '' || err !== ''}
+            disabled={largeTariff === '' || smallTariff === '' || err !== '' || currentPhoto === null}
             onPress={this.validateFields}
           >
             <Text style={styles.btnTxt}>Spremi</Text>

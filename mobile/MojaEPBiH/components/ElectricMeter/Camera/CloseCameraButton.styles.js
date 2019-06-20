@@ -4,6 +4,8 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 
+import Colors from '../../../assets/colors/AppColorsEnum';
+
 const styles = {
   closeBtn: {
     alignSelf: 'flex-start',
@@ -18,7 +20,7 @@ const styles = {
     left: wp('85%'),
   },
   closeIcon: {
-    color: 'white',
+    color: Colors.PRIMARY_WHITE,
   },
 };
 

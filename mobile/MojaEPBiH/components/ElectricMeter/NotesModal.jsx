@@ -67,7 +67,7 @@ class NotesModal extends React.Component {
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.btnModal}
-                onPress={onSaveButtonPress}
+                onPress={() => onSaveButtonPress(note)}
               >
                 <Text style={styles.btnText}>Spremi</Text>
               </TouchableOpacity>

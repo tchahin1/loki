@@ -28,9 +28,6 @@ import NotificationsModal from '../../../components/helpers/NotificationsModal';
 const styles = createStyles();
 
 class HomeScreen extends React.Component {
-  static navigationOptions = {
-    title: 'Početna',
-  };
 
   static propTypes = {
     serverText: PropTypes.shape({}).isRequired,
@@ -46,7 +43,7 @@ class HomeScreen extends React.Component {
     this.state = {
       token: '',
       openNotMod: false,
-      openPlaceOfMeasurementMod: true,
+      openPlaceOfMeasurementMod: false,
     };
   }
 

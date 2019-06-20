@@ -14,9 +14,6 @@ import createStyles from './ConsumptionReview.styles';
 const styles = createStyles();
 
 class ConsumptionReviewScreen extends React.Component {
-  static navigationOptions = {
-    title: 'Pregled potrošnje',
-  };
 
   static propTypes = {
     navigation: PropTypes.shape({}).isRequired,

@@ -9,7 +9,7 @@ const styles = createStyles();
 
 const SavePhotoButton = ({ savePhoto }) => (
   <TouchableOpacity style={styles.cameraBtn} onPress={savePhoto}>
-    <Icon name="check" type="entypo" size={35} />
+    <Icon name="ios-checkmark" type="ionicon" size={45} />
   </TouchableOpacity>
 );
 

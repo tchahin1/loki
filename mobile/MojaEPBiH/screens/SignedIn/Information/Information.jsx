@@ -13,9 +13,6 @@ import createStyles from './Information.styles';
 const styles = createStyles();
 
 class InfoScreen extends React.Component {
-  static navigationOptions = {
-    title: 'Ostale informacije',
-  };
 
   static propTypes = {
     navigation: PropTypes.shape({}).isRequired,

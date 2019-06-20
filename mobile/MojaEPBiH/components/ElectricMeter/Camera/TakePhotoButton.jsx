@@ -9,7 +9,7 @@ const styles = createStyles();
 
 const TakePhotoButton = ({ takePicture }) => (
   <TouchableOpacity style={styles.cameraBtn} onPress={takePicture}>
-    <Icon name="camera" type="entypo" size={35} />
+    <Icon name="ios-camera" type="ionicon" size={45} />
   </TouchableOpacity>
 );
 

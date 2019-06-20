@@ -2,9 +2,7 @@ import React from 'react';
 import {
   View,
   ImageBackground,
-  KeyboardAvoidingView,
   BackHandler,
-  Text,
 } from 'react-native';
 import { Camera, Permissions } from 'expo';
 import PropTypes from 'prop-types';
@@ -53,8 +51,18 @@ class CameraScreen extends React.Component {
     }
   };
 
-  savePhoto = () => {
+  closeCamera = () => {
+    const { currentPhoto } = this.state;
+    if (currentPhoto !== null) {
+      this.setState({ currentPhoto: null });
+    } else {
+      this.goBack();
+    }
+  };
 
+  goBack = () => {
+    const { navigation } = this.props;
+    navigation.navigate('ElectricMeter');
   };
 
   render() {
@@ -65,10 +73,8 @@ class CameraScreen extends React.Component {
     } = this.state;
     const { navigation } = this.props;
 
-    if (hasCameraPermission === null) {
+    if (hasCameraPermission === null || hasCameraPermission === false) {
       return <View />;
-    } if (hasCameraPermission === false) {
-      return <Text>No access to camera</Text>;
     }
 
     return (
@@ -84,23 +90,18 @@ class CameraScreen extends React.Component {
               ratio="16:9"
             >
               <View style={styles.cameraContainer}>
-                <CloseCameraButton closeCamera={navigation.goBack} />
+                <CloseCameraButton closeCamera={this.closeCamera} />
                 <TakePhotoButton takePicture={this.takePhoto} />
               </View>
             </Camera>
           )
           : (
             <ImageBackground
-              style={styles.wrapper}
-              source={currentPhoto.uri}
+              style={styles.cameraContainer}
+              source={{ uri: currentPhoto.uri }}
             >
-              <KeyboardAvoidingView
-                style={styles.cameraContainer}
-                behaviour="padding"
-                enabled
-              />
-              <CloseCameraButton closeCamera={navigation.goBack} />
-              <SavePhotoButton savePhoto={this.savePhoto} />
+              <CloseCameraButton closeCamera={this.closeCamera} />
+              <SavePhotoButton savePhoto={() => navigation.state.params.savePhoto(currentPhoto)} />
             </ImageBackground>
           )
           }
