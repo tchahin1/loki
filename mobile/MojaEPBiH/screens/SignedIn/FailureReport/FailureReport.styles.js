@@ -19,14 +19,14 @@ const styles = {
   sliderContainer: {
     flex: 1 / 4,
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
     alignItems: 'center',
+    paddingRight: wp('1%'),
+    paddingLeft: wp('1.5%'),
   },
   slider: {
-    width: wp('20%'),
+    width: wp('15%'),
     height: hp('15%'),
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   label: {
     fontSize: 18,
@@ -34,27 +34,25 @@ const styles = {
     textAlign: 'center',
   },
   textContainer: {
-    height: hp('15'),
     justifyContent: 'center',
     alignItems: 'center',
   },
   txtInputContainer: {
     flex: 1 / 2,
-    width: wp('90%'),
+    width: wp('97%'),
     borderWidth: 1,
-    marginLeft: wp('5%'),
-    marginRight: wp('5%'),
+    marginHorizontal: wp('1.5%'),
   },
   txtInput: {
     fontSize: 19,
-    marginLeft: wp('1%'),
-    marginRight: wp('1%'),
+    marginHorizontal: wp('1%'),
   },
   btnsWrapper: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
     flex: 1 / 4,
     alignItems: 'center',
+    paddingHorizontal: hp('1%'),
   },
   btnIcon: {
     height: hp('6%'),
