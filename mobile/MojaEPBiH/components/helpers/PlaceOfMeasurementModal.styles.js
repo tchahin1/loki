@@ -48,7 +48,7 @@ const styles = {
     justifyContent: 'space-around',
     paddingVertical: wp('2%'),
   },
-  txtInput: {
+  txtInputContainer: {
     borderBottomWidth: 1,
     height: hp('5%'),
     width: wp('68%'),

@@ -1,4 +1,8 @@
 import { StyleSheet } from 'react-native';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 
 import Colors from '../../../assets/colors/AppColorsEnum';
 
@@ -9,10 +13,73 @@ const styles = {
   title: {
     color: Colors.PRIMARY_WHITE,
   },
-  container: {
+  wrapper: {
     flex: 1,
+  },
+  sliderContainer: {
+    flex: 1 / 4,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+  },
+  slider: {
+    width: wp('20%'),
+    height: hp('15%'),
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  label: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  textContainer: {
+    height: hp('15'),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  txtInputContainer: {
+    flex: 1 / 2,
+    width: wp('90%'),
+    borderWidth: 1,
+    marginLeft: wp('5%'),
+    marginRight: wp('5%'),
+  },
+  txtInput: {
+    fontSize: 19,
+    marginLeft: wp('1%'),
+    marginRight: wp('1%'),
+  },
+  btnsWrapper: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    flex: 1 / 4,
+    alignItems: 'center',
+  },
+  btnIcon: {
+    height: hp('6%'),
+    width: wp('15%'),
+    borderWidth: 2,
+    borderColor: Colors.PRIMARY_BLUE,
+    borderRadius: 1,
+    elevation: 3,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  btnSend: {
+    height: hp('6%'),
+    width: wp('35%'),
+    borderWidth: 2,
+    backgroundColor: Colors.PRIMARY_WHITE,
+    borderColor: Colors.PRIMARY_BLUE,
+    borderRadius: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    elevation: 3,
+  },
+  btnTxt: {
+    fontSize: 17,
+    fontWeight: 'bold',
   },
 };
 
