@@ -153,8 +153,15 @@ class MetricLocationData extends React.Component {
         </View>
         <View style={styles.btnsWrapper}>
           <TouchableOpacity
-            style={[styles.btnIcon, { backgroundColor: this.checkPhotoAndNoteIconColors().cameraColor }]}
-            onPress={() => navigation.navigate('Camera', { savePhoto: this.savePhoto })}
+            style={[styles.btnIcon,
+              {
+                backgroundColor: this.checkPhotoAndNoteIconColors().cameraColor,
+              }]}
+            onPress={() => navigation.navigate('Camera',
+              {
+                savePhoto: this.savePhoto,
+                onBackButtonPressScreen: 'ElectricMeter',
+              })}
           >
             <Icon
               type="ionicon"
@@ -164,7 +171,10 @@ class MetricLocationData extends React.Component {
             />
           </TouchableOpacity>
           <TouchableOpacity
-            style={[styles.btnIcon, { backgroundColor: this.checkPhotoAndNoteIconColors().noteColor }]}
+            style={[styles.btnIcon,
+              {
+                backgroundColor: this.checkPhotoAndNoteIconColors().noteColor,
+              }]}
             onPress={() => this.setState({ openNotesModal: true })}
           >
             <Icon

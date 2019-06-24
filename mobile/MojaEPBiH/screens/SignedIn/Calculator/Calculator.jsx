@@ -14,7 +14,6 @@ import createStyles from './Calculator.styles';
 const styles = createStyles();
 
 class CalculatorScreen extends React.Component {
-
   static propTypes = {
     navigation: PropTypes.shape({}).isRequired,
   };

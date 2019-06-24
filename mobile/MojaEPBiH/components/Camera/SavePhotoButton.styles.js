@@ -1,26 +1,20 @@
 import { StyleSheet } from 'react-native';
 import {
-  widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 
-import Colors from '../../../assets/colors/AppColorsEnum';
+import Colors from '../../assets/colors/AppColorsEnum';
 
 const styles = {
-  closeBtn: {
-    alignSelf: 'flex-start',
-    position: 'absolute',
+  cameraBtn: {
+    alignSelf: 'flex-end',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'transparent',
-    width: hp('7%'),
-    height: hp('7%'),
+    backgroundColor: Colors.PRIMARY_WHITE,
+    width: hp('13%'),
+    height: hp('13%'),
     borderRadius: 100 / 2,
-    marginTop: hp('5%'),
-    left: wp('85%'),
-  },
-  closeIcon: {
-    color: Colors.PRIMARY_WHITE,
+    marginBottom: hp('3%'),
   },
 };
 

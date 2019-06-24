@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
-import Colors from '../../../assets/colors/AppColorsEnum';
+import Colors from '../../assets/colors/AppColorsEnum';
 
 const styles = {
   cameraBtn: {

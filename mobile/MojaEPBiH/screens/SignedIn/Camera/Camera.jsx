@@ -7,9 +7,9 @@ import {
 import { Camera, Permissions } from 'expo';
 import PropTypes from 'prop-types';
 
-import CloseCameraButton from '../../../../components/ElectricMeter/Camera/CloseCameraButton';
-import TakePhotoButton from '../../../../components/ElectricMeter/Camera/TakePhotoButton';
-import SavePhotoButton from '../../../../components/ElectricMeter/Camera/SavePhotoButton';
+import CloseCameraButton from '../../../components/Camera/CloseCameraButton';
+import TakePhotoButton from '../../../components/Camera/TakePhotoButton';
+import SavePhotoButton from '../../../components/Camera/SavePhotoButton';
 
 import createStyles from './Camera.styles';
 
@@ -62,7 +62,7 @@ class CameraScreen extends React.Component {
 
   goBack = () => {
     const { navigation } = this.props;
-    navigation.navigate('ElectricMeter');
+    navigation.navigate(navigation.state.params.onBackButtonPressScreen);
   };
 
   render() {
@@ -104,7 +104,7 @@ class CameraScreen extends React.Component {
               <SavePhotoButton savePhoto={() => navigation.state.params.savePhoto(currentPhoto)} />
             </ImageBackground>
           )
-          }
+        }
       </View>
     );
   }

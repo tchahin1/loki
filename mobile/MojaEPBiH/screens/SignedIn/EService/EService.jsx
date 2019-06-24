@@ -13,7 +13,6 @@ import createStyles from './EService.styles';
 const styles = createStyles();
 
 class EServiceScreen extends React.Component {
-
   static propTypes = {
     navigation: PropTypes.shape({}).isRequired,
   };

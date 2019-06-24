@@ -13,7 +13,6 @@ import createStyles from './QuestionsAndComplaints.styles';
 const styles = createStyles();
 
 class QuestionsAndComplaintsScreen extends React.Component {
-
   static propTypes = {
     navigation: PropTypes.shape({}).isRequired,
   };

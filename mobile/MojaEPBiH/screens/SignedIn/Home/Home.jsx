@@ -28,7 +28,6 @@ import NotificationsModal from '../../../components/helpers/NotificationsModal';
 const styles = createStyles();
 
 class HomeScreen extends React.Component {
-
   static propTypes = {
     serverText: PropTypes.shape({}).isRequired,
     serverUnavailable: PropTypes.func.isRequired,

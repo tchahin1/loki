@@ -10,13 +10,13 @@ import {
 import { Header, Icon } from 'react-native-elements';
 import PropTypes from 'prop-types';
 
-import MenuButton from '../../../../components/helpers/MenuButton';
-import NotificationsButton from '../../../../components/helpers/NotificationsButton';
-import NotificationsModal from '../../../../components/helpers/NotificationsModal';
-import PlaceOfMeasurementModal from '../../../../components/helpers/PlaceOfMeasurementModal';
-import MetricLocationData from '../../../../components/ElectricMeter/MetricLocationData';
-import { onSignOut } from '../../../../Auth';
-import Colors from '../../../../assets/colors/AppColorsEnum';
+import MenuButton from '../../../components/helpers/MenuButton';
+import NotificationsButton from '../../../components/helpers/NotificationsButton';
+import NotificationsModal from '../../../components/helpers/NotificationsModal';
+import PlaceOfMeasurementModal from '../../../components/helpers/PlaceOfMeasurementModal';
+import MetricLocationData from '../../../components/ElectricMeter/MetricLocationData';
+import { onSignOut } from '../../../Auth';
+import Colors from '../../../assets/colors/AppColorsEnum';
 
 import createStyles from './ElectricMeter.styles';
 

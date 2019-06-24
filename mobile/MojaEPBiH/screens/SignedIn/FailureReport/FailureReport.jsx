@@ -13,7 +13,6 @@ import createStyles from './FailureReport.styles';
 const styles = createStyles();
 
 class FailureReportScreen extends React.Component {
-
   static propTypes = {
     navigation: PropTypes.shape({}).isRequired,
   };

@@ -1,6 +1,6 @@
 import { createStackNavigator } from 'react-navigation';
 
-import CameraScreen from './Camera';
+import CameraScreen from '../Camera';
 import ElectricMeterScreen from './ElectricMeter';
 
 const ElectricMeterNavigator = createStackNavigator({
