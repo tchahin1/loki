@@ -9,7 +9,7 @@ import Colors from '../../assets/colors/AppColorsEnum';
 const styles = {
   container: {
     flex: 2 / 3,
-    marginHorizontal: hp('2%'),
+    marginHorizontal: hp('1%'),
     marginVertical: wp('4%'),
     borderWidth: 1,
     justifyContent: 'space-around',

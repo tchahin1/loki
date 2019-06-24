@@ -43,7 +43,7 @@ const styles = {
   metricPlacesContainer: {
     flex: 1 / 3,
     borderWidth: 1,
-    marginHorizontal: hp('2%'),
+    marginHorizontal: hp('1%'),
     marginVertical: wp('4%'),
   },
   inputsWrapper: {
