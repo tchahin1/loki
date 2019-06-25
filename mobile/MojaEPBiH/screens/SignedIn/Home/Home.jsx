@@ -87,7 +87,11 @@ class HomeScreen extends React.Component {
     } = this.state;
 
     if (current === ServerTextEnum.WAITING.text) {
-      return <ActivityIndicator size="small" color={Colors.PRIMARY_WHITE} />;
+      return (
+        <View style={styles.container}>
+          <ActivityIndicator size="large" color={Colors.PRIMARY_WHITE} />
+        </View>
+      );
     }
     return (
       <View style={styles.wrapper}>
