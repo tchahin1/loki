@@ -42,7 +42,7 @@ class HomeScreen extends React.Component {
     this.state = {
       token: '',
       openNotMod: false,
-      openPlaceOfMeasurementMod: true,
+      openPlaceOfMeasurementMod: false,
     };
   }
 
