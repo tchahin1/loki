@@ -12,7 +12,8 @@ const styles = {
     marginTop: hp('4%'),
   },
   scrollContainer: {
-    marginVertical: hp('1.5%'),
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   pickersContainer: {
     width: wp('97%'),
@@ -30,13 +31,14 @@ const styles = {
   inputsContainer: {
     width: wp('97%'),
     alignItems: 'center',
-    height: hp('72%'),
+    height: hp('77%'),
   },
   textInput: {
     borderBottomWidth: 1,
     width: wp('90%'),
     height: hp('5%'),
     fontSize: 16,
+    marginTop: hp('2%'),
   },
   txtInputs: {
     width: wp('97%'),
@@ -49,19 +51,12 @@ const styles = {
     marginLeft: wp('2%'),
     marginTop: hp('1%'),
   },
-  btnSignIn: {
+  btnReq: {
     backgroundColor: Colors.PRIMARY_BLUE,
-    marginTop: hp('2%'),
+    marginTop: hp('7%'),
     height: hp('8%'),
     width: wp('92%'),
     alignSelf: 'flex-end',
-  },
-  reqInput: {
-    borderWidth: 1,
-    width: wp('90%'),
-    height: hp('10%'),
-    fontSize: 16,
-    marginTop: hp('2%'),
   },
 };
 
