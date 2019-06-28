@@ -53,10 +53,16 @@ const styles = {
   },
   btnReq: {
     backgroundColor: Colors.PRIMARY_BLUE,
-    marginTop: hp('7%'),
+    marginTop: hp('5%'),
     height: hp('8%'),
     width: wp('92%'),
     alignSelf: 'flex-end',
+  },
+  error: {
+    color: Colors.NOTICE_COLOR,
+    fontWeight: 'bold',
+    fontSize: 16,
+    textAlign: 'center',
   },
 };
 

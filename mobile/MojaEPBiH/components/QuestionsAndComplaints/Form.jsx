@@ -43,6 +43,7 @@ class Form extends React.Component {
       scrollEnabled: false,
       height: Dimensions.get('window').height,
       openReqModal: false,
+      err: '',
     };
   }
 
@@ -96,8 +97,46 @@ class Form extends React.Component {
     } = this.state;
 
     return (customerType === customerTypes[0]
-      && (name === '' || surname === '' || email === '' || address === '')) || (customerType === customerTypes[1]
+      && (name === '' || surname === '' || email === '' || address === ''))
+      || (customerType === customerTypes[1]
       && (legalName === '' || email === '' || address === ''));
+  };
+
+  validateFields = () => {
+    const {
+      customerType,
+      name,
+      surname,
+      email,
+      code,
+      phone,
+      legalName,
+    } = this.state;
+
+    const numReg = new RegExp('^[0-9]+$');
+    const letReg = new RegExp('^[a-zA-Z]+$');
+    const emailReg = new RegExp(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+
+
+    if (customerType === customerTypes[0]
+      && (!phone.match(numReg)
+        || !name.match(letReg)
+        || !surname.match(letReg)
+        || !email.match(emailReg)
+        || !code.match(new RegExp('^[0-9]*$')))) {
+      this.setState({ err: 'Polja nisu ispravno popunjena' });
+      return;
+    }
+    if (customerType === customerTypes[1]
+      && (!phone.match(numReg)
+        || !legalName.match(letReg)
+        || !email.match(emailReg)
+        || !code.match(new RegExp('^[0-9]*$')))) {
+      this.setState({ err: 'Polja nisu ispravno popunjena' });
+      return;
+    }
+
+    this.setState({ openReqModal: true });
   };
 
   render() {
@@ -114,6 +153,8 @@ class Form extends React.Component {
       scrollEnabled,
       height,
       openReqModal,
+      legalName,
+      err,
     } = this.state;
 
     return (
@@ -156,13 +197,13 @@ class Form extends React.Component {
               <View>
                 <TextInput
                   value={name}
-                  onChangeText={text => this.setState({ name: text })}
+                  onChangeText={text => this.setState({ name: text, err: '' })}
                   placeholder="Ime*"
                   style={[styles.textInput, { marginTop: 0 }]}
                 />
                 <TextInput
                   value={surname}
-                  onChangeText={text => this.setState({ surname: text })}
+                  onChangeText={text => this.setState({ surname: text, err: '' })}
                   placeholder="Prezime*"
                   style={styles.textInput}
                 />
@@ -170,44 +211,45 @@ class Form extends React.Component {
               )}
               {customerType === customerTypes[1] && (
               <TextInput
-                value={name}
-                onChangeText={text => this.setState({ legalName: text })}
+                value={legalName}
+                onChangeText={text => this.setState({ legalName: text, err: '' })}
                 placeholder="Naziv*"
                 style={[styles.textInput, { marginTop: hp('4%') }]}
               />
               )}
               <TextInput
                 value={address}
-                onChangeText={text => this.setState({ address: text })}
+                onChangeText={text => this.setState({ address: text, err: '' })}
                 placeholder="Adresa*"
                 style={styles.textInput}
               />
               <TextInput
                 value={email}
-                onChangeText={text => this.setState({ email: text })}
+                onChangeText={text => this.setState({ email: text, err: '' })}
                 placeholder="E-mail*"
                 style={styles.textInput}
               />
               <TextInput
                 value={code}
-                onChangeText={text => this.setState({ code: text })}
+                onChangeText={text => this.setState({ code: text, err: '' })}
                 placeholder="Šifra mjernog mjesta"
                 style={styles.textInput}
                 keyboardType="numeric"
               />
               <TextInput
                 value={phone}
-                onChangeText={text => this.setState({ phone: text })}
+                onChangeText={text => this.setState({ phone: text, err: '' })}
                 placeholder="Broj telefona"
                 style={styles.textInput}
                 keyboardType="numeric"
               />
               <Text style={styles.reqText}>Polja označena sa * su obavezna</Text>
+              <Text style={styles.error}>{err}</Text>
               <Button
                 buttonStyle={styles.btnReq}
                 title="Napiši zahtjev"
                 titleStyle={{ fontSize: 18 }}
-                onPress={() => this.setState({ openReqModal: true })}
+                onPress={this.validateFields}
                 disabled={this.disableButton()}
               />
             </View>
