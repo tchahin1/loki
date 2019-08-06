@@ -86,7 +86,7 @@ class PlaceOfMeasurementModal extends React.Component {
             <Text style={styles.modalTitle}>Dodaj mjerno mjesto</Text>
             <Text style={styles.label}>Naziv:</Text>
             <TextInput
-              style={styles.txtInput}
+              style={styles.txtInputContainer}
               placeholder="npr. kuća, vikendica"
               value={name}
               onChangeText={text => this.setState({ name: text, errorText: '' })}
@@ -94,7 +94,7 @@ class PlaceOfMeasurementModal extends React.Component {
             />
             <Text style={styles.label}>Broj računa/Referenca:</Text>
             <TextInput
-              style={styles.txtInput}
+              style={styles.txtInputContainer}
               placeholder="xxxxx-xxxxxxx-xxxxx"
               value={reference}
               maxLength={19}
@@ -102,7 +102,7 @@ class PlaceOfMeasurementModal extends React.Component {
             />
             <Text style={styles.label}>Broj mjernog mjesta:</Text>
             <TextInput
-              style={styles.txtInput}
+              style={styles.txtInputContainer}
               placeholder="xxxxxx"
               value={number}
               keyboardType="numeric"

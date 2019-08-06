@@ -1,7 +1,7 @@
 import { createDrawerNavigator } from 'react-navigation';
 
 import HomeScreen from './Home';
-import FailureReportScreen from './FailureReport';
+import FailureReportScreen from './FailureReport/Navigator';
 import QuestionsAndComplaintsScreen from './QuestionsAndComplaints';
 import ConsumptionReviewScreen from './ConsumptionReview';
 import AccountScreen from './Account';

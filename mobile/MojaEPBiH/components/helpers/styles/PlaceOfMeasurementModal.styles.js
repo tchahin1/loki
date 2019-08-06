@@ -53,7 +53,7 @@ const styles = {
     paddingVertical: wp('2%'),
     paddingHorizontal: wp('3%'),
   },
-  txtInput: {
+  txtInputContainer: {
     borderBottomWidth: 1,
     height: hp('5%'),
     width: wp('90%'),
