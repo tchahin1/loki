@@ -4,22 +4,21 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 
-import Colors from '../../assets/colors/AppColorsEnum';
+import Colors from '../../../assets/colors/AppColorsEnum';
 
 const styles = {
   notificationsMod: {
     alignSelf: 'center',
     backgroundColor: Colors.PRIMARY_WHITE,
     height: hp('10%'),
-    width: wp('70%'),
+    width: wp('97%'),
     flexDirection: 'column',
   },
   signOutbtn: {
     alignSelf: 'flex-end',
-    width: wp('70%'),
+    width: wp('97%'),
     height: hp('10%'),
     borderWidth: 1,
-    borderColor: Colors.PRIMARY_BLUE,
     alignItems: 'center',
     justifyContent: 'center',
   },

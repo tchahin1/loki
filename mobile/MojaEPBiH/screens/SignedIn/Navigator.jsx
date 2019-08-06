@@ -8,7 +8,7 @@ import AccountScreen from './Account';
 import EServiceScreen from './EService';
 import CalculatorScreen from './Calculator';
 import InfoScreen from './Information';
-import ElectricMeterScreen from './ElectricMeter';
+import ElectricMeterScreen from './ElectricMeter/Navigator';
 
 const SignedInNavigator = createDrawerNavigator({
   Home: {
