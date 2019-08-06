@@ -1,5 +1,11 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import {
+  View,
+  Text,
+  Picker,
+  TextInput,
+  KeyboardAvoidingView,
+} from 'react-native';
 import { Header } from 'react-native-elements';
 import PropTypes from 'prop-types';
 
@@ -7,6 +13,7 @@ import MenuButton from '../../../components/helpers/MenuButton';
 import NotificationsButton from '../../../components/helpers/NotificationsButton';
 import NotificationsModal from '../../../components/helpers/NotificationsModal';
 import { onSignOut } from '../../../Auth';
+import Form from '../../../components/QuestionsAndComplaints/Form';
 
 import createStyles from './QuestionsAndComplaints.styles';
 
@@ -26,7 +33,9 @@ class QuestionsAndComplaintsScreen extends React.Component {
 
   render() {
     const { navigation } = this.props;
-    const { openNotMod } = this.state;
+    const {
+      openNotMod,
+    } = this.state;
     return (
       <View style={{ flex: 1 }}>
         <Header
@@ -40,16 +49,16 @@ class QuestionsAndComplaintsScreen extends React.Component {
             />
           )}
         />
-        <View style={styles.container}>
-          <Text>QuestionsAndComplaintsScreen</Text>
-          <NotificationsModal
-            animationType="fade"
-            transparent
-            visible={openNotMod}
-            onRequestClose={() => this.setState({ openNotMod: false })}
-            onSignOutPress={() => onSignOut().then(navigation.navigate('SignedOut'))}
-          />
-        </View>
+        <Form
+          navigation={navigation}
+        />
+        <NotificationsModal
+          animationType="fade"
+          transparent
+          visible={openNotMod}
+          onRequestClose={() => this.setState({ openNotMod: false })}
+          onSignOutPress={() => onSignOut().then(navigation.navigate('SignedOut'))}
+        />
       </View>
     );
   }
