@@ -78,7 +78,6 @@ class PlaceOfMeasurementModal extends React.Component {
         onRequestClose={onRequestClose}
         animationType="fade"
         transparent
-
       >
         <View style={styles.modalContainer}>
           <View style={styles.placeOfMeasurementMod}>

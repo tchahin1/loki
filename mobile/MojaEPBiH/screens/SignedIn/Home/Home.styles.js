@@ -7,6 +7,9 @@ import {
 import Colors from '../../../assets/colors/AppColorsEnum';
 
 const styles = {
+  wrapper: {
+    flex: 1,
+  },
   container: {
     flex: 1,
     backgroundColor: Colors.PRIMARY_BLUE,
@@ -14,11 +17,7 @@ const styles = {
     alignItems: 'center',
   },
   header: {
-    height: hp('8%'),
-    width: wp('95%'),
-    marginTop: hp('3%'),
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
+    backgroundColor: Colors.PRIMARY_BLUE,
   },
   btnsWrapper: {
     marginVertical: wp('4%'),
@@ -34,28 +33,6 @@ const styles = {
   btnTxt: {
     color: Colors.PRIMARY_WHITE,
     fontSize: 20,
-  },
-  notificationsMod: {
-    alignSelf: 'center',
-    backgroundColor: Colors.PRIMARY_WHITE,
-    height: hp('10%'),
-    width: wp('70%'),
-    flexDirection: 'column',
-  },
-  signOutbtn: {
-    alignSelf: 'flex-end',
-    width: wp('70%'),
-    height: hp('10%'),
-    borderWidth: 1,
-    borderColor: Colors.PRIMARY_BLUE,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  modalContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.6)',
   },
 };
 
