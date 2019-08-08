@@ -9,7 +9,7 @@ import { createStore } from 'redux';
 
 import serverTextReducer from './src/reducers/ServerTextReducer';
 import SpaceMonoFont from './src/assets/fonts/SpaceMono-Regular.ttf';
-import createRootNavigator from './router';
+import createRootNavigator from './src/navigation/router';
 import { isSignedIn } from './Auth';
 
 const store = createStore(serverTextReducer);
