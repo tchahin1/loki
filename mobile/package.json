@@ -1,0 +1,53 @@
+{
+  "main": "node_modules/expo/AppEntry.js",
+  "scripts": {
+    "start": "npm run lint && expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "eject": "expo eject",
+    "test": "node ./node_modules/jest/bin/jest.js --passWithNoTests",
+    "lint": "eslint \"**/*.{js,jsx}\""
+  },
+  "jest": {
+    "preset": "jest-expo",
+    "testMatch": [
+      "**/__tests__/**/*.(jsx)",
+      "**/?(*.)+(spec|test).(jsx)"
+    ],
+    "globals": {
+      "__DEV__": true,
+      "fetch": true
+    },
+    "transform": {
+      "^.+\\.(js|jsx)?$": "babel-jest"
+    }
+  },
+  "dependencies": {
+    "@expo/samples": "2.1.1",
+    "expo": "^32.0.0",
+    "prop-types": "^15.7.2",
+    "react": "16.5.0",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",
+    "react-native-elements": "^1.1.0",
+    "react-native-material-textfield": "^0.12.0",
+    "react-native-responsive-screen": "^1.2.2",
+    "react-navigation": "^3.0.9",
+    "react-redux": "^6.0.1",
+    "react-test-renderer": "^16.8.6",
+    "redux": "^4.0.1",
+    "redux-thunk": "^2.3.0"
+  },
+  "devDependencies": {
+    "babel-eslint": "^10.0.1",
+    "babel-jest": "^24.8.0",
+    "babel-preset-expo": "^5.0.0",
+    "eslint": "5.3.0",
+    "eslint-config-airbnb": "17.1.0",
+    "eslint-plugin-import": "2.14.0",
+    "eslint-plugin-jsx-a11y": "6.1.1",
+    "eslint-plugin-react": "7.11.0",
+    "jest": "^24.8.0",
+    "jest-expo": "^32.0.0"
+  },
+  "private": true
+}
