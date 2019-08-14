@@ -5,11 +5,9 @@ import {
   View,
   ActivityIndicator,
 } from 'react-native';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { Header } from 'react-native-elements/src/index';
-
 import api from '../../api/network.config';
 import createStyles from './Home.styles';
 import {
@@ -24,6 +22,8 @@ import { getToken, onSignOut } from '../../../Auth';
 import PlaceOfMeasurementModal from '../../components/helpers/PlaceOfMeasurementModal';
 import NotificationsButton from '../../components/helpers/NotificationsButton';
 import NotificationsModal from '../../components/helpers/NotificationsModal';
+import { connect } from 'react-redux';
+import { logoutUser } from '../account/AccountActions';
 
 const styles = createStyles();
 
@@ -78,6 +78,18 @@ class HomeScreen extends React.Component {
     this.setState({ openPlaceOfMeasurementMod: !openPlaceOfMeasurementMod });
   };
 
+  onSignOutPressed() {
+    this.props.logoutUser();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { navigation } = this.props;
+
+    if(nextProps.user === '') {
+      onSignOut().then(navigation.navigate('SignedOut'));
+    }
+  }
+
   render() {
     const { serverText, navigation } = this.props;
     const { current } = serverText;
@@ -120,7 +132,7 @@ class HomeScreen extends React.Component {
             transparent
             visible={openNotMod}
             onRequestClose={() => this.setState({ openNotMod: false })}
-            onSignOutPress={() => onSignOut().then(navigation.navigate('SignedOut'))}
+            onSignOutPress={this.onSignOutPressed.bind(this)}
           />
           <PlaceOfMeasurementModal
             visible={openPlaceOfMeasurementMod}
@@ -134,8 +146,10 @@ class HomeScreen extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  const { serverText } = state;
-  return { serverText };
+  return { 
+    serverText: state.serverText,
+    user: state.signIn.user
+  };
 };
 
 const mapDispatchToProps = dispatch => (
@@ -143,6 +157,7 @@ const mapDispatchToProps = dispatch => (
     serverUnavailable: serverUnavailableAction,
     waitingForServer: waitingForServerAction,
     receivedTextFromServer: receivedTextFromServerAction,
+    logoutUser: logoutUser
   }, dispatch)
 );
 

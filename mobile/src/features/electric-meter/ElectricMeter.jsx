@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 import { Header, Icon } from 'react-native-elements/src/index';
 import PropTypes from 'prop-types';
-
 import MenuButton from '../../components/helpers/MenuButton';
 import NotificationsButton from '../../components/helpers/NotificationsButton';
 import NotificationsModal from '../../components/helpers/NotificationsModal';
@@ -17,8 +16,9 @@ import PlaceOfMeasurementModal from '../../components/helpers/PlaceOfMeasurement
 import MetricLocationData from '../../components/electric-meter/MetricLocationData';
 import { onSignOut } from '../../../Auth';
 import Colors from '../../assets/colors/AppColorsEnum';
-
 import createStyles from './ElectricMeter.styles';
+import { connect } from 'react-redux';
+import { logoutUser } from '../account/AccountActions';
 
 const styles = createStyles();
 
@@ -63,6 +63,18 @@ class ElectricMeterScreen extends React.Component {
   keyboardDidHide = () => {
     this.setState({ keyboardDidShow: false, flexStyle: 2 / 3 });
   };
+
+  onSignOutPressed() {
+    this.props.logoutUser();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { navigation } = this.props;
+
+    if(nextProps.user === '') {
+      onSignOut().then(navigation.navigate('SignedOut'));
+    }
+  }
 
   render() {
     const { navigation } = this.props;
@@ -126,7 +138,7 @@ class ElectricMeterScreen extends React.Component {
           transparent
           visible={openNotMod}
           onRequestClose={() => this.setState({ openNotMod: false })}
-          onSignOutPress={() => onSignOut().then(navigation.navigate('SignedOut'))}
+          onSignOutPress={this.onSignOutPressed.bind(this)}
         />
         <PlaceOfMeasurementModal
           visible={openPOM}
@@ -138,4 +150,10 @@ class ElectricMeterScreen extends React.Component {
   }
 }
 
-export default ElectricMeterScreen;
+const mapStateToProps = state => {
+  return {
+    user: state.signIn.user
+  };
+};
+
+export default connect(mapStateToProps, {logoutUser})(ElectricMeterScreen);

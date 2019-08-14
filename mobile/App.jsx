@@ -5,14 +5,14 @@ import {
 } from 'expo';
 import { createAppContainer } from 'react-navigation';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
-
+import { createStore, applyMiddleware } from 'redux';
 import serverTextReducer from './src/reducers/ServerTextReducer';
 import SpaceMonoFont from './src/assets/fonts/SpaceMono-Regular.ttf';
 import createRootNavigator from './src/navigation/router';
 import { isSignedIn } from './Auth';
+import ReduxThunk from 'redux-thunk';
 
-const store = createStore(serverTextReducer);
+const store = createStore(serverTextReducer, {}, applyMiddleware(ReduxThunk)); //added applyMiddleware!!!!
 
 export default class App extends React.Component {
   state = {

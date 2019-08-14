@@ -11,14 +11,14 @@ import {
 } from 'react-native';
 import { Header, Icon } from 'react-native-elements/src/index';
 import PropTypes from 'prop-types';
-
 import MenuButton from '../../components/helpers/MenuButton';
 import NotificationsButton from '../../components/helpers/NotificationsButton';
 import NotificationsModal from '../../components/helpers/NotificationsModal';
 import { onSignOut } from '../../../Auth';
 import Colors from '../../assets/colors/AppColorsEnum';
-
 import createStyles from './FailureReport.styles';
+import { connect } from 'react-redux';
+import { logoutUser } from '../account/AccountActions';
 
 const styles = createStyles();
 
@@ -116,6 +116,17 @@ class FailureReportScreen extends React.Component {
     Alert.alert('INFO', 'Uspješno prijavljen kvar!');
   };
 
+  onSignOutPressed() {
+    this.props.logoutUser();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { navigation } = this.props;
+
+    if(nextProps.user === '') {
+      onSignOut().then(navigation.navigate('SignedOut'));
+    }
+  }
 
   render() {
     const { navigation } = this.props;
@@ -196,11 +207,17 @@ class FailureReportScreen extends React.Component {
           transparent
           visible={openNotMod}
           onRequestClose={() => this.setState({ openNotMod: false })}
-          onSignOutPress={() => onSignOut().then(navigation.navigate('SignedOut'))}
+          onSignOutPress={this.onSignOutPressed.bind(this)}
         />
       </KeyboardAvoidingView>
     );
   }
 }
 
-export default FailureReportScreen;
+const mapStateToProps = state => {
+  return {
+    user: state.signIn.user
+  };
+};
+
+export default connect(mapStateToProps, {logoutUser})(FailureReportScreen);

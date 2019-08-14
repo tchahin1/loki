@@ -11,18 +11,22 @@ import {
 import { Button } from 'react-native-elements/src/index';
 import { TextField } from 'react-native-material-textfield';
 import PropTypes from 'prop-types';
-
-import api from '../../api/network.config';
-
 import Background from '../../assets/images/epbih.jpg';
 import Colors from '../../assets/colors/AppColorsEnum';
 import Inputs from '../../assets/enum/LoginInputsEnum';
-
 import createStyles from './SignUp.styles';
+import {connect} from 'react-redux';
+import { 
+  initializeRegistration,
+  signupUsernameChanged, 
+  signupPasswordChanged, 
+  signupEmailChanged, 
+  signupConfirmPasswordChanged , 
+  registerUser } from './SignUpActions';
 
 const styles = createStyles();
 
-export default class SignUp extends React.Component {
+class SignUp extends React.Component {
   static propTypes = {
     navigation: PropTypes.shape({}).isRequired,
   };
@@ -31,25 +35,20 @@ export default class SignUp extends React.Component {
     super(props);
 
     this.state = {
-      email: '',
-      username: '',
-      password: '',
-      confirmPass: '',
       error: {
         username: '',
         email: '',
         password: '',
         confirmPass: '',
-      },
-      isLoading: false,
-      userExistsErr: '',
+      }
     };
   }
 
   changeAndValidateValues = (input, value) => {
     this.setState({ userExistsErr: '' });
 
-    const { password, error } = this.state;
+    const { password, confirmPass } = this.props;
+    const { error } = this.state;
     const { ERRORS, LABELS } = Inputs;
     const errors = {
       username: error.username,
@@ -62,7 +61,7 @@ export default class SignUp extends React.Component {
 
     switch (input) {
       case LABELS.USERNAME:
-        this.setState({ username: value });
+        this.onUsernameChange(value);
         if (value.length < 4) {
           errors.username = ERRORS.USERNAME_ERR;
         } else {
@@ -72,7 +71,7 @@ export default class SignUp extends React.Component {
 
       case LABELS.EMAIL: {
         const regExp = new RegExp(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
-        this.setState({ email: value });
+        this.onEmailChange(value);
         if (!value.match(regExp)) {
           errors.email = ERRORS.EMAIL_ERR;
         } else {
@@ -82,16 +81,25 @@ export default class SignUp extends React.Component {
       }
 
       case LABELS.PASSWORD:
-        this.setState({ password: value });
+        this.onPasswordChange(value);
         if (value.length < 6) {
           errors.password = ERRORS.PASS_LENGTH_ERR;
-        } else {
+        }
+        else if(value !== confirmPass) {
+          errors.password = '';
+          errors.confirmPass = ERRORS.PASS_CONFIRM_ERR;
+        }
+        else if(value === confirmPass) {
+          errors.password = '';
+          errors.confirmPass = '';
+        }
+        else {
           errors.password = '';
         }
         break;
 
       case LABELS.CONFIRM_PASS:
-        this.setState({ confirmPass: value });
+        this.onConfirmPasswordChange(value);
         if (value !== password) {
           errors.confirmPass = ERRORS.PASS_CONFIRM_ERR;
         } else {
@@ -104,61 +112,52 @@ export default class SignUp extends React.Component {
     this.setState({ error: errors });
   };
 
-  registerUser = () => {
+  onUsernameChange(text) {
+    this.props.signupUsernameChanged(text);
+  }
+
+  onPasswordChange(text) {
+      this.props.signupPasswordChanged(text);
+  }
+
+  onEmailChange(text) {
+    this.props.signupEmailChanged(text);
+  }
+
+  onConfirmPasswordChange(text) {
+      this.props.signupConfirmPasswordChanged(text);
+  }
+
+  onButtonPress() {
+      const { username, password, email, confirmPass } = this.props;
+
+      this.props.registerUser({username, password, email, confirmPass});
+  }
+
+  componentWillMount(){
+      this.props.initializeRegistration(this.props.successFlag);
+  }
+
+  componentWillReceiveProps(nextProps){
     const { navigation } = this.props;
-    const {
-      username,
-      email,
-      password,
-      confirmPass,
-    } = this.state;
-    const { ERRORS } = Inputs;
 
-    this.setState({ isLoading: true });
-
-    fetch(`${api}/register`, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        username,
-        email,
-        password,
-        passwordRepeated: confirmPass,
-      }),
-    }).then((response) => {
-      this.setState({ isLoading: false });
-
-      if (response.ok) {
-        Alert.alert(
-          'INFO',
-          'Uspješno ste registrovani na MOJAEP!',
-          [
-            { text: 'UREDU', onPress: () => navigation.navigate('SignIn') },
-          ],
-          { cancelable: false },
-        );
-      } else {
-        Keyboard.dismiss();
-        this.setState({ userExistsErr: ERRORS.USER_EXISTS_ERR });
-      }
-    });
-  };
+    if(nextProps.successFlag){
+      Alert.alert(
+        'INFO',
+        'Uspješno ste registrovani na MOJAEP!',
+        [
+          { text: 'UREDU', onPress: () => navigation.navigate('SignIn') },
+        ],
+        { cancelable: false },
+      );
+    }
+  }
 
   render() {
-    const { navigation } = this.props;
     const { LABELS } = Inputs;
-    const {
-      username,
-      password,
-      email,
-      confirmPass,
-      error,
-      isLoading,
-      userExistsErr,
-    } = this.state;
+    const { error } = this.state;
+    const { navigation } = this.props;
+    const{email, username, password, confirmPass, isLoading, userExistsErr} = this.props;
 
     return (
       <ImageBackground source={Background} style={styles.wrapper}>
@@ -250,7 +249,7 @@ export default class SignUp extends React.Component {
                   || email === ''
                   || confirmPass === ''
                 }
-                onPress={this.registerUser}
+                onPress={this.onButtonPress.bind(this)}
               />
             </View>
             <View />
@@ -268,3 +267,18 @@ export default class SignUp extends React.Component {
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    username: state.signUp.username,
+    password: state.signUp.password,
+    email: state.signUp.email,
+    confirmPass: state.signUp.confirmPass,
+    userExistsErr: state.signUp.error,
+    isLoading: state.signUp.isLoading,
+    successFlag: state.signUp.success
+  };
+};
+
+export default connect(mapStateToProps, 
+    {initializeRegistration, signupConfirmPasswordChanged, signupEmailChanged, signupPasswordChanged, signupUsernameChanged, registerUser})(SignUp);
