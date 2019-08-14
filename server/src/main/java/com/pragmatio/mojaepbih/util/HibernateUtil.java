@@ -12,7 +12,7 @@ import org.hibernate.cfg.Environment;
 import org.hibernate.service.ServiceRegistry;
 
 public class HibernateUtil {
-    private static SessionFactory sessionFactory;
+    private static SessionFactory sessionFactory = null;
     public static SessionFactory getSessionFactory() {
         if (sessionFactory == null) {
             try {
@@ -25,6 +25,7 @@ public class HibernateUtil {
                 settings.put(Environment.PASS, "pragmatio");
                 settings.put(Environment.DIALECT, "org.hibernate.dialect.MySQL5Dialect");
                 settings.put(Environment.SHOW_SQL, "true");
+                settings.put("allowPublicKeyRetrieval", "true");                    //added
                 settings.put(Environment.CURRENT_SESSION_CONTEXT_CLASS, "thread");
                 settings.put(Environment.HBM2DDL_AUTO, "create-drop");
                 configuration.setProperties(settings);
