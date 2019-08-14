@@ -1,4 +1,8 @@
+/* eslint-disable react/jsx-no-bind */
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable react/prop-types */
 import React from 'react';
+import { connect } from 'react-redux';
 import {
   Text,
   TouchableOpacity,
@@ -22,7 +26,7 @@ import { getToken, onSignOut } from '../../../Auth';
 import PlaceOfMeasurementModal from '../../components/helpers/PlaceOfMeasurementModal';
 import NotificationsButton from '../../components/helpers/NotificationsButton';
 import NotificationsModal from '../../components/helpers/NotificationsModal';
-import { connect } from 'react-redux';
+
 import { logoutUser } from '../account/AccountActions';
 
 const styles = createStyles();
@@ -48,6 +52,18 @@ class HomeScreen extends React.Component {
 
   componentWillMount() {
     getToken().then(token => this.setState({ token }, () => this.fetchServerText()));
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { navigation } = this.props;
+
+    if (nextProps.user === '') {
+      onSignOut().then(navigation.navigate('SignedOut'));
+    }
+  }
+
+  onSignOutPressed() {
+    this.props.logoutUser();
   }
 
   fetchServerText = () => {
@@ -77,18 +93,6 @@ class HomeScreen extends React.Component {
     const { openPlaceOfMeasurementMod } = this.state;
     this.setState({ openPlaceOfMeasurementMod: !openPlaceOfMeasurementMod });
   };
-
-  onSignOutPressed() {
-    this.props.logoutUser();
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const { navigation } = this.props;
-
-    if(nextProps.user === '') {
-      onSignOut().then(navigation.navigate('SignedOut'));
-    }
-  }
 
   render() {
     const { serverText, navigation } = this.props;
@@ -145,19 +149,17 @@ class HomeScreen extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return { 
-    serverText: state.serverText,
-    user: state.signIn.user
-  };
-};
+const mapStateToProps = state => ({
+  serverText: state.serverText,
+  user: state.signIn.user,
+});
 
 const mapDispatchToProps = dispatch => (
   bindActionCreators({
     serverUnavailable: serverUnavailableAction,
     waitingForServer: waitingForServerAction,
     receivedTextFromServer: receivedTextFromServerAction,
-    logoutUser: logoutUser
+    logoutUser,
   }, dispatch)
 );
 

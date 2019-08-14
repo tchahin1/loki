@@ -1,11 +1,14 @@
+/* eslint-disable react/jsx-no-bind */
+/* eslint-disable react/prop-types */
+/* eslint-disable react/destructuring-assignment */
 import React from 'react';
+import { connect } from 'react-redux';
 import {
   ImageBackground,
   KeyboardAvoidingView,
   View,
   Alert,
   ActivityIndicator,
-  Keyboard,
   Text,
 } from 'react-native';
 import { Button } from 'react-native-elements/src/index';
@@ -15,14 +18,14 @@ import Background from '../../assets/images/epbih.jpg';
 import Colors from '../../assets/colors/AppColorsEnum';
 import Inputs from '../../assets/enum/LoginInputsEnum';
 import createStyles from './SignUp.styles';
-import {connect} from 'react-redux';
-import { 
+import {
   initializeRegistration,
-  signupUsernameChanged, 
-  signupPasswordChanged, 
-  signupEmailChanged, 
-  signupConfirmPasswordChanged , 
-  registerUser } from './SignUpActions';
+  signupUsernameChanged,
+  signupPasswordChanged,
+  signupEmailChanged,
+  signupConfirmPasswordChanged,
+  registerUser,
+} from './SignUpActions';
 
 const styles = createStyles();
 
@@ -40,12 +43,57 @@ class SignUp extends React.Component {
         email: '',
         password: '',
         confirmPass: '',
-      }
+      },
     };
   }
 
+  componentWillMount() {
+    this.props.initializeRegistration(this.props.successFlag);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { navigation } = this.props;
+
+    if (nextProps.successFlag) {
+      Alert.alert(
+        'INFO',
+        'Uspješno ste registrovani na MOJAEP!',
+        [
+          { text: 'UREDU', onPress: () => navigation.navigate('SignIn') },
+        ],
+        { cancelable: false },
+      );
+    }
+  }
+
+  onUsernameChange(text) {
+    this.props.signupUsernameChanged(text);
+  }
+
+  onPasswordChange(text) {
+    this.props.signupPasswordChanged(text);
+  }
+
+  onEmailChange(text) {
+    this.props.signupEmailChanged(text);
+  }
+
+  onConfirmPasswordChange(text) {
+    this.props.signupConfirmPasswordChanged(text);
+  }
+
+  onButtonPress() {
+    const {
+      username, password, email, confirmPass,
+    } = this.props;
+
+    this.props.registerUser({
+      username, password, email, confirmPass,
+    });
+  }
+
   changeAndValidateValues = (input, value) => {
-    this.setState({ userExistsErr: '' });
+    //  this.setState({ userExistsErr: '' });
 
     const { password, confirmPass } = this.props;
     const { error } = this.state;
@@ -57,7 +105,7 @@ class SignUp extends React.Component {
       confirmPass: error.confirmPass,
     };
 
-    this.setState({ userExistsErr: '' });
+    //  this.setState({ userExistsErr: '' });
 
     switch (input) {
       case LABELS.USERNAME:
@@ -84,16 +132,13 @@ class SignUp extends React.Component {
         this.onPasswordChange(value);
         if (value.length < 6) {
           errors.password = ERRORS.PASS_LENGTH_ERR;
-        }
-        else if(value !== confirmPass) {
+        } else if (value !== confirmPass) {
           errors.password = '';
           errors.confirmPass = ERRORS.PASS_CONFIRM_ERR;
-        }
-        else if(value === confirmPass) {
+        } else if (value === confirmPass) {
           errors.password = '';
           errors.confirmPass = '';
-        }
-        else {
+        } else {
           errors.password = '';
         }
         break;
@@ -112,52 +157,13 @@ class SignUp extends React.Component {
     this.setState({ error: errors });
   };
 
-  onUsernameChange(text) {
-    this.props.signupUsernameChanged(text);
-  }
-
-  onPasswordChange(text) {
-      this.props.signupPasswordChanged(text);
-  }
-
-  onEmailChange(text) {
-    this.props.signupEmailChanged(text);
-  }
-
-  onConfirmPasswordChange(text) {
-      this.props.signupConfirmPasswordChanged(text);
-  }
-
-  onButtonPress() {
-      const { username, password, email, confirmPass } = this.props;
-
-      this.props.registerUser({username, password, email, confirmPass});
-  }
-
-  componentWillMount(){
-      this.props.initializeRegistration(this.props.successFlag);
-  }
-
-  componentWillReceiveProps(nextProps){
-    const { navigation } = this.props;
-
-    if(nextProps.successFlag){
-      Alert.alert(
-        'INFO',
-        'Uspješno ste registrovani na MOJAEP!',
-        [
-          { text: 'UREDU', onPress: () => navigation.navigate('SignIn') },
-        ],
-        { cancelable: false },
-      );
-    }
-  }
-
   render() {
     const { LABELS } = Inputs;
     const { error } = this.state;
     const { navigation } = this.props;
-    const{email, username, password, confirmPass, isLoading, userExistsErr} = this.props;
+    const {
+      email, username, password, confirmPass, isLoading, userExistsErr,
+    } = this.props;
 
     return (
       <ImageBackground source={Background} style={styles.wrapper}>
@@ -268,17 +274,22 @@ class SignUp extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    username: state.signUp.username,
-    password: state.signUp.password,
-    email: state.signUp.email,
-    confirmPass: state.signUp.confirmPass,
-    userExistsErr: state.signUp.error,
-    isLoading: state.signUp.isLoading,
-    successFlag: state.signUp.success
-  };
-};
+const mapStateToProps = state => ({
+  username: state.signUp.username,
+  password: state.signUp.password,
+  email: state.signUp.email,
+  confirmPass: state.signUp.confirmPass,
+  userExistsErr: state.signUp.error,
+  isLoading: state.signUp.isLoading,
+  successFlag: state.signUp.success,
+});
 
-export default connect(mapStateToProps, 
-    {initializeRegistration, signupConfirmPasswordChanged, signupEmailChanged, signupPasswordChanged, signupUsernameChanged, registerUser})(SignUp);
+export default connect(mapStateToProps,
+  {
+    initializeRegistration,
+    signupConfirmPasswordChanged,
+    signupEmailChanged,
+    signupPasswordChanged,
+    signupUsernameChanged,
+    registerUser,
+  })(SignUp);

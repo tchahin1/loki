@@ -1,4 +1,8 @@
+/* eslint-disable react/jsx-no-bind */
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable react/prop-types */
 import React from 'react';
+import { connect } from 'react-redux';
 import {
   View,
   Text,
@@ -17,7 +21,7 @@ import MetricLocationData from '../../components/electric-meter/MetricLocationDa
 import { onSignOut } from '../../../Auth';
 import Colors from '../../assets/colors/AppColorsEnum';
 import createStyles from './ElectricMeter.styles';
-import { connect } from 'react-redux';
+
 import { logoutUser } from '../account/AccountActions';
 
 const styles = createStyles();
@@ -51,9 +55,21 @@ class ElectricMeterScreen extends React.Component {
     );
   }
 
+  componentWillReceiveProps(nextProps) {
+    const { navigation } = this.props;
+
+    if (nextProps.user === '') {
+      onSignOut().then(navigation.navigate('SignedOut'));
+    }
+  }
+
   componentWillUnmount() {
     this.keyboardDidShowListener.remove();
     this.keyboardDidHideListener.remove();
+  }
+
+  onSignOutPressed() {
+    this.props.logoutUser();
   }
 
   keyboardDidShow = () => {
@@ -63,18 +79,6 @@ class ElectricMeterScreen extends React.Component {
   keyboardDidHide = () => {
     this.setState({ keyboardDidShow: false, flexStyle: 2 / 3 });
   };
-
-  onSignOutPressed() {
-    this.props.logoutUser();
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const { navigation } = this.props;
-
-    if(nextProps.user === '') {
-      onSignOut().then(navigation.navigate('SignedOut'));
-    }
-  }
 
   render() {
     const { navigation } = this.props;
@@ -150,10 +154,8 @@ class ElectricMeterScreen extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    user: state.signIn.user
-  };
-};
+const mapStateToProps = state => ({
+  user: state.signIn.user,
+});
 
-export default connect(mapStateToProps, {logoutUser})(ElectricMeterScreen);
+export default connect(mapStateToProps, { logoutUser })(ElectricMeterScreen);

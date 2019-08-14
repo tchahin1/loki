@@ -1,4 +1,5 @@
 import React from 'react';
+import ReduxThunk from 'redux-thunk';
 import PropTypes from 'prop-types';
 import {
   AppLoading, Font, Icon,
@@ -10,9 +11,9 @@ import serverTextReducer from './src/reducers/ServerTextReducer';
 import SpaceMonoFont from './src/assets/fonts/SpaceMono-Regular.ttf';
 import createRootNavigator from './src/navigation/router';
 import { isSignedIn } from './Auth';
-import ReduxThunk from 'redux-thunk';
 
-const store = createStore(serverTextReducer, {}, applyMiddleware(ReduxThunk)); //added applyMiddleware!!!!
+// added applyMiddleware!!!!
+const store = createStore(serverTextReducer, {}, applyMiddleware(ReduxThunk));
 
 export default class App extends React.Component {
   state = {

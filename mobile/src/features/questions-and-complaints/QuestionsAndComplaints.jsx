@@ -1,4 +1,8 @@
+/* eslint-disable react/jsx-no-bind */
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable react/prop-types */
 import React from 'react';
+import { connect } from 'react-redux';
 import { View } from 'react-native';
 import { Header } from 'react-native-elements/src/index';
 import PropTypes from 'prop-types';
@@ -8,7 +12,7 @@ import NotificationsModal from '../../components/helpers/NotificationsModal';
 import { onSignOut } from '../../../Auth';
 import Form from '../../components/questions-and-complaints/Form';
 import createStyles from './QuestionsAndComplaints.styles';
-import { connect } from 'react-redux';
+
 import { logoutUser } from '../account/AccountActions';
 
 const styles = createStyles();
@@ -25,16 +29,16 @@ class QuestionsAndComplaintsScreen extends React.Component {
     };
   }
 
-  onSignOutPressed() {
-    this.props.logoutUser();
-  }
-
   componentWillReceiveProps(nextProps) {
     const { navigation } = this.props;
 
-    if(nextProps.user === '') {
+    if (nextProps.user === '') {
       onSignOut().then(navigation.navigate('SignedOut'));
     }
+  }
+
+  onSignOutPressed() {
+    this.props.logoutUser();
   }
 
   render() {
@@ -70,10 +74,8 @@ class QuestionsAndComplaintsScreen extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    user: state.signIn.user
-  };
-};
+const mapStateToProps = state => ({
+  user: state.signIn.user,
+});
 
-export default connect(mapStateToProps, {logoutUser})(QuestionsAndComplaintsScreen);
+export default connect(mapStateToProps, { logoutUser })(QuestionsAndComplaintsScreen);

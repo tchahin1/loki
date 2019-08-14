@@ -1,6 +1,10 @@
+/* eslint-disable react/jsx-no-bind */
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable react/prop-types */
 import React from 'react';
+import { connect } from 'react-redux';
 import {
-  ActivityIndicator, ImageBackground, Keyboard, KeyboardAvoidingView, Text, View,
+  ActivityIndicator, ImageBackground, KeyboardAvoidingView, Text, View,
 } from 'react-native';
 import { Button } from 'react-native-elements/src/index';
 import { TextField } from 'react-native-material-textfield';
@@ -10,7 +14,6 @@ import Background from '../../assets/images/epbih.jpg';
 import createStyles from './SignIn.styles';
 import Inputs from '../../assets/enum/LoginInputsEnum';
 import ScreenName from '../../navigation/ScreenName';
-import {connect} from 'react-redux';
 import { usernameChanged, passwordChanged, loginUser } from './SignInActions';
 
 
@@ -18,44 +21,46 @@ const styles = createStyles();
 
 class SignIn extends React.Component {
   static propTypes = {
-    navigation: PropTypes.shape({}).isRequired
+    navigation: PropTypes.shape({}).isRequired,
   };
+
+  componentWillReceiveProps(nextProps) {
+    const { navigation } = this.props;
+
+    if (nextProps.user !== '' && nextProps.user !== undefined) {
+      navigation.navigate(ScreenName.HOME);
+    }
+  }
 
   onUsernameChange(text) {
     this.props.usernameChanged(text);
   }
 
   onPasswordChange(text) {
-      this.props.passwordChanged(text);
+    this.props.passwordChanged(text);
   }
 
   onButtonPress() {
-      const { username, password } = this.props;
+    const { username, password } = this.props;
 
-      this.props.loginUser({username, password});
+    this.props.loginUser({ username, password });
   }
 
   renderLoading() {
-      const {isLoading} = this.props;
+    const { isLoading } = this.props;
 
-      if(isLoading){
-        return <ActivityIndicator size="small" color={Colors.PRIMARY_WHITE} />;
-      }
-  }
-
-  componentWillReceiveProps(nextProps){
-    const { navigation } = this.props;
-
-    if(nextProps.user !== '' && nextProps.user !== undefined){
-      navigation.navigate(ScreenName.HOME);
+    if (isLoading) {
+      return <ActivityIndicator size="small" color={Colors.PRIMARY_WHITE} />;
     }
+
+    return null;
   }
 
   render() {
     const { navigation } = this.props;
     const { LABELS } = Inputs;
     const {
-      username, password, error, isLoading, user
+      username, password, error,
     } = this.props;
 
     return (
@@ -103,7 +108,7 @@ class SignIn extends React.Component {
               <Button
                 buttonStyle={styles.btnSignIn}
                 title="PRIJAVI SE"
-                disabled={!{username} || !{password}}
+                disabled={!{ username } || !{ password }}
                 titleStyle={{ fontSize: 18 }}
                 onPress={this.onButtonPress.bind(this)}
               />
@@ -124,14 +129,12 @@ class SignIn extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    username: state.signIn.username,
-    password: state.signIn.password,
-    error: state.signIn.error,
-    isLoading: state.signIn.isLoading,
-    user: state.signIn.user
-  };
-};
+const mapStateToProps = state => ({
+  username: state.signIn.username,
+  password: state.signIn.password,
+  error: state.signIn.error,
+  isLoading: state.signIn.isLoading,
+  user: state.signIn.user,
+});
 
-export default connect(mapStateToProps, {usernameChanged, passwordChanged, loginUser})(SignIn);
+export default connect(mapStateToProps, { usernameChanged, passwordChanged, loginUser })(SignIn);

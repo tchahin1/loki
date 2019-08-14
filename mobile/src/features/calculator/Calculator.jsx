@@ -1,4 +1,8 @@
+/* eslint-disable react/jsx-no-bind */
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable react/prop-types */
 import React from 'react';
+import { connect } from 'react-redux';
 import { View, Text } from 'react-native';
 import { Header } from 'react-native-elements/src/index';
 import PropTypes from 'prop-types';
@@ -7,7 +11,7 @@ import NotificationsButton from '../../components/helpers/NotificationsButton';
 import NotificationsModal from '../../components/helpers/NotificationsModal';
 import { onSignOut } from '../../../Auth';
 import createStyles from './Calculator.styles';
-import { connect } from 'react-redux';
+
 import { logoutUser } from '../account/AccountActions';
 
 
@@ -25,16 +29,16 @@ class CalculatorScreen extends React.Component {
     };
   }
 
-  onSignOutPressed() {
-    this.props.logoutUser();
-  }
-
   componentWillReceiveProps(nextProps) {
     const { navigation } = this.props;
 
-    if(nextProps.user === '') {
+    if (nextProps.user === '') {
       onSignOut().then(navigation.navigate('SignedOut'));
     }
+  }
+
+  onSignOutPressed() {
+    this.props.logoutUser();
   }
 
   render() {
@@ -68,10 +72,8 @@ class CalculatorScreen extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    user: state.signIn.user
-  };
-};
+const mapStateToProps = state => ({
+  user: state.signIn.user,
+});
 
-export default connect(mapStateToProps, {logoutUser})(CalculatorScreen);
+export default connect(mapStateToProps, { logoutUser })(CalculatorScreen);
