@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import {
   View,
   Text,
@@ -9,11 +10,13 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { Icon } from 'react-native-elements/src/index';
-
 import NotesModal from './NotesModal';
 import Colors from '../../assets/colors/AppColorsEnum';
-
 import createStyles from './MetricLocationData.styles';
+import {
+  largeTariffChanged,
+  smallTariffChanged,
+} from '../../features/electric-meter/ElectricMeterActions';
 
 const styles = createStyles();
 
@@ -21,6 +24,10 @@ class MetricLocationData extends React.Component {
   static propTypes = {
     flexStyle: PropTypes.number,
     navigation: PropTypes.shape({}).isRequired,
+    largeTariff: PropTypes.string.isRequired,
+    smallTariff: PropTypes.string.isRequired,
+    LargeTariffChanged: PropTypes.func.isRequired,
+    SmallTariffChanged: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -31,8 +38,6 @@ class MetricLocationData extends React.Component {
     super(props);
 
     this.state = {
-      largeTariff: '',
-      smallTariff: '',
       saveBtnDisabledOpacity: 0.4,
       err: '',
       openNotesModal: false,
@@ -41,9 +46,23 @@ class MetricLocationData extends React.Component {
     };
   }
 
+  onLargeTariffChanged = (text) => {
+    const { LargeTariffChanged } = this.props;
+
+    // this.setState({ saveBtnDisabledOpacity: 1 });
+    LargeTariffChanged(text);
+  }
+
+  onSmallTariffChanged = (text) => {
+    const { SmallTariffChanged } = this.props;
+
+    // this.setState({ saveBtnDisabledOpacity: 1 });
+    SmallTariffChanged(text);
+  }
+
   validateFields = () => {
     const reg = new RegExp('^[0-9]+$');
-    const { largeTariff, smallTariff } = this.state;
+    const { largeTariff, smallTariff } = this.props;
 
     if (!largeTariff.match(reg) || !smallTariff.match(reg)) {
       this.setState({
@@ -111,13 +130,13 @@ class MetricLocationData extends React.Component {
   render() {
     const { flexStyle, navigation } = this.props;
     const {
-      largeTariff,
-      smallTariff,
       saveBtnDisabledOpacity,
       err,
       openNotesModal,
       currentPhoto,
     } = this.state;
+    const { largeTariff, smallTariff } = this.props;
+
     return (
       <View style={[styles.container, { flex: flexStyle }]}>
         <View style={styles.inputsWrapper}>
@@ -125,11 +144,7 @@ class MetricLocationData extends React.Component {
             <Text style={styles.labelInput}>Velika tarifa:</Text>
             <TextInput
               value={largeTariff}
-              onChangeText={text => this.setState({
-                largeTariff: text,
-                err: '',
-                saveBtnDisabledOpacity: 1,
-              })}
+              onChangeText={this.onLargeTariffChanged}
               underlineColorAndroid="transparent"
               keyboardType="numeric"
               style={styles.txtInput}
@@ -139,11 +154,7 @@ class MetricLocationData extends React.Component {
             <Text style={styles.labelInput}>Mala tarifa:</Text>
             <TextInput
               value={smallTariff}
-              onChangeText={text => this.setState({
-                smallTariff: text,
-                err: '',
-                saveBtnDisabledOpacity: 1,
-              })}
+              onChangeText={this.onSmallTariffChanged}
               underlineColorAndroid="transparent"
               keyboardType="numeric"
               style={styles.txtInput}
@@ -203,4 +214,13 @@ class MetricLocationData extends React.Component {
   }
 }
 
-export default MetricLocationData;
+const mapStateToProps = state => ({
+  largeTariff: state.electricMeter.largeTariff,
+  smallTariff: state.electricMeter.smallTariff,
+});
+
+export default connect(mapStateToProps,
+  {
+    LargeTariffChanged: largeTariffChanged,
+    SmallTariffChanged: smallTariffChanged,
+  })(MetricLocationData);

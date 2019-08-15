@@ -14,3 +14,6 @@ export const SIGNUP_CONF_PASS_CHANGED = 'signup_confirm_password_changed';
 export const REGISTER_USER_SUCCESS = 'register_user_success';
 export const REGISTER_USER_FAIL = 'register_user_fail';
 export const REGISTER_USER = 'register_user';
+
+export const LARGE_TARIFF_CHANGED = 'large_tariff_changed';
+export const SMALL_TARIFF_CHANGED = 'small_tariff_changed';

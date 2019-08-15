@@ -3,6 +3,7 @@ import ServerTextEnum from '../assets/enum/ServerTextEnum';
 import SignInReducer from '../features/sign-in/SignInReducer'; // added
 import AccountReducer from '../features/account/AccountReducer';
 import SignUpReducer from '../features/sign-up/SignUpReducer';
+import ElectricMeterReducer from '../features/electric-meter/ElectricMeterReducer';
 
 
 const changeServerText = text => ({
@@ -31,4 +32,5 @@ export default combineReducers({
   signIn: SignInReducer, // added
   account: AccountReducer,
   signUp: SignUpReducer,
+  electricMeter: ElectricMeterReducer,
 });
