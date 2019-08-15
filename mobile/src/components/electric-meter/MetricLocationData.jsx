@@ -16,6 +16,7 @@ import createStyles from './MetricLocationData.styles';
 import {
   largeTariffChanged,
   smallTariffChanged,
+  photoChanged,
 } from '../../features/electric-meter/ElectricMeterActions';
 
 const styles = createStyles();
@@ -26,12 +27,15 @@ class MetricLocationData extends React.Component {
     navigation: PropTypes.shape({}).isRequired,
     largeTariff: PropTypes.string.isRequired,
     smallTariff: PropTypes.string.isRequired,
+    currentPhoto: PropTypes.shape({}),
     LargeTariffChanged: PropTypes.func.isRequired,
     SmallTariffChanged: PropTypes.func.isRequired,
+    PhotoChanged: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
     flexStyle: 2 / 3,
+    currentPhoto: null,
   };
 
   constructor(props) {
@@ -42,21 +46,20 @@ class MetricLocationData extends React.Component {
       err: '',
       openNotesModal: false,
       note: '',
-      currentPhoto: null,
     };
   }
 
   onLargeTariffChanged = (text) => {
     const { LargeTariffChanged } = this.props;
 
-    // this.setState({ saveBtnDisabledOpacity: 1 });
+    this.setState({ saveBtnDisabledOpacity: 1 });
     LargeTariffChanged(text);
   }
 
   onSmallTariffChanged = (text) => {
     const { SmallTariffChanged } = this.props;
 
-    // this.setState({ saveBtnDisabledOpacity: 1 });
+    this.setState({ saveBtnDisabledOpacity: 1 });
     SmallTariffChanged(text);
   }
 
@@ -87,15 +90,16 @@ class MetricLocationData extends React.Component {
   };
 
   savePhoto = (photo) => {
-    const { navigation } = this.props;
+    const { navigation, PhotoChanged } = this.props;
 
-    this.setState({ currentPhoto: photo });
+    PhotoChanged(photo);
     navigation.navigate('ElectricMeter');
     // save data to database
   };
 
   checkPhotoAndNoteIconColors() {
-    const { note, currentPhoto } = this.state;
+    const { note } = this.state;
+    const { currentPhoto } = this.props;
     let noteColor = Colors.PRIMARY_WHITE;
     let cameraColor = Colors.PRIMARY_WHITE;
     let noteIconColor = 'black';
@@ -133,9 +137,8 @@ class MetricLocationData extends React.Component {
       saveBtnDisabledOpacity,
       err,
       openNotesModal,
-      currentPhoto,
     } = this.state;
-    const { largeTariff, smallTariff } = this.props;
+    const { largeTariff, smallTariff, currentPhoto } = this.props;
 
     return (
       <View style={[styles.container, { flex: flexStyle }]}>
@@ -217,10 +220,12 @@ class MetricLocationData extends React.Component {
 const mapStateToProps = state => ({
   largeTariff: state.electricMeter.largeTariff,
   smallTariff: state.electricMeter.smallTariff,
+  currentPhoto: state.electricMeter.photo,
 });
 
 export default connect(mapStateToProps,
   {
     LargeTariffChanged: largeTariffChanged,
     SmallTariffChanged: smallTariffChanged,
+    PhotoChanged: photoChanged,
   })(MetricLocationData);

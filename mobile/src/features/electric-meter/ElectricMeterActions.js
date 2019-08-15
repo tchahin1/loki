@@ -9,3 +9,8 @@ export const smallTariffChanged = text => ({
   type: types.SMALL_TARIFF_CHANGED,
   payload: text,
 });
+
+export const photoChanged = photo => ({
+  type: types.PHOTO_CHANGED,
+  payload: photo,
+});

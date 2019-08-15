@@ -17,3 +17,4 @@ export const REGISTER_USER = 'register_user';
 
 export const LARGE_TARIFF_CHANGED = 'large_tariff_changed';
 export const SMALL_TARIFF_CHANGED = 'small_tariff_changed';
+export const PHOTO_CHANGED = 'photo_changed';
