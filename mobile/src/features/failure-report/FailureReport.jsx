@@ -1,6 +1,3 @@
-/* eslint-disable react/jsx-no-bind */
-/* eslint-disable react/destructuring-assignment */
-/* eslint-disable react/prop-types */
 import React from 'react';
 import { connect } from 'react-redux';
 import {
@@ -21,14 +18,15 @@ import NotificationsModal from '../../components/helpers/NotificationsModal';
 import { onSignOut } from '../../../Auth';
 import Colors from '../../assets/colors/AppColorsEnum';
 import createStyles from './FailureReport.styles';
-
-import { logoutUser } from '../account/AccountActions';
+import logoutUser from '../account/AccountActions';
 
 const styles = createStyles();
 
 class FailureReportScreen extends React.Component {
   static propTypes = {
     navigation: PropTypes.shape({}).isRequired,
+    user: PropTypes.string.isRequired,
+    LogoutUser: PropTypes.func.isRequired,
   };
 
   constructor(props) {
@@ -68,8 +66,10 @@ class FailureReportScreen extends React.Component {
     this.keyboardDidHideListener.remove();
   }
 
-  onSignOutPressed() {
-    this.props.logoutUser();
+  onSignOutPressed = () => {
+    const { LogoutUser } = this.props;
+
+    LogoutUser();
   }
 
   setFailureText = (text) => {
@@ -211,7 +211,7 @@ class FailureReportScreen extends React.Component {
           transparent
           visible={openNotMod}
           onRequestClose={() => this.setState({ openNotMod: false })}
-          onSignOutPress={this.onSignOutPressed.bind(this)}
+          onSignOutPress={this.onSignOutPressed}
         />
       </KeyboardAvoidingView>
     );
@@ -222,4 +222,4 @@ const mapStateToProps = state => ({
   user: state.signIn.user,
 });
 
-export default connect(mapStateToProps, { logoutUser })(FailureReportScreen);
+export default connect(mapStateToProps, { LogoutUser: logoutUser })(FailureReportScreen);

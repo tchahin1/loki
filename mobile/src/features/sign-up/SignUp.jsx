@@ -1,6 +1,3 @@
-/* eslint-disable react/jsx-no-bind */
-/* eslint-disable react/prop-types */
-/* eslint-disable react/destructuring-assignment */
 import React from 'react';
 import { connect } from 'react-redux';
 import {
@@ -32,6 +29,19 @@ const styles = createStyles();
 class SignUp extends React.Component {
   static propTypes = {
     navigation: PropTypes.shape({}).isRequired,
+    username: PropTypes.string.isRequired,
+    password: PropTypes.string.isRequired,
+    email: PropTypes.string.isRequired,
+    confirmPass: PropTypes.string.isRequired,
+    userExistsErr: PropTypes.string.isRequired,
+    successFlag: PropTypes.bool.isRequired,
+    isLoading: PropTypes.bool.isRequired,
+    InitializeRegistration: PropTypes.func.isRequired,
+    SignupUsernameChanged: PropTypes.func.isRequired,
+    SignupPasswordChanged: PropTypes.func.isRequired,
+    SignupEmailChanged: PropTypes.func.isRequired,
+    SignupConfirmPasswordChanged: PropTypes.func.isRequired,
+    RegisterUser: PropTypes.func.isRequired,
   };
 
   constructor(props) {
@@ -48,7 +58,9 @@ class SignUp extends React.Component {
   }
 
   componentWillMount() {
-    this.props.initializeRegistration(this.props.successFlag);
+    const { InitializeRegistration, successFlag } = this.props;
+
+    InitializeRegistration(successFlag);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -66,28 +78,36 @@ class SignUp extends React.Component {
     }
   }
 
-  onUsernameChange(text) {
-    this.props.signupUsernameChanged(text);
+  onUsernameChange = (text) => {
+    const { SignupUsernameChanged } = this.props;
+
+    SignupUsernameChanged(text);
   }
 
-  onPasswordChange(text) {
-    this.props.signupPasswordChanged(text);
+  onPasswordChange = (text) => {
+    const { SignupPasswordChanged } = this.props;
+
+    SignupPasswordChanged(text);
   }
 
-  onEmailChange(text) {
-    this.props.signupEmailChanged(text);
+  onEmailChange = (text) => {
+    const { SignupEmailChanged } = this.props;
+
+    SignupEmailChanged(text);
   }
 
-  onConfirmPasswordChange(text) {
-    this.props.signupConfirmPasswordChanged(text);
+  onConfirmPasswordChange = (text) => {
+    const { SignupConfirmPasswordChanged } = this.props;
+
+    SignupConfirmPasswordChanged(text);
   }
 
-  onButtonPress() {
+  onButtonPress = () => {
     const {
-      username, password, email, confirmPass,
+      username, password, email, confirmPass, RegisterUser,
     } = this.props;
 
-    this.props.registerUser({
+    RegisterUser({
       username, password, email, confirmPass,
     });
   }
@@ -255,7 +275,7 @@ class SignUp extends React.Component {
                   || email === ''
                   || confirmPass === ''
                 }
-                onPress={this.onButtonPress.bind(this)}
+                onPress={this.onButtonPress}
               />
             </View>
             <View />
@@ -286,10 +306,10 @@ const mapStateToProps = state => ({
 
 export default connect(mapStateToProps,
   {
-    initializeRegistration,
-    signupConfirmPasswordChanged,
-    signupEmailChanged,
-    signupPasswordChanged,
-    signupUsernameChanged,
-    registerUser,
+    InitializeRegistration: initializeRegistration,
+    SignupConfirmPasswordChanged: signupConfirmPasswordChanged,
+    SignupEmailChanged: signupEmailChanged,
+    SignupPasswordChanged: signupPasswordChanged,
+    SignupUsernameChanged: signupUsernameChanged,
+    RegisterUser: registerUser,
   })(SignUp);

@@ -1,6 +1,3 @@
-/* eslint-disable react/jsx-no-bind */
-/* eslint-disable react/destructuring-assignment */
-/* eslint-disable react/prop-types */
 import React from 'react';
 import { connect } from 'react-redux';
 import { View, Text } from 'react-native';
@@ -11,8 +8,7 @@ import NotificationsButton from '../../components/helpers/NotificationsButton';
 import NotificationsModal from '../../components/helpers/NotificationsModal';
 import { onSignOut } from '../../../Auth';
 import createStyles from './ConsumptionReview.styles';
-
-import { logoutUser } from '../account/AccountActions';
+import logoutUser from '../account/AccountActions';
 
 
 const styles = createStyles();
@@ -20,6 +16,8 @@ const styles = createStyles();
 class ConsumptionReviewScreen extends React.Component {
   static propTypes = {
     navigation: PropTypes.shape({}).isRequired,
+    user: PropTypes.string.isRequired,
+    LogoutUser: PropTypes.func.isRequired,
   };
 
   constructor(props) {
@@ -37,8 +35,10 @@ class ConsumptionReviewScreen extends React.Component {
     }
   }
 
-  onSignOutPressed() {
-    this.props.logoutUser();
+  onSignOutPressed = () => {
+    const { LogoutUser } = this.props;
+
+    LogoutUser();
   }
 
   render() {
@@ -64,7 +64,7 @@ class ConsumptionReviewScreen extends React.Component {
             transparent
             visible={openNotMod}
             onRequestClose={() => this.setState({ openNotMod: false })}
-            onSignOutPress={this.onSignOutPressed.bind(this)}
+            onSignOutPress={this.onSignOutPressed}
           />
         </View>
       </View>
@@ -76,4 +76,4 @@ const mapStateToProps = state => ({
   user: state.signIn.user,
 });
 
-export default connect(mapStateToProps, { logoutUser })(ConsumptionReviewScreen);
+export default connect(mapStateToProps, { LogoutUser: logoutUser })(ConsumptionReviewScreen);

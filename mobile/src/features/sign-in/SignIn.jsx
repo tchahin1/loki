@@ -1,6 +1,3 @@
-/* eslint-disable react/jsx-no-bind */
-/* eslint-disable react/destructuring-assignment */
-/* eslint-disable react/prop-types */
 import React from 'react';
 import { connect } from 'react-redux';
 import {
@@ -22,6 +19,14 @@ const styles = createStyles();
 class SignIn extends React.Component {
   static propTypes = {
     navigation: PropTypes.shape({}).isRequired,
+    user: PropTypes.string.isRequired,
+    username: PropTypes.string.isRequired,
+    password: PropTypes.string.isRequired,
+    error: PropTypes.string.isRequired,
+    isLoading: PropTypes.bool.isRequired,
+    UsernameChanged: PropTypes.func.isRequired,
+    PasswordChanged: PropTypes.func.isRequired,
+    LoginUser: PropTypes.func.isRequired,
   };
 
   componentWillReceiveProps(nextProps) {
@@ -32,18 +37,22 @@ class SignIn extends React.Component {
     }
   }
 
-  onUsernameChange(text) {
-    this.props.usernameChanged(text);
+  onUsernameChange = (text) => {
+    const { UsernameChanged } = this.props;
+
+    UsernameChanged(text);
   }
 
-  onPasswordChange(text) {
-    this.props.passwordChanged(text);
+  onPasswordChange = (text) => {
+    const { PasswordChanged } = this.props;
+
+    PasswordChanged(text);
   }
 
-  onButtonPress() {
-    const { username, password } = this.props;
+  onButtonPress = () => {
+    const { username, password, LoginUser } = this.props;
 
-    this.props.loginUser({ username, password });
+    LoginUser({ username, password });
   }
 
   renderLoading() {
@@ -76,7 +85,7 @@ class SignIn extends React.Component {
             <View style={styles.inputsWrapper}>
               <TextField
                 label={LABELS.USERNAME}
-                onChangeText={this.onUsernameChange.bind(this)}
+                onChangeText={this.onUsernameChange}
                 value={username}
                 animationDuration={100}
                 tintColor={Colors.PRIMARY_WHITE}
@@ -90,7 +99,7 @@ class SignIn extends React.Component {
               <TextField
                 secureTextEntry
                 label={LABELS.PASSWORD}
-                onChangeText={this.onPasswordChange.bind(this)}
+                onChangeText={this.onPasswordChange}
                 value={password}
                 animationDuration={100}
                 tintColor={Colors.PRIMARY_WHITE}
@@ -110,7 +119,7 @@ class SignIn extends React.Component {
                 title="PRIJAVI SE"
                 disabled={!{ username } || !{ password }}
                 titleStyle={{ fontSize: 18 }}
-                onPress={this.onButtonPress.bind(this)}
+                onPress={this.onButtonPress}
               />
             </View>
             <View />
@@ -137,4 +146,9 @@ const mapStateToProps = state => ({
   user: state.signIn.user,
 });
 
-export default connect(mapStateToProps, { usernameChanged, passwordChanged, loginUser })(SignIn);
+export default connect(mapStateToProps,
+  {
+    UsernameChanged: usernameChanged,
+    PasswordChanged: passwordChanged,
+    LoginUser: loginUser,
+  })(SignIn);
