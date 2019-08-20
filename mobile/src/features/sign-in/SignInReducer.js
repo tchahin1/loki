@@ -6,6 +6,7 @@ const INITIAL_STATE = {
   user: '',
   error: '',
   isLoading: false,
+  id: '',
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -15,7 +16,12 @@ export default (state = INITIAL_STATE, action) => {
     case types.PASSWORD_CHANGED:
       return { ...state, password: action.payload };
     case types.LOGIN_USER_SUCCESS:
-      return { ...state, ...INITIAL_STATE, user: action.payload };
+      return {
+        ...state,
+        ...INITIAL_STATE,
+        user: action.payload,
+        id: state.username,
+      };
     case types.LOGIN_USER_FAIL:
       return {
         ...state, error: action.payload, isLoading: false, password: '',

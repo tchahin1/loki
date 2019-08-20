@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import {
   Modal,
   Text,
@@ -7,8 +8,15 @@ import {
   View,
 } from 'react-native';
 import PropTypes from 'prop-types';
-
 import createStyles from './styles/PlaceOfMeasurementModal.styles';
+import {
+  placeNameChanged,
+  referenceChanged,
+  placeNumberChanged,
+  savePlaceDetails,
+  initializePlaceOfMeasurementModal,
+  fetchMeasurementPlaces,
+} from './PlaceOfMeasurementModalActions';
 
 const styles = createStyles();
 
@@ -17,27 +25,78 @@ class PlaceOfMeasurementModal extends React.Component {
     visible: PropTypes.bool.isRequired,
     onRequestClose: PropTypes.func.isRequired,
     toggle: PropTypes.func.isRequired,
+    name: PropTypes.string.isRequired,
+    number: PropTypes.string.isRequired,
+    token: PropTypes.string.isRequired,
+    status: PropTypes.string.isRequired,
+    username: PropTypes.string.isRequired,
+    reference: PropTypes.string.isRequired,
+    PlaceNameChanged: PropTypes.func.isRequired,
+    ReferenceChanged: PropTypes.func.isRequired,
+    PlaceNumberChanged: PropTypes.func.isRequired,
+    SavePlaceDetails: PropTypes.func.isRequired,
+    InitializePlaceOfMeasurementModal: PropTypes.func.isRequired,
+    FetchMeasurementPlaces: PropTypes.func.isRequired,
   };
 
   constructor(props) {
     super(props);
 
     this.state = {
-      name: '',
-      reference: '',
-      number: '',
       errorText: '',
     };
   }
 
+  componentWillMount() {
+    const { InitializePlaceOfMeasurementModal, status } = this.props;
+
+    if (status === 'OK') {
+      InitializePlaceOfMeasurementModal();
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { status } = nextProps;
+    const {
+      InitializePlaceOfMeasurementModal,
+      FetchMeasurementPlaces, username, token,
+    } = this.props;
+
+    if (status === 'OK') {
+      InitializePlaceOfMeasurementModal();
+      FetchMeasurementPlaces({ username, token });
+    }
+  }
+
+  onPlaceNameChanged = (text) => {
+    const { PlaceNameChanged } = this.props;
+
+    PlaceNameChanged(text);
+  }
+
+  onReferenceChanged = (text) => {
+    const { ReferenceChanged } = this.props;
+
+    ReferenceChanged(text);
+  }
+
+  onPlaceNumberChanged = (text) => {
+    const { PlaceNumberChanged } = this.props;
+
+    PlaceNumberChanged(text);
+  }
+
   validateFields = () => {
-    const { name, reference, number } = this.state;
+    const {
+      name, reference, number, SavePlaceDetails, token, username,
+    } = this.props;
+    const { errorText } = this.state;
     const { toggle } = this.props;
-    const refCopy = reference;
+    let refCopy = reference;
     const reg = new RegExp('^[0-9]+$');
     const text = 'Polja nisu ipravno popunjena';
     const res = reference.split('-');
-    refCopy.replace('-', '');
+    refCopy = res[0] + res[1] + res[2];
 
     if (name.length === 0) {
       this.setState({ errorText: text });
@@ -59,21 +118,21 @@ class PlaceOfMeasurementModal extends React.Component {
       this.setState({ errorText: text });
       return;
     }
-    this.setState({ reference: refCopy, errorText: '' });
 
-    // Save data to database
+    this.setState({ errorText: '' });
 
-    toggle();
+    SavePlaceDetails({
+      name, reference: refCopy, number, token, username,
+    });
+
+    if (errorText === '') toggle();
   };
 
   render() {
+    const { errorText } = this.state;
     const {
-      name,
-      reference,
-      number,
-      errorText,
-    } = this.state;
-    const { visible, onRequestClose, toggle } = this.props;
+      visible, onRequestClose, toggle, name, number, reference,
+    } = this.props;
     return (
       <Modal
         visible={visible}
@@ -89,7 +148,7 @@ class PlaceOfMeasurementModal extends React.Component {
               style={styles.txtInputContainer}
               placeholder="npr. kuća, vikendica"
               value={name}
-              onChangeText={text => this.setState({ name: text, errorText: '' })}
+              onChangeText={this.onPlaceNameChanged}
 
             />
             <Text style={styles.label}>Broj računa/Referenca:</Text>
@@ -98,7 +157,7 @@ class PlaceOfMeasurementModal extends React.Component {
               placeholder="xxxxx-xxxxxxx-xxxxx"
               value={reference}
               maxLength={19}
-              onChangeText={text => this.setState({ reference: text, errorText: '' })}
+              onChangeText={this.onReferenceChanged}
             />
             <Text style={styles.label}>Broj mjernog mjesta:</Text>
             <TextInput
@@ -107,7 +166,7 @@ class PlaceOfMeasurementModal extends React.Component {
               value={number}
               keyboardType="numeric"
               maxLength={6}
-              onChangeText={text => this.setState({ number: text, errorText: '' })}
+              onChangeText={this.onPlaceNumberChanged}
             />
             <Text style={styles.err}>{errorText}</Text>
             <View style={styles.btnContainer}>
@@ -133,4 +192,21 @@ class PlaceOfMeasurementModal extends React.Component {
   }
 }
 
-export default PlaceOfMeasurementModal;
+const mapStateToProps = state => ({
+  name: state.measurementPlaceModal.placeName,
+  reference: state.measurementPlaceModal.reference,
+  number: state.measurementPlaceModal.placeNumber,
+  token: state.signIn.user,
+  status: state.measurementPlaceModal.status,
+  username: state.signIn.id,
+});
+
+export default connect(mapStateToProps,
+  {
+    PlaceNameChanged: placeNameChanged,
+    ReferenceChanged: referenceChanged,
+    PlaceNumberChanged: placeNumberChanged,
+    SavePlaceDetails: savePlaceDetails,
+    InitializePlaceOfMeasurementModal: initializePlaceOfMeasurementModal,
+    FetchMeasurementPlaces: fetchMeasurementPlaces,
+  })(PlaceOfMeasurementModal);
