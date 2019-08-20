@@ -31,6 +31,5 @@ public class SignUpService {
         } else {
             return Response.serverError().entity("Already exists!").build();
         }
-
     }
 }

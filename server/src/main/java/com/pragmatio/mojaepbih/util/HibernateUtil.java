@@ -3,6 +3,7 @@ package com.pragmatio.mojaepbih.util;
 
 import java.util.Properties;
 
+import com.pragmatio.mojaepbih.hibernate.entity.Measurement;
 import com.pragmatio.mojaepbih.hibernate.entity.PlaceOfMeasurement;
 import com.pragmatio.mojaepbih.hibernate.entity.User;
 import org.hibernate.SessionFactory;
@@ -27,9 +28,10 @@ public class HibernateUtil {
                 settings.put(Environment.SHOW_SQL, "true");
                 settings.put("allowPublicKeyRetrieval", "true");                    //added
                 settings.put(Environment.CURRENT_SESSION_CONTEXT_CLASS, "thread");
-                settings.put(Environment.HBM2DDL_AUTO, "create-drop");
+                settings.put(Environment.HBM2DDL_AUTO, "update");
                 configuration.setProperties(settings);
                 configuration.addAnnotatedClass(User.class);
+                configuration.addAnnotatedClass(Measurement.class);
                 configuration.addAnnotatedClass(PlaceOfMeasurement.class);
                 ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
                         .applySettings(configuration.getProperties()).build();

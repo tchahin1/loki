@@ -1,26 +1,20 @@
 package com.pragmatio.mojaepbih.hibernate.dao;
 
-import com.pragmatio.mojaepbih.hibernate.entity.User;
-import com.pragmatio.mojaepbih.hibernate.interfaces.UserDaoInterface;
+import com.pragmatio.mojaepbih.hibernate.entity.Measurement;
+import com.pragmatio.mojaepbih.hibernate.interfaces.MeasurementDaoInterface;
 import com.pragmatio.mojaepbih.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
-import javax.persistence.NoResultException;
-import javax.persistence.Query;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 import java.util.List;
 
-public class UserDao implements UserDaoInterface<User, String> {
+public class MeasurementDao implements MeasurementDaoInterface<Measurement, String> {
     private Session currentSession;
 
     private Transaction currentTransaction;
 
-    public UserDao() {
+    public MeasurementDao() {
     }
 
     public Session openCurrentSession() {
@@ -63,44 +57,30 @@ public class UserDao implements UserDaoInterface<User, String> {
         this.currentTransaction = currentTransaction;
     }
 
-    public void persist(User entity) {
+    public void persist(Measurement entity) {
         getCurrentSession().save(entity);
     }
 
-    public void update(User entity) {
+    public void update(Measurement entity) {
         getCurrentSession().update(entity);
     }
 
-    public User findById(String id) {
-        return (User) getCurrentSession().get(User.class, id);
+    public Measurement findById(String id) {
+        return (Measurement) getCurrentSession().get(Measurement.class, id);
     }
 
-    public User findByUsername(String username) {
-        try {
-            CriteriaBuilder criteriaBuilder = getCurrentSession().getCriteriaBuilder();
-            CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
-            Root<User> user = criteriaQuery.from(User.class);
-            Predicate predicate = criteriaBuilder.equal(user.get("username"), username);
-            Query query = getCurrentSession().createQuery(criteriaQuery.where(predicate));
-            return (User) query.getSingleResult();
-        } catch (NoResultException e) {
-            return null;
-        }
-    }
-
-
-    public void delete(User entity) {
+    public void delete(Measurement entity) {
         getCurrentSession().delete(entity);
     }
 
     @SuppressWarnings("unchecked")
-    public List<User> findAll() {
-        return (List<User>) getCurrentSession().createQuery("from User").list();
+    public List<Measurement> findAll() {
+        return (List<Measurement>) getCurrentSession().createQuery("from Measurement").list();
     }
 
     public void deleteAll() {
-        List<User> entityList = findAll();
-        for (User entity : entityList) {
+        List<Measurement> entityList = findAll();
+        for (Measurement entity : entityList) {
             delete(entity);
         }
     }
