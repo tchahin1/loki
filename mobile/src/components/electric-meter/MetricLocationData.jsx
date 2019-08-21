@@ -17,6 +17,9 @@ import {
   largeTariffChanged,
   smallTariffChanged,
   photoChanged,
+  noteChanged,
+  saveMeasurement,
+  clearInfoText,
 } from '../../features/electric-meter/ElectricMeterActions';
 
 const styles = createStyles();
@@ -28,9 +31,17 @@ class MetricLocationData extends React.Component {
     largeTariff: PropTypes.string.isRequired,
     smallTariff: PropTypes.string.isRequired,
     currentPhoto: PropTypes.shape({}),
+    username: PropTypes.string.isRequired,
+    token: PropTypes.string.isRequired,
+    infoText: PropTypes.string.isRequired,
     LargeTariffChanged: PropTypes.func.isRequired,
     SmallTariffChanged: PropTypes.func.isRequired,
     PhotoChanged: PropTypes.func.isRequired,
+    currentPlace: PropTypes.string.isRequired,
+    note: PropTypes.string.isRequired,
+    NoteChanged: PropTypes.func.isRequired,
+    SaveMeasurement: PropTypes.func.isRequired,
+    ClearInfoText: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -45,8 +56,17 @@ class MetricLocationData extends React.Component {
       saveBtnDisabledOpacity: 0.4,
       err: '',
       openNotesModal: false,
-      note: '',
     };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { ClearInfoText } = this.props;
+
+    if (nextProps.infoText !== '') {
+      Keyboard.dismiss();
+      Alert.alert('INFO', nextProps.infoText);
+      ClearInfoText();
+    }
   }
 
   onLargeTariffChanged = (text) => {
@@ -79,14 +99,20 @@ class MetricLocationData extends React.Component {
   };
 
   saveData = () => {
-    // save data to database
-    Keyboard.dismiss();
-    Alert.alert('INFO', 'Brojilo uspješno očitano!');
+    const {
+      largeTariff, smallTariff, currentPhoto, note, currentPlace, username, token, SaveMeasurement,
+    } = this.props;
+
+    SaveMeasurement({
+      largeTariff, smallTariff, currentPhoto, note, currentPlace, username, token,
+    });
   };
 
   saveNote = (note) => {
     this.setState({ openNotesModal: false, note });
-    // save data to database
+    const { NoteChanged } = this.props;
+
+    NoteChanged(note);
   };
 
   savePhoto = (photo) => {
@@ -94,7 +120,6 @@ class MetricLocationData extends React.Component {
 
     PhotoChanged(photo);
     navigation.navigate('ElectricMeter');
-    // save data to database
   };
 
   checkPhotoAndNoteIconColors() {
@@ -221,6 +246,11 @@ const mapStateToProps = state => ({
   largeTariff: state.electricMeter.largeTariff,
   smallTariff: state.electricMeter.smallTariff,
   currentPhoto: state.electricMeter.photo,
+  note: state.electricMeter.note,
+  currentPlace: state.electricMeter.selectedPlace,
+  username: state.signIn.id,
+  token: state.signIn.user,
+  infoText: state.electricMeter.infoText,
 });
 
 export default connect(mapStateToProps,
@@ -228,4 +258,7 @@ export default connect(mapStateToProps,
     LargeTariffChanged: largeTariffChanged,
     SmallTariffChanged: smallTariffChanged,
     PhotoChanged: photoChanged,
+    NoteChanged: noteChanged,
+    SaveMeasurement: saveMeasurement,
+    ClearInfoText: clearInfoText,
   })(MetricLocationData);

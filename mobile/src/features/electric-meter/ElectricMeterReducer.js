@@ -4,6 +4,9 @@ const INITIAL_STATE = {
   largeTariff: '',
   smallTariff: '',
   photo: null,
+  selectedPlace: '',
+  note: '',
+  infoText: '',
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -14,6 +17,16 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, smallTariff: action.payload };
     case types.PHOTO_CHANGED:
       return { ...state, photo: action.payload };
+    case types.NOTE_CHANGED:
+      return { ...state, note: action.payload };
+    case types.PLACE_CHANGED:
+      return { ...state, selectedPlace: action.payload };
+    case types.SAVE_MEASUREMENT_SUCCESS:
+      return { ...state, ...INITIAL_STATE, infoText: 'Brojilo uspješno očitano!' };
+    case types.SAVE_MEASUREMENT_FAILED:
+      return { ...state, infoText: action.payload };
+    case types.CLEAR_INFO_TEXT:
+      return { ...state, infoText: '' };
     default:
       return state;
   }

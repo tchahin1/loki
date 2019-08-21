@@ -21,10 +21,9 @@ import Colors from '../../assets/colors/AppColorsEnum';
 import createStyles from './ElectricMeter.styles';
 import logoutUser from '../account/AccountActions';
 import { fetchMeasurementPlaces } from '../../components/helpers/PlaceOfMeasurementModalActions';
+import { placeChanged } from './ElectricMeterActions';
 
 const styles = createStyles();
-
-// const dummyData = ['Mjerno mjesto 1', 'Mjerno mjesto 2'];
 
 class ElectricMeterScreen extends React.Component {
   static propTypes = {
@@ -34,13 +33,14 @@ class ElectricMeterScreen extends React.Component {
     username: PropTypes.string.isRequired,
     FetchMeasurementPlaces: PropTypes.func.isRequired,
     places: PropTypes.instanceOf(Array).isRequired,
+    PlaceChanged: PropTypes.func.isRequired,
+    selectedPlace: PropTypes.string.isRequired,
   };
 
   constructor(props) {
     super(props);
     this.state = {
       openNotMod: false,
-      selected: '',
       keyboardDidShow: false,
       flexStyle: 2 / 3,
       openPOM: false,
@@ -66,16 +66,21 @@ class ElectricMeterScreen extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     const {
-      navigation, places, username, user, FetchMeasurementPlaces,
+      navigation,
     } = this.props;
 
     if (nextProps.user === '') {
       onSignOut().then(navigation.navigate('SignedOut'));
     }
 
-    if (nextProps.places.length !== places.length) {
+    // console.log(nextProps.places.length, nextProps.places);
+
+    /* if (pickerData === 0 || nextProps.pickerData.length !== pickerData.length) {
       FetchMeasurementPlaces({ username, token: user });
-    }
+      // populate picker
+    } */
+
+    // populate picker
   }
 
   componentWillUnmount() {
@@ -89,6 +94,12 @@ class ElectricMeterScreen extends React.Component {
     LogoutUser();
   }
 
+  onPlaceChanged(item) {
+    const { PlaceChanged } = this.props;
+
+    PlaceChanged(item);
+  }
+
   keyboardDidShow = () => {
     this.setState({ keyboardDidShow: true, flexStyle: 1 / 2 });
   };
@@ -98,14 +109,14 @@ class ElectricMeterScreen extends React.Component {
   };
 
   render() {
-    const { navigation, places } = this.props;
+    const { navigation, places, selectedPlace } = this.props;
     const {
       openNotMod,
       openPOM,
-      selected,
       keyboardDidShow,
       flexStyle,
     } = this.state;
+
     return (
       <KeyboardAvoidingView
         style={styles.wrapper}
@@ -127,15 +138,15 @@ class ElectricMeterScreen extends React.Component {
             <Text style={styles.label}>Moja mjerna mjesta:</Text>
             <View style={styles.firstPart}>
               <Picker
-                selectedValue={selected}
+                selectedValue={selectedPlace}
                 style={styles.picker}
-                onValueChange={itemValue => this.setState({ selected: itemValue })}
+                onValueChange={itemValue => this.onPlaceChanged(itemValue)}
               >
                 {places.map(data => (
                   <Picker.Item
                     key={data.id.toString()}
                     label={data.name}
-                    value={data.name}
+                    value={data.id.toString()}
                   />
                 ))}
               </Picker>
@@ -175,10 +186,12 @@ const mapStateToProps = state => ({
   user: state.signIn.user,
   username: state.signIn.id,
   places: _.map(state.measurementPlaceModal.places, val => ({ ...val })),
+  selectedPlace: state.electricMeter.selectedPlace,
 });
 
 export default connect(mapStateToProps,
   {
     LogoutUser: logoutUser,
     FetchMeasurementPlaces: fetchMeasurementPlaces,
+    PlaceChanged: placeChanged,
   })(ElectricMeterScreen);
