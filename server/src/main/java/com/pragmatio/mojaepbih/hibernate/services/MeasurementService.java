@@ -31,6 +31,13 @@ public class MeasurementService {
         return measurement;
     }
 
+    public Measurement findByPlaceId(int id){
+        measurementDao.openCurrentSession();
+        Measurement measurement = measurementDao.findByPlaceId(id);
+        measurementDao.closeCurrentSession();
+        return measurement;
+    }
+
     public void delete(String id) {
         measurementDao.openCurrentSessionwithTransaction();
         Measurement measurement = measurementDao.findById(id);

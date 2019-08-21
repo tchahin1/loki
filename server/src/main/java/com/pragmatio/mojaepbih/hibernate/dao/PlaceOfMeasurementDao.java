@@ -15,7 +15,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.List;
 
-public class PlaceOfMeasurementDao implements PlaceOfMeasurementDaoInterface<PlaceOfMeasurement, String> {
+public class PlaceOfMeasurementDao implements PlaceOfMeasurementDaoInterface<PlaceOfMeasurement, Integer> {
     private Session currentSession;
 
     private Transaction currentTransaction;
@@ -71,7 +71,7 @@ public class PlaceOfMeasurementDao implements PlaceOfMeasurementDaoInterface<Pla
         getCurrentSession().update(entity);
     }
 
-    public PlaceOfMeasurement findById(String id) {
+    public PlaceOfMeasurement findById(Integer id) {
         return (PlaceOfMeasurement) getCurrentSession().get(PlaceOfMeasurement.class, id);
     }
 

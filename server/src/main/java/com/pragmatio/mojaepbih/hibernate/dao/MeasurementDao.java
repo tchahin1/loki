@@ -7,6 +7,12 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
+import javax.persistence.NoResultException;
+import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import java.util.List;
 
 public class MeasurementDao implements MeasurementDaoInterface<Measurement, String> {
@@ -67,6 +73,19 @@ public class MeasurementDao implements MeasurementDaoInterface<Measurement, Stri
 
     public Measurement findById(String id) {
         return (Measurement) getCurrentSession().get(Measurement.class, id);
+    }
+
+    public Measurement findByPlaceId(int id) {
+        try {
+            CriteriaBuilder criteriaBuilder = getCurrentSession().getCriteriaBuilder();
+            CriteriaQuery<Measurement> criteriaQuery = criteriaBuilder.createQuery(Measurement.class);
+            Root<Measurement> measurement = criteriaQuery.from(Measurement.class);
+            Predicate predicate = criteriaBuilder.equal(measurement.get("placeOfMeasurement"), id);
+            Query query = getCurrentSession().createQuery(criteriaQuery.where(predicate));
+            return (Measurement) query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
     public void delete(Measurement entity) {

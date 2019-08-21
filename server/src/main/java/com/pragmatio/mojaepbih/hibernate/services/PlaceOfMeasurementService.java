@@ -24,7 +24,7 @@ public class PlaceOfMeasurementService {
         placeOfMeasurementDao.closeCurrentSessionwithTransaction();
     }
 
-    public PlaceOfMeasurement findById(String id) {
+    public PlaceOfMeasurement findById(int id) {
         placeOfMeasurementDao.openCurrentSession();
         PlaceOfMeasurement placeOfMeasurement = placeOfMeasurementDao.findById(id);
         placeOfMeasurementDao.closeCurrentSession();
@@ -45,7 +45,7 @@ public class PlaceOfMeasurementService {
         return placesOfMeasurement;
     }
 
-    public void delete(String id) {
+    public void delete(int id) {
         placeOfMeasurementDao.openCurrentSessionwithTransaction();
         PlaceOfMeasurement placeOfMeasurement = placeOfMeasurementDao.findById(id);
         placeOfMeasurementDao.delete(placeOfMeasurement);
