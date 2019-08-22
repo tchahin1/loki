@@ -3,7 +3,6 @@ import * as types from '../../actions/types';
 import Inputs from '../../assets/enum/LoginInputsEnum';
 import api from '../../api/network.config';
 
-
 export const initializeRegistration = (successFlag) => {
   if (successFlag || successFlag === undefined) {
     return {

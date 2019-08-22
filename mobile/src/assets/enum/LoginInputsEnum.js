@@ -11,7 +11,7 @@ const LoginInputsEnum = {
     USERNAME_ERR: 'Korisničko ime mora imati minimalno 4 znaka',
     EMAIL_ERR: 'E-mail nije validan',
     LOGIN_ERR: 'Korisničko ime ili šifra nisu ispravni',
-    USER_EXISTS_ERR: 'Korisnik s tim korisničkim imenom već postoji',
+    USER_EXISTS_ERR: 'Korisničko ime već postoji!',
   },
 };
 

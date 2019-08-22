@@ -94,7 +94,7 @@ class PlaceOfMeasurementModal extends React.Component {
     const { toggle } = this.props;
     let refCopy = reference;
     const reg = new RegExp('^[0-9]+$');
-    const text = 'Polja nisu ipravno popunjena';
+    const text = 'Polja nisu ispravno popunjena';
     const res = reference.split('-');
     refCopy = res[0] + res[1] + res[2];
 
@@ -114,7 +114,7 @@ class PlaceOfMeasurementModal extends React.Component {
       this.setState({ errorText: text });
       return;
     }
-    if (number.length !== 6 || !number.match(reg)) {
+    if (number.length < 6 || !number.match(reg)) {
       this.setState({ errorText: text });
       return;
     }
@@ -162,10 +162,11 @@ class PlaceOfMeasurementModal extends React.Component {
             <Text style={styles.label}>Broj mjernog mjesta:</Text>
             <TextInput
               style={styles.txtInputContainer}
-              placeholder="xxxxxx"
+              placeholder="xxxxxxx"
               value={number}
               keyboardType="numeric"
-              maxLength={6}
+              minLength
+              maxLength={7}
               onChangeText={this.onPlaceNumberChanged}
             />
             <Text style={styles.err}>{errorText}</Text>

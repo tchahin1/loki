@@ -4,6 +4,9 @@ import { onSignIn } from '../../../Auth';
 import Inputs from '../../assets/enum/LoginInputsEnum';
 import api from '../../api/network.config';
 
+export const initializeLogin = () => ({
+  type: types.INITIALIZE_LOGIN,
+});
 
 export const usernameChanged = text => ({
   type: types.USERNAME_CHANGED,

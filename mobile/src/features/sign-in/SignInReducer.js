@@ -30,6 +30,8 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, isLoading: true, error: '' };
     case types.SIGN_OUT_USER:
       return INITIAL_STATE;
+    case types.INITIALIZE_LOGIN:
+      return INITIAL_STATE;
     default:
       return state;
   }
