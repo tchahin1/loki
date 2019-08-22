@@ -21,6 +21,7 @@ public class Measurement {
     @Column(name = "note")
     private String note;
 
+    @Lob
     @Column(name = "photo")
     private String photo;
 
