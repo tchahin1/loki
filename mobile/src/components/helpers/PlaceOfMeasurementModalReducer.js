@@ -18,7 +18,9 @@ export default (state = INITIAL_STATE, action) => {
     case types.PLACE_NUMBER_CHANGED:
       return { ...state, placeNumber: action.payload };
     case types.SAVE_PLACE_SUCCESS:
-      return { ...state, status: 'OK' };
+      return {
+        ...state, placeName: '', reference: '', placeNumber: '', status: 'OK',
+      };
     case types.SAVE_PLACE_FAILED:
       return { ...state, serverError: 'Internal Server Error!' };
     case types.FETCH_PLACES_SUCCESS:

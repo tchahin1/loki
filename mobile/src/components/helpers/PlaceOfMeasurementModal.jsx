@@ -128,10 +128,18 @@ class PlaceOfMeasurementModal extends React.Component {
     if (errorText === '') toggle();
   };
 
+  clearFields = () => {
+    const { toggle, InitializePlaceOfMeasurementModal } = this.props;
+
+    InitializePlaceOfMeasurementModal();
+
+    toggle();
+  }
+
   render() {
     const { errorText } = this.state;
     const {
-      visible, onRequestClose, toggle, name, number, reference,
+      visible, onRequestClose, name, number, reference,
     } = this.props;
     return (
       <Modal
@@ -181,7 +189,9 @@ class PlaceOfMeasurementModal extends React.Component {
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.modalBtn}
-                onPress={toggle}
+                onPress={() => {
+                  this.clearFields();
+                }}
               >
                 <Text style={{ fontSize: 16 }}>Zatvori</Text>
               </TouchableOpacity>

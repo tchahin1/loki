@@ -27,6 +27,8 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, infoText: action.payload };
     case types.CLEAR_INFO_TEXT:
       return { ...state, infoText: '' };
+    case types.INITIALIZE_ELECTRIC_METER:
+      return INITIAL_STATE;
     default:
       return state;
   }

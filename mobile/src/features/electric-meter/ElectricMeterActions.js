@@ -69,3 +69,7 @@ export const saveMeasurement = ({
 export const clearInfoText = () => ({
   type: types.CLEAR_INFO_TEXT,
 });
+
+export const initializeElectricMeter = () => ({
+  type: types.INITIALIZE_ELECTRIC_METER,
+});

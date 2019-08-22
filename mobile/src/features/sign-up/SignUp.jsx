@@ -125,7 +125,7 @@ class SignUp extends React.Component {
 
     switch (input) {
       case LABELS.USERNAME: {
-        const regExp = new RegExp(/^(?=.*\d)(?=.*[a-zA-Z]).{4,}$/);
+        const regExp = new RegExp(/^(?=.*\d)*(?=.*[a-zA-Z]).{4,}$/);
         this.onUsernameChange(value);
         if (value.length < 4) {
           errors.username = ERRORS.USERNAME_ERR;

@@ -24,6 +24,8 @@ import PlaceOfMeasurementModal from '../../components/helpers/PlaceOfMeasurement
 import NotificationsButton from '../../components/helpers/NotificationsButton';
 import NotificationsModal from '../../components/helpers/NotificationsModal';
 import logoutUser from '../account/AccountActions';
+import { initializePlaceOfMeasurementModal } from '../../components/helpers/PlaceOfMeasurementModalActions';
+import { initializeElectricMeter } from '../electric-meter/ElectricMeterActions';
 
 const styles = createStyles();
 
@@ -36,6 +38,8 @@ class HomeScreen extends React.Component {
     navigation: PropTypes.shape({}).isRequired,
     user: PropTypes.string.isRequired,
     LogoutUser: PropTypes.func.isRequired,
+    InitializePlaceOfMeasurementModal: PropTypes.func.isRequired,
+    InitializeElectricMeter: PropTypes.func.isRequired,
   };
 
   constructor(props) {
@@ -91,11 +95,27 @@ class HomeScreen extends React.Component {
 
   togglePlaceOfMeasurementModal = () => {
     const { openPlaceOfMeasurementMod } = this.state;
+    const { InitializePlaceOfMeasurementModal } = this.props;
+
+    InitializePlaceOfMeasurementModal();
     this.setState({ openPlaceOfMeasurementMod: !openPlaceOfMeasurementMod });
   };
 
+  openMenu = (option) => {
+    const { navigation, InitializeElectricMeter } = this.props;
+
+    switch (option.key) {
+      case 'ElectricMeter':
+        InitializeElectricMeter();
+        navigation.navigate(option.key);
+        break;
+      default:
+        console.log('');
+    }
+  }
+
   render() {
-    const { serverText, navigation } = this.props;
+    const { serverText } = this.props;
     const { current } = serverText;
     const {
       openNotMod,
@@ -125,7 +145,7 @@ class HomeScreen extends React.Component {
               <TouchableOpacity
                 key={index.toString()}
                 style={styles.btnIcon}
-                onPress={() => navigation.navigate(option.key)}
+                onPress={() => this.openMenu(option)}
               >
                 <Text style={styles.btnTxt}>{option.value}</Text>
               </TouchableOpacity>
@@ -160,6 +180,8 @@ const mapDispatchToProps = dispatch => (
     waitingForServer: waitingForServerAction,
     receivedTextFromServer: receivedTextFromServerAction,
     LogoutUser: logoutUser,
+    InitializePlaceOfMeasurementModal: initializePlaceOfMeasurementModal,
+    InitializeElectricMeter: initializeElectricMeter,
   }, dispatch)
 );
 

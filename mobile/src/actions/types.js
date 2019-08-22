@@ -41,3 +41,4 @@ export const SAVE_PLACE_FAILED = 'save_place_failed';
 export const FETCH_PLACES_SUCCESS = 'fetch_places_success';
 export const FETCH_PLACES_FAILED = 'fetch_places_failed';
 export const CHANGE_MADE_RESET = 'change_made_reset';
+export const INITIALIZE_ELECTRIC_METER = 'initialize_electric_meter';
