@@ -20,6 +20,7 @@ export default (state = INITIAL_STATE, action) => {
     case types.NOTE_CHANGED:
       return { ...state, note: action.payload };
     case types.PLACE_CHANGED:
+      console.log(action.payload);
       return { ...state, selectedPlace: action.payload };
     case types.SAVE_MEASUREMENT_SUCCESS:
       return { ...state, ...INITIAL_STATE, infoText: 'Brojilo uspješno očitano!' };

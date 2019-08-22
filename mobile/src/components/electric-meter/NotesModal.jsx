@@ -51,7 +51,6 @@ class NotesModal extends React.Component {
                 value={note}
                 onChangeText={text => this.setState({ note: text })}
                 multiline
-                maxLength={40}
                 numberOfLines={5}
                 autoFocus
                 underlineColorAndroid="transparent"

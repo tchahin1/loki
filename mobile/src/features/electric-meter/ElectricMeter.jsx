@@ -67,20 +67,17 @@ class ElectricMeterScreen extends React.Component {
   componentWillReceiveProps(nextProps) {
     const {
       navigation,
+      places,
+      PlaceChanged,
     } = this.props;
 
     if (nextProps.user === '') {
       onSignOut().then(navigation.navigate('SignedOut'));
     }
 
-    // console.log(nextProps.places.length, nextProps.places);
-
-    /* if (pickerData === 0 || nextProps.pickerData.length !== pickerData.length) {
-      FetchMeasurementPlaces({ username, token: user });
-      // populate picker
-    } */
-
-    // populate picker
+    if (places.length === 0 || nextProps.places.length !== places.length) {
+      PlaceChanged(nextProps.places[0].id.toString());
+    }
   }
 
   componentWillUnmount() {
