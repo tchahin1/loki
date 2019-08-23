@@ -62,6 +62,7 @@ class MetricLocationData extends React.Component {
       saveBtnDisabledOpacity: 0.4,
       err: '',
       openNotesModal: false,
+      previousCamera: false,
     };
   }
 
@@ -83,8 +84,13 @@ class MetricLocationData extends React.Component {
 
   load = () => {
     const { InitializeElectricMeter, places } = this.props;
+    const { previousCamera } = this.state;
 
-    if (places.length !== 0) InitializeElectricMeter();
+    if (places.length !== 0 && previousCamera === false) {
+      InitializeElectricMeter();
+    }
+
+    this.setState({ previousCamera: !previousCamera });
   }
 
   onLargeTariffChanged = (text) => {
@@ -147,6 +153,18 @@ class MetricLocationData extends React.Component {
     this.setState({ openNotesModal: false });
   }
 
+  navigateToCamera = () => {
+    const { navigation } = this.props;
+
+    this.setState({ previousCamera: true });
+
+    navigation.navigate('Camera',
+      {
+        savePhoto: this.savePhoto,
+        onBackButtonPressScreen: 'ElectricMeter',
+      });
+  }
+
   checkPhotoAndNoteIconColors() {
     const { note } = this.state;
     const { currentPhoto } = this.props;
@@ -181,7 +199,7 @@ class MetricLocationData extends React.Component {
   }
 
   render() {
-    const { flexStyle, navigation } = this.props;
+    const { flexStyle } = this.props;
     const {
       saveBtnDisabledOpacity,
       err,
@@ -220,11 +238,7 @@ class MetricLocationData extends React.Component {
               {
                 backgroundColor: this.checkPhotoAndNoteIconColors().cameraColor,
               }]}
-            onPress={() => navigation.navigate('Camera',
-              {
-                savePhoto: this.savePhoto,
-                onBackButtonPressScreen: 'ElectricMeter',
-              })}
+            onPress={() => this.navigateToCamera()}
           >
             <Icon
               type="ionicon"
