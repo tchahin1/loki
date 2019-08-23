@@ -28,6 +28,7 @@ export const PLACE_CHANGED = 'place_changed';
 export const SAVE_MEASUREMENT_SUCCESS = 'save_measurement_success';
 export const SAVE_MEASUREMENT_FAILED = 'save_measurement_failed';
 export const CLEAR_INFO_TEXT = 'clear_info_text';
+export const CLEAR_NOTE = 'clear_note';
 
 // places modal part
 export const PLACE_NAME_CHANGED = 'place_name_changed';

@@ -73,3 +73,7 @@ export const clearInfoText = () => ({
 export const initializeElectricMeter = () => ({
   type: types.INITIALIZE_ELECTRIC_METER,
 });
+
+export const clearNote = () => ({
+  type: types.CLEAR_NOTE,
+});

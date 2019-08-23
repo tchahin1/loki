@@ -33,6 +33,9 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, infoText: '' };
     case types.INITIALIZE_ELECTRIC_METER:
       return { ...INITIAL_STATE, selectedPlace: state.selectedPlace };
+    case types.CLEAR_NOTE:
+      console.log('tuj too');
+      return { ...state, note: '' };
     default:
       return state;
   }

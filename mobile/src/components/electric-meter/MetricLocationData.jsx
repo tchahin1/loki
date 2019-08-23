@@ -8,6 +8,7 @@ import {
   Alert,
   Keyboard,
 } from 'react-native';
+import _ from 'lodash';
 import PropTypes from 'prop-types';
 import { Icon } from 'react-native-elements/src/index';
 import NotesModal from './NotesModal';
@@ -20,12 +21,15 @@ import {
   noteChanged,
   saveMeasurement,
   clearInfoText,
+  clearNote,
+  initializeElectricMeter,
 } from '../../features/electric-meter/ElectricMeterActions';
 
 const styles = createStyles();
 
 class MetricLocationData extends React.Component {
   static propTypes = {
+    places: PropTypes.instanceOf(Array).isRequired,
     flexStyle: PropTypes.number,
     navigation: PropTypes.shape({}).isRequired,
     largeTariff: PropTypes.string.isRequired,
@@ -42,6 +46,8 @@ class MetricLocationData extends React.Component {
     NoteChanged: PropTypes.func.isRequired,
     SaveMeasurement: PropTypes.func.isRequired,
     ClearInfoText: PropTypes.func.isRequired,
+    ClearNote: PropTypes.func.isRequired,
+    InitializeElectricMeter: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -59,6 +65,12 @@ class MetricLocationData extends React.Component {
     };
   }
 
+  componentDidMount() {
+    const { navigation } = this.props;
+
+    navigation.addListener('willFocus', this.load);
+  }
+
   componentWillReceiveProps(nextProps) {
     const { ClearInfoText } = this.props;
 
@@ -67,6 +79,12 @@ class MetricLocationData extends React.Component {
       Alert.alert('INFO', nextProps.infoText);
       ClearInfoText();
     }
+  }
+
+  load = () => {
+    const { InitializeElectricMeter, places } = this.props;
+
+    if (places.length !== 0) InitializeElectricMeter();
   }
 
   onLargeTariffChanged = (text) => {
@@ -122,6 +140,13 @@ class MetricLocationData extends React.Component {
     navigation.navigate('ElectricMeter');
   };
 
+  clearNote = () => {
+    const { ClearNote } = this.props;
+
+    ClearNote();
+    this.setState({ openNotesModal: false });
+  }
+
   checkPhotoAndNoteIconColors() {
     const { note } = this.state;
     const { currentPhoto } = this.props;
@@ -154,7 +179,6 @@ class MetricLocationData extends React.Component {
       cameraIconColor,
     };
   }
-
 
   render() {
     const { flexStyle, navigation } = this.props;
@@ -232,9 +256,9 @@ class MetricLocationData extends React.Component {
           </TouchableOpacity>
         </View>
         <NotesModal
-          onRequestClose={() => this.setState({ openNotesModal: false })}
+          onRequestClose={() => this.clearNote()}
           visible={openNotesModal}
-          onCloseButtonPress={() => this.setState({ openNotesModal: false })}
+          onCloseButtonPress={() => this.clearNote()}
           onSaveButtonPress={this.saveNote}
         />
       </View>
@@ -251,6 +275,7 @@ const mapStateToProps = state => ({
   username: state.signIn.id,
   token: state.signIn.user,
   infoText: state.electricMeter.infoText,
+  places: _.map(state.measurementPlaceModal.places, val => ({ ...val })),
 });
 
 export default connect(mapStateToProps,
@@ -261,4 +286,6 @@ export default connect(mapStateToProps,
     NoteChanged: noteChanged,
     SaveMeasurement: saveMeasurement,
     ClearInfoText: clearInfoText,
+    ClearNote: clearNote,
+    InitializeElectricMeter: initializeElectricMeter,
   })(MetricLocationData);
