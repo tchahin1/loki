@@ -90,7 +90,7 @@ class MetricLocationData extends React.Component {
       InitializeElectricMeter();
     }
 
-    this.setState({ previousCamera: !previousCamera });
+    if (previousCamera === true) this.setState({ previousCamera: !previousCamera });
   }
 
   onLargeTariffChanged = (text) => {
