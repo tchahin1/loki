@@ -69,13 +69,14 @@ class ElectricMeterScreen extends React.Component {
       navigation,
       places,
       PlaceChanged,
+      selectedPlace,
     } = this.props;
 
     if (nextProps.user === '') {
       onSignOut().then(navigation.navigate('SignedOut'));
     }
 
-    if (places.length === 0 || nextProps.places.length !== places.length) {
+    if ((places.length === 0 || nextProps.places.length !== places.length) && selectedPlace === '') {
       PlaceChanged(nextProps.places[0].id.toString());
     }
   }
@@ -113,6 +114,8 @@ class ElectricMeterScreen extends React.Component {
       keyboardDidShow,
       flexStyle,
     } = this.state;
+
+    // console.log('selected place', selectedPlace);
 
     return (
       <KeyboardAvoidingView

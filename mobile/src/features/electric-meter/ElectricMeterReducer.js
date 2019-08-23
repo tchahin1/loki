@@ -20,16 +20,19 @@ export default (state = INITIAL_STATE, action) => {
     case types.NOTE_CHANGED:
       return { ...state, note: action.payload };
     case types.PLACE_CHANGED:
-      console.log(action.payload);
       return { ...state, selectedPlace: action.payload };
     case types.SAVE_MEASUREMENT_SUCCESS:
-      return { ...state, ...INITIAL_STATE, infoText: 'Brojilo uspješno očitano!' };
+      return {
+        ...state, ...INITIAL_STATE, infoText: 'Brojilo uspješno očitano!', selectedPlace: state.selectedPlace,
+      };
     case types.SAVE_MEASUREMENT_FAILED:
-      return { ...state, infoText: action.payload };
+      return {
+        ...state, ...INITIAL_STATE, infoText: action.payload, selectedPlace: state.selectedPlace,
+      };
     case types.CLEAR_INFO_TEXT:
       return { ...state, infoText: '' };
     case types.INITIALIZE_ELECTRIC_METER:
-      return INITIAL_STATE;
+      return { ...INITIAL_STATE, selectedPlace: state.selectedPlace };
     default:
       return state;
   }

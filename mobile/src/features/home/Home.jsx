@@ -107,11 +107,12 @@ class HomeScreen extends React.Component {
     switch (option.key) {
       case 'ElectricMeter':
         InitializeElectricMeter();
-        navigation.navigate(option.key);
         break;
       default:
         console.log('');
     }
+
+    navigation.navigate(option.key);
   }
 
   render() {
