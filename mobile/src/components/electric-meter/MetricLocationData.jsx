@@ -96,14 +96,14 @@ class MetricLocationData extends React.Component {
   onLargeTariffChanged = (text) => {
     const { LargeTariffChanged } = this.props;
 
-    this.setState({ saveBtnDisabledOpacity: 1 });
+    this.setState({ err: '', saveBtnDisabledOpacity: 1 });
     LargeTariffChanged(text);
   }
 
   onSmallTariffChanged = (text) => {
     const { SmallTariffChanged } = this.props;
 
-    this.setState({ saveBtnDisabledOpacity: 1 });
+    this.setState({ err: '', saveBtnDisabledOpacity: 1 });
     SmallTariffChanged(text);
   }
 
