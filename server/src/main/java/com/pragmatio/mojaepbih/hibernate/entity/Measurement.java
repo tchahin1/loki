@@ -1,7 +1,5 @@
 package com.pragmatio.mojaepbih.hibernate.entity;
 
-import com.mysql.jdbc.Blob;
-
 import javax.persistence.*;
 
 @Entity
