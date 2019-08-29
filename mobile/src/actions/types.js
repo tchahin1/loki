@@ -46,3 +46,4 @@ export const INITIALIZE_ELECTRIC_METER = 'initialize_electric_meter';
 
 // home part
 export const NOTIFICATION_RECIEVED = 'notification_recieved';
+export const RESET_NOTIFICATION = 'reset_notification';
