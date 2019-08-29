@@ -9,7 +9,6 @@ export default (state = INITIAL_STATE, action) => {
     case types.NOTIFICATION_RECIEVED:
       return { ...state, notification: true };
     case types.RESET_NOTIFICATION:
-      console.log('tuj sam');
       return { ...state, notification: false };
     default:
       return state;
