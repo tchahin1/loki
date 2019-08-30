@@ -43,3 +43,12 @@ export const FETCH_PLACES_SUCCESS = 'fetch_places_success';
 export const FETCH_PLACES_FAILED = 'fetch_places_failed';
 export const CHANGE_MADE_RESET = 'change_made_reset';
 export const INITIALIZE_ELECTRIC_METER = 'initialize_electric_meter';
+
+// failure report part
+export const FR_PHOTO_CHANGED = 'fr_photo_changed';
+export const FR_NOTE_CHANGED = 'fr_note_changed';
+export const SEND_FAILURE_REPORT = 'send_failure_report';
+export const SLIDER_VALUE_CHANGED = 'slider_value_changed';
+export const SEND_FR_SUCCESS = 'send_failure_report_success';
+export const SEND_FR_FAIL = 'send_failure_report_fail';
+export const INITIALIZE_FAILURE_REPORT = 'initialize_failure_report';
