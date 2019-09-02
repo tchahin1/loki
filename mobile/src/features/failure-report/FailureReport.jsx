@@ -103,9 +103,9 @@ class FailureReportScreen extends React.Component {
   }
 
   setFailureText = (text) => {
-    const { NoteChanged } = this.props;
+    const { NoteChanged, failure } = this.props;
 
-    if (text === '') {
+    if (failure === '') {
       this.setState({ sendBtnDisabledOpacity: 0.4 });
     } else {
       this.setState({ sendBtnDisabledOpacity: 1 });
