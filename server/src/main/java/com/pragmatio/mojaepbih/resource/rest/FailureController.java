@@ -27,8 +27,9 @@ public class FailureController {
     }
 
     Response saveFailureReport(FailureDto failureDto) {
-        User user = userService.findByUsername(failureDto.getUsername());
-        if(user == null) return Response.status(400).entity("User does not exist!").build();
+        User user = null;
+        if(!failureDto.getUsername().equals("")) user = userService.findByUsername(failureDto.getUsername());
+        if(user == null && (!failureDto.getUsername().equals(""))) return Response.status(400).entity("User does not exist!").build();
         Failure newFailure = new Failure(failureDto.getDescription(), failureDto.getPhoto(),
                 user);
         this.measurementService.persist(newFailure);

@@ -17,7 +17,7 @@ public class Failure {
     @Column(name = "photo")
     private String photo;
 
-    @ManyToOne
+    @ManyToOne(optional = true, fetch = FetchType.LAZY)
     private User user;
 
     public Failure() {
