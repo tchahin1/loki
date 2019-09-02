@@ -195,6 +195,10 @@ class FailureReportScreen extends React.Component {
       SendFailureReport({
         currentPhoto, failure, token, username,
       });
+    } else {
+      SendFailureReport({
+        currentPhoto, failure, token, username: '',
+      });
     }
     Keyboard.dismiss();
   }
