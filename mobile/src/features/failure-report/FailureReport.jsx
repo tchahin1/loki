@@ -20,7 +20,8 @@ import Colors from '../../assets/colors/AppColorsEnum';
 import createStyles from './FailureReport.styles';
 import logoutUser from '../account/AccountActions';
 import {
-  noteChanged, photoChanged, sendFailureReport, sliderValueChanged, initializeFailureReport,
+  noteChanged, photoChanged, sendFailureReport, sliderValueChanged,
+  initializeFailureReport, resetStatus,
 } from './FailureReportActions';
 
 const styles = createStyles();
@@ -40,6 +41,7 @@ class FailureReportScreen extends React.Component {
     SendFailureReport: PropTypes.func.isRequired,
     SliderValueChanged: PropTypes.func.isRequired,
     InitializeFailureReport: PropTypes.func.isRequired,
+    ResetStatus: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -74,14 +76,19 @@ class FailureReportScreen extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { navigation } = this.props;
+    const { navigation, ResetStatus } = this.props;
 
     if (nextProps.token === '') {
       onSignOut().then(navigation.navigate('SignedOut'));
     }
 
-    if (nextProps.status === 'OK') Alert.alert('INFO', 'Uspješno prijavljen kvar!');
-    else if (nextProps.status === 'ERROR') Alert.alert('GREŠKA', 'Nešto nije uredu, pokušajte ponovo!');
+    if (nextProps.status === 'OK') {
+      Alert.alert('INFO', 'Uspješno prijavljen kvar!');
+      ResetStatus();
+    } else if (nextProps.status === 'ERROR') {
+      Alert.alert('GREŠKA', 'Nešto nije uredu, pokušajte ponovo!');
+      ResetStatus();
+    }
   }
 
   componentWillUnmount() {
@@ -292,4 +299,5 @@ export default connect(mapStateToProps, {
   SendFailureReport: sendFailureReport,
   SliderValueChanged: sliderValueChanged,
   InitializeFailureReport: initializeFailureReport,
+  ResetStatus: resetStatus,
 })(FailureReportScreen);

@@ -21,6 +21,8 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, ...INITIAL_STATE, status: 'OK' };
     case types.SEND_FR_FAIL:
       return { ...state, status: 'ERROR' };
+    case types.RESET_FR_STATUS:
+      return { ...state, status: '' };
     case types.INITIALIZE_FAILURE_REPORT:
       return INITIAL_STATE;
     default:

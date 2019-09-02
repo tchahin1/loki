@@ -52,3 +52,4 @@ export const SLIDER_VALUE_CHANGED = 'slider_value_changed';
 export const SEND_FR_SUCCESS = 'send_failure_report_success';
 export const SEND_FR_FAIL = 'send_failure_report_fail';
 export const INITIALIZE_FAILURE_REPORT = 'initialize_failure_report';
+export const RESET_FR_STATUS = 'reset_fr_status';

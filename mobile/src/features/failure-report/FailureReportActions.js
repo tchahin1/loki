@@ -5,6 +5,10 @@ export const initializeFailureReport = () => ({
   type: types.INITIALIZE_FAILURE_REPORT,
 });
 
+export const resetStatus = () => ({
+  type: types.RESET_FR_STATUS,
+});
+
 export const photoChanged = photo => ({
   type: types.FR_PHOTO_CHANGED,
   payload: photo,
@@ -33,6 +37,9 @@ export const sendFailureReport = ({
 }) => (dispatch) => {
   dispatch({ type: types.SEND_FAILURE_REPORT });
 
+  let base64image = null;
+  if (currentPhoto !== null) base64image = currentPhoto.base64;
+
   fetch(`${api}/failure/save`, {
     method: 'POST',
     headers: {
@@ -42,7 +49,7 @@ export const sendFailureReport = ({
     },
     body: JSON.stringify({
       username,
-      photo: currentPhoto.base64,
+      photo: base64image,
       description: failure,
     }),
   }).then((response) => {
