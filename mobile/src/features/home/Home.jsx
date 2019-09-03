@@ -1,15 +1,14 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import {
   Text,
   TouchableOpacity,
   View,
   ActivityIndicator,
 } from 'react-native';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { Header } from 'react-native-elements/src/index';
-
 import api from '../../api/network.config';
 import createStyles from './Home.styles';
 import {
@@ -19,11 +18,13 @@ import {
 } from '../../actions/ServerTextActions';
 import ServerTextEnum from '../../assets/enum/ServerTextEnum';
 import MainMenuOptions from '../../assets/enum/MainMenuOptions';
+import Screen from '../../navigation/ScreenName';
 import Colors from '../../assets/colors/AppColorsEnum';
 import { getToken, onSignOut } from '../../../Auth';
 import PlaceOfMeasurementModal from '../../components/helpers/PlaceOfMeasurementModal';
 import NotificationsButton from '../../components/helpers/NotificationsButton';
 import NotificationsModal from '../../components/helpers/NotificationsModal';
+import logoutUser from '../account/AccountActions';
 
 const styles = createStyles();
 
@@ -34,6 +35,8 @@ class HomeScreen extends React.Component {
     waitingForServer: PropTypes.func.isRequired,
     receivedTextFromServer: PropTypes.func.isRequired,
     navigation: PropTypes.shape({}).isRequired,
+    user: PropTypes.string.isRequired,
+    LogoutUser: PropTypes.func.isRequired,
   };
 
   constructor(props) {
@@ -48,6 +51,20 @@ class HomeScreen extends React.Component {
 
   componentWillMount() {
     getToken().then(token => this.setState({ token }, () => this.fetchServerText()));
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { navigation } = this.props;
+
+    if (nextProps.user === '') {
+      onSignOut().then(navigation.navigate(Screen.SIGN_OUT));
+    }
+  }
+
+  onSignOutPressed = () => {
+    const { LogoutUser } = this.props;
+
+    LogoutUser();
   }
 
   fetchServerText = () => {
@@ -120,7 +137,7 @@ class HomeScreen extends React.Component {
             transparent
             visible={openNotMod}
             onRequestClose={() => this.setState({ openNotMod: false })}
-            onSignOutPress={() => onSignOut().then(navigation.navigate('SignedOut'))}
+            onSignOutPress={this.onSignOutPressed}
           />
           <PlaceOfMeasurementModal
             visible={openPlaceOfMeasurementMod}
@@ -133,16 +150,17 @@ class HomeScreen extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  const { serverText } = state;
-  return { serverText };
-};
+const mapStateToProps = state => ({
+  serverText: state.serverText,
+  user: state.signIn.user,
+});
 
 const mapDispatchToProps = dispatch => (
   bindActionCreators({
     serverUnavailable: serverUnavailableAction,
     waitingForServer: waitingForServerAction,
     receivedTextFromServer: receivedTextFromServerAction,
+    LogoutUser: logoutUser,
   }, dispatch)
 );
 

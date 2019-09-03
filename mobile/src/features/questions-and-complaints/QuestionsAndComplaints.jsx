@@ -1,21 +1,24 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { View } from 'react-native';
 import { Header } from 'react-native-elements/src/index';
 import PropTypes from 'prop-types';
-
 import MenuButton from '../../components/helpers/MenuButton';
 import NotificationsButton from '../../components/helpers/NotificationsButton';
 import NotificationsModal from '../../components/helpers/NotificationsModal';
 import { onSignOut } from '../../../Auth';
 import Form from '../../components/questions-and-complaints/Form';
-
 import createStyles from './QuestionsAndComplaints.styles';
+
+import logoutUser from '../account/AccountActions';
 
 const styles = createStyles();
 
 class QuestionsAndComplaintsScreen extends React.Component {
   static propTypes = {
     navigation: PropTypes.shape({}).isRequired,
+    user: PropTypes.string.isRequired,
+    LogoutUser: PropTypes.func.isRequired,
   };
 
   constructor(props) {
@@ -23,6 +26,20 @@ class QuestionsAndComplaintsScreen extends React.Component {
     this.state = {
       openNotMod: false,
     };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { navigation } = this.props;
+
+    if (nextProps.user === '') {
+      onSignOut().then(navigation.navigate('SignedOut'));
+    }
+  }
+
+  onSignOutPressed = () => {
+    const { LogoutUser } = this.props;
+
+    LogoutUser();
   }
 
   render() {
@@ -51,11 +68,15 @@ class QuestionsAndComplaintsScreen extends React.Component {
           transparent
           visible={openNotMod}
           onRequestClose={() => this.setState({ openNotMod: false })}
-          onSignOutPress={() => onSignOut().then(navigation.navigate('SignedOut'))}
+          onSignOutPress={this.onSignOutPressed}
         />
       </View>
     );
   }
 }
 
-export default QuestionsAndComplaintsScreen;
+const mapStateToProps = state => ({
+  user: state.signIn.user,
+});
+
+export default connect(mapStateToProps, { LogoutUser: logoutUser })(QuestionsAndComplaintsScreen);

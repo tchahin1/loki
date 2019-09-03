@@ -1,18 +1,19 @@
 import React from 'react';
+import ReduxThunk from 'redux-thunk';
 import PropTypes from 'prop-types';
 import {
   AppLoading, Font, Icon,
 } from 'expo';
 import { createAppContainer } from 'react-navigation';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
-
+import { createStore, applyMiddleware } from 'redux';
 import serverTextReducer from './src/reducers/ServerTextReducer';
 import SpaceMonoFont from './src/assets/fonts/SpaceMono-Regular.ttf';
 import createRootNavigator from './src/navigation/router';
 import { isSignedIn } from './Auth';
 
-const store = createStore(serverTextReducer);
+// added applyMiddleware!!!!
+const store = createStore(serverTextReducer, {}, applyMiddleware(ReduxThunk));
 
 export default class App extends React.Component {
   state = {

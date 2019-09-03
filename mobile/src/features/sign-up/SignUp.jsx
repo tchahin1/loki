@@ -1,55 +1,120 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import {
   ImageBackground,
   KeyboardAvoidingView,
   View,
   Alert,
   ActivityIndicator,
-  Keyboard,
   Text,
 } from 'react-native';
 import { Button } from 'react-native-elements/src/index';
 import { TextField } from 'react-native-material-textfield';
 import PropTypes from 'prop-types';
-
-import api from '../../api/network.config';
-
 import Background from '../../assets/images/epbih.jpg';
 import Colors from '../../assets/colors/AppColorsEnum';
 import Inputs from '../../assets/enum/LoginInputsEnum';
-
 import createStyles from './SignUp.styles';
+import {
+  initializeRegistration,
+  signupUsernameChanged,
+  signupPasswordChanged,
+  signupEmailChanged,
+  signupConfirmPasswordChanged,
+  registerUser,
+} from './SignUpActions';
 
 const styles = createStyles();
 
-export default class SignUp extends React.Component {
+class SignUp extends React.Component {
   static propTypes = {
     navigation: PropTypes.shape({}).isRequired,
+    username: PropTypes.string.isRequired,
+    password: PropTypes.string.isRequired,
+    email: PropTypes.string.isRequired,
+    confirmPass: PropTypes.string.isRequired,
+    userExistsErr: PropTypes.string.isRequired,
+    successFlag: PropTypes.bool.isRequired,
+    isLoading: PropTypes.bool.isRequired,
+    InitializeRegistration: PropTypes.func.isRequired,
+    SignupUsernameChanged: PropTypes.func.isRequired,
+    SignupPasswordChanged: PropTypes.func.isRequired,
+    SignupEmailChanged: PropTypes.func.isRequired,
+    SignupConfirmPasswordChanged: PropTypes.func.isRequired,
+    RegisterUser: PropTypes.func.isRequired,
   };
 
   constructor(props) {
     super(props);
 
     this.state = {
-      email: '',
-      username: '',
-      password: '',
-      confirmPass: '',
       error: {
         username: '',
         email: '',
         password: '',
         confirmPass: '',
       },
-      isLoading: false,
-      userExistsErr: '',
     };
   }
 
-  changeAndValidateValues = (input, value) => {
-    this.setState({ userExistsErr: '' });
+  componentWillMount() {
+    const { InitializeRegistration, successFlag } = this.props;
 
-    const { password, error } = this.state;
+    InitializeRegistration(successFlag);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { navigation } = this.props;
+
+    if (nextProps.successFlag) {
+      Alert.alert(
+        'INFO',
+        'Uspješno ste registrovani na MOJAEP!',
+        [
+          { text: 'UREDU', onPress: () => navigation.navigate('SignIn') },
+        ],
+        { cancelable: false },
+      );
+    }
+  }
+
+  onUsernameChange = (text) => {
+    const { SignupUsernameChanged } = this.props;
+
+    SignupUsernameChanged(text);
+  }
+
+  onPasswordChange = (text) => {
+    const { SignupPasswordChanged } = this.props;
+
+    SignupPasswordChanged(text);
+  }
+
+  onEmailChange = (text) => {
+    const { SignupEmailChanged } = this.props;
+
+    SignupEmailChanged(text);
+  }
+
+  onConfirmPasswordChange = (text) => {
+    const { SignupConfirmPasswordChanged } = this.props;
+
+    SignupConfirmPasswordChanged(text);
+  }
+
+  onButtonPress = () => {
+    const {
+      username, password, email, confirmPass, RegisterUser,
+    } = this.props;
+
+    RegisterUser({
+      username, password, email, confirmPass,
+    });
+  }
+
+  changeAndValidateValues = (input, value) => {
+    const { password, confirmPass } = this.props;
+    const { error } = this.state;
     const { ERRORS, LABELS } = Inputs;
     const errors = {
       username: error.username,
@@ -58,11 +123,9 @@ export default class SignUp extends React.Component {
       confirmPass: error.confirmPass,
     };
 
-    this.setState({ userExistsErr: '' });
-
     switch (input) {
       case LABELS.USERNAME:
-        this.setState({ username: value });
+        this.onUsernameChange(value);
         if (value.length < 4) {
           errors.username = ERRORS.USERNAME_ERR;
         } else {
@@ -72,7 +135,7 @@ export default class SignUp extends React.Component {
 
       case LABELS.EMAIL: {
         const regExp = new RegExp(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
-        this.setState({ email: value });
+        this.onEmailChange(value);
         if (!value.match(regExp)) {
           errors.email = ERRORS.EMAIL_ERR;
         } else {
@@ -82,16 +145,22 @@ export default class SignUp extends React.Component {
       }
 
       case LABELS.PASSWORD:
-        this.setState({ password: value });
+        this.onPasswordChange(value);
         if (value.length < 6) {
           errors.password = ERRORS.PASS_LENGTH_ERR;
+        } else if (value !== confirmPass) {
+          errors.password = '';
+          errors.confirmPass = ERRORS.PASS_CONFIRM_ERR;
+        } else if (value === confirmPass) {
+          errors.password = '';
+          errors.confirmPass = '';
         } else {
           errors.password = '';
         }
         break;
 
       case LABELS.CONFIRM_PASS:
-        this.setState({ confirmPass: value });
+        this.onConfirmPasswordChange(value);
         if (value !== password) {
           errors.confirmPass = ERRORS.PASS_CONFIRM_ERR;
         } else {
@@ -104,61 +173,13 @@ export default class SignUp extends React.Component {
     this.setState({ error: errors });
   };
 
-  registerUser = () => {
-    const { navigation } = this.props;
-    const {
-      username,
-      email,
-      password,
-      confirmPass,
-    } = this.state;
-    const { ERRORS } = Inputs;
-
-    this.setState({ isLoading: true });
-
-    fetch(`${api}/register`, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        username,
-        email,
-        password,
-        passwordRepeated: confirmPass,
-      }),
-    }).then((response) => {
-      this.setState({ isLoading: false });
-
-      if (response.ok) {
-        Alert.alert(
-          'INFO',
-          'Uspješno ste registrovani na MOJAEP!',
-          [
-            { text: 'UREDU', onPress: () => navigation.navigate('SignIn') },
-          ],
-          { cancelable: false },
-        );
-      } else {
-        Keyboard.dismiss();
-        this.setState({ userExistsErr: ERRORS.USER_EXISTS_ERR });
-      }
-    });
-  };
-
   render() {
-    const { navigation } = this.props;
     const { LABELS } = Inputs;
+    const { error } = this.state;
+    const { navigation } = this.props;
     const {
-      username,
-      password,
-      email,
-      confirmPass,
-      error,
-      isLoading,
-      userExistsErr,
-    } = this.state;
+      email, username, password, confirmPass, isLoading, userExistsErr,
+    } = this.props;
 
     return (
       <ImageBackground source={Background} style={styles.wrapper}>
@@ -250,7 +271,7 @@ export default class SignUp extends React.Component {
                   || email === ''
                   || confirmPass === ''
                 }
-                onPress={this.registerUser}
+                onPress={this.onButtonPress}
               />
             </View>
             <View />
@@ -268,3 +289,23 @@ export default class SignUp extends React.Component {
     );
   }
 }
+
+const mapStateToProps = state => ({
+  username: state.signUp.username,
+  password: state.signUp.password,
+  email: state.signUp.email,
+  confirmPass: state.signUp.confirmPass,
+  userExistsErr: state.signUp.error,
+  isLoading: state.signUp.isLoading,
+  successFlag: state.signUp.success,
+});
+
+export default connect(mapStateToProps,
+  {
+    InitializeRegistration: initializeRegistration,
+    SignupConfirmPasswordChanged: signupConfirmPasswordChanged,
+    SignupEmailChanged: signupEmailChanged,
+    SignupPasswordChanged: signupPasswordChanged,
+    SignupUsernameChanged: signupUsernameChanged,
+    RegisterUser: registerUser,
+  })(SignUp);

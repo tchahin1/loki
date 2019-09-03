@@ -1,77 +1,77 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import {
-  ActivityIndicator, ImageBackground, Keyboard, KeyboardAvoidingView, Text, View,
+  ActivityIndicator, ImageBackground, KeyboardAvoidingView, Text, View,
 } from 'react-native';
 import { Button } from 'react-native-elements/src/index';
 import { TextField } from 'react-native-material-textfield';
 import PropTypes from 'prop-types';
-
-import api from '../../api/network.config';
-
 import Colors from '../../assets/colors/AppColorsEnum';
 import Background from '../../assets/images/epbih.jpg';
 import createStyles from './SignIn.styles';
 import Inputs from '../../assets/enum/LoginInputsEnum';
-import { onSignIn } from '../../../Auth';
 import ScreenName from '../../navigation/ScreenName';
+import { usernameChanged, passwordChanged, loginUser } from './SignInActions';
+
 
 const styles = createStyles();
 
-export default class SignIn extends React.Component {
+class SignIn extends React.Component {
   static propTypes = {
     navigation: PropTypes.shape({}).isRequired,
+    user: PropTypes.string.isRequired,
+    username: PropTypes.string.isRequired,
+    password: PropTypes.string.isRequired,
+    error: PropTypes.string.isRequired,
+    isLoading: PropTypes.bool.isRequired,
+    UsernameChanged: PropTypes.func.isRequired,
+    PasswordChanged: PropTypes.func.isRequired,
+    LoginUser: PropTypes.func.isRequired,
   };
 
-  constructor(props) {
-    super(props);
+  componentWillReceiveProps(nextProps) {
+    const { navigation } = this.props;
 
-    this.state = {
-      username: '',
-      password: '',
-      error: '',
-      isLoading: false,
-    };
+    if (nextProps.user !== '' && nextProps.user !== undefined) {
+      navigation.navigate(ScreenName.HOME);
+    }
   }
 
-  loginUser = () => {
-    const { username, password } = this.state;
-    const { navigation } = this.props;
-    const { ERRORS } = Inputs;
+  onUsernameChange = (text) => {
+    const { UsernameChanged } = this.props;
 
-    this.setState({ isLoading: true });
+    UsernameChanged(text);
+  }
 
-    fetch(`${api}/auth`, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        username,
-        password,
-      }),
-    }).then((response) => {
-      this.setState({ isLoading: false });
+  onPasswordChange = (text) => {
+    const { PasswordChanged } = this.props;
 
-      if (response.ok) {
-        response.text().then((text) => {
-          onSignIn(text).then(() => {
-            navigation.navigate(ScreenName.HOME);
-          });
-        });
-      } else {
-        Keyboard.dismiss();
-        this.setState({ error: ERRORS.LOGIN_ERR });
-      }
-    });
-  };
+    PasswordChanged(text);
+  }
+
+  onButtonPress = () => {
+    const { username, password, LoginUser } = this.props;
+
+    LoginUser({ username, password });
+  }
+
+  renderLoading() {
+    const { isLoading } = this.props;
+
+    if (isLoading) {
+      return <ActivityIndicator size="small" color={Colors.PRIMARY_WHITE} />;
+    }
+
+    return null;
+  }
 
   render() {
     const { navigation } = this.props;
     const { LABELS } = Inputs;
     const {
-      username, password, error, isLoading,
-    } = this.state;
+      username, password, error,
+    } = this.props;
+
     return (
       <ImageBackground source={Background} style={styles.wrapper}>
         <View style={styles.wrapper}>
@@ -85,8 +85,8 @@ export default class SignIn extends React.Component {
             <View style={styles.inputsWrapper}>
               <TextField
                 label={LABELS.USERNAME}
+                onChangeText={this.onUsernameChange}
                 value={username}
-                onChangeText={text => this.setState({ username: text, error: '' })}
                 animationDuration={100}
                 tintColor={Colors.PRIMARY_WHITE}
                 textColor={Colors.PRIMARY_WHITE}
@@ -99,8 +99,8 @@ export default class SignIn extends React.Component {
               <TextField
                 secureTextEntry
                 label={LABELS.PASSWORD}
+                onChangeText={this.onPasswordChange}
                 value={password}
-                onChangeText={text => this.setState({ password: text, error: '' })}
                 animationDuration={100}
                 tintColor={Colors.PRIMARY_WHITE}
                 textColor={Colors.PRIMARY_WHITE}
@@ -112,17 +112,14 @@ export default class SignIn extends React.Component {
               />
             </View>
             <View style={styles.btnWrapper}>
-              {isLoading
-                ? <ActivityIndicator size="small" color={Colors.PRIMARY_WHITE} />
-                : null
-              }
+              {this.renderLoading()}
               <Text style={styles.error}>{error}</Text>
               <Button
                 buttonStyle={styles.btnSignIn}
                 title="PRIJAVI SE"
-                disabled={!username || !password}
+                disabled={!{ username } || !{ password }}
                 titleStyle={{ fontSize: 18 }}
-                onPress={this.loginUser}
+                onPress={this.onButtonPress}
               />
             </View>
             <View />
@@ -140,3 +137,18 @@ export default class SignIn extends React.Component {
     );
   }
 }
+
+const mapStateToProps = state => ({
+  username: state.signIn.username,
+  password: state.signIn.password,
+  error: state.signIn.error,
+  isLoading: state.signIn.isLoading,
+  user: state.signIn.user,
+});
+
+export default connect(mapStateToProps,
+  {
+    UsernameChanged: usernameChanged,
+    PasswordChanged: passwordChanged,
+    LoginUser: loginUser,
+  })(SignIn);
