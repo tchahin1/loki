@@ -113,8 +113,6 @@ class SignUp extends React.Component {
   }
 
   changeAndValidateValues = (input, value) => {
-    //  this.setState({ userExistsErr: '' });
-
     const { password, confirmPass } = this.props;
     const { error } = this.state;
     const { ERRORS, LABELS } = Inputs;
@@ -124,8 +122,6 @@ class SignUp extends React.Component {
       password: error.password,
       confirmPass: error.confirmPass,
     };
-
-    //  this.setState({ userExistsErr: '' });
 
     switch (input) {
       case LABELS.USERNAME:

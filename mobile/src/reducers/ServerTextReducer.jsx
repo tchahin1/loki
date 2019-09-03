@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 import ServerTextEnum from '../assets/enum/ServerTextEnum';
-import SignInReducer from '../features/sign-in/SignInReducer'; // added
+import SignInReducer from '../features/sign-in/SignInReducer';
 import AccountReducer from '../features/account/AccountReducer';
 import SignUpReducer from '../features/sign-up/SignUpReducer';
 
@@ -28,7 +28,7 @@ const serverTextReducer = (state = INITIAL_STATE, action) => {
 
 export default combineReducers({
   serverText: serverTextReducer,
-  signIn: SignInReducer, // added
+  signIn: SignInReducer,
   account: AccountReducer,
   signUp: SignUpReducer,
 });

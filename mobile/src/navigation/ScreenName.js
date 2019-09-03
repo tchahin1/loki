@@ -1,6 +1,7 @@
 const ScreenName = {
   SIGN_IN: 'SignIn',
   SIGN_UP: 'SignUp',
+  SIGN_OUT: 'SignedOut',
 
   HOME: 'Home',
   ELECTRIC_METER: 'ElectricMeter',
