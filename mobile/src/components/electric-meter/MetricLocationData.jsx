@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import {
   View,
   Text,
@@ -7,43 +8,111 @@ import {
   Alert,
   Keyboard,
 } from 'react-native';
+import _ from 'lodash';
 import PropTypes from 'prop-types';
 import { Icon } from 'react-native-elements/src/index';
-
 import NotesModal from './NotesModal';
+import Screen from '../../navigation/ScreenName';
 import Colors from '../../assets/colors/AppColorsEnum';
-
 import createStyles from './MetricLocationData.styles';
+import {
+  largeTariffChanged,
+  smallTariffChanged,
+  photoChanged,
+  noteChanged,
+  saveMeasurement,
+  clearInfoText,
+  clearNote,
+  initializeElectricMeter,
+} from '../../features/electric-meter/ElectricMeterActions';
 
 const styles = createStyles();
 
 class MetricLocationData extends React.Component {
   static propTypes = {
+    places: PropTypes.instanceOf(Array).isRequired,
     flexStyle: PropTypes.number,
     navigation: PropTypes.shape({}).isRequired,
+    largeTariff: PropTypes.string.isRequired,
+    smallTariff: PropTypes.string.isRequired,
+    currentPhoto: PropTypes.shape({}),
+    username: PropTypes.string.isRequired,
+    token: PropTypes.string.isRequired,
+    infoText: PropTypes.string.isRequired,
+    LargeTariffChanged: PropTypes.func.isRequired,
+    SmallTariffChanged: PropTypes.func.isRequired,
+    PhotoChanged: PropTypes.func.isRequired,
+    currentPlace: PropTypes.string.isRequired,
+    note: PropTypes.string.isRequired,
+    NoteChanged: PropTypes.func.isRequired,
+    SaveMeasurement: PropTypes.func.isRequired,
+    ClearInfoText: PropTypes.func.isRequired,
+    ClearNote: PropTypes.func.isRequired,
+    InitializeElectricMeter: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
     flexStyle: 2 / 3,
+    currentPhoto: null,
   };
 
   constructor(props) {
     super(props);
 
     this.state = {
-      largeTariff: '',
-      smallTariff: '',
       saveBtnDisabledOpacity: 0.4,
       err: '',
       openNotesModal: false,
-      note: '',
-      currentPhoto: null,
+      previousCamera: false,
     };
+  }
+
+  componentDidMount() {
+    const { navigation } = this.props;
+
+    navigation.addListener('willFocus', this.load);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { ClearInfoText } = this.props;
+
+    if (nextProps.infoText !== '') {
+      Keyboard.dismiss();
+      Alert.alert('INFO', nextProps.infoText);
+      ClearInfoText();
+    }
+  }
+
+  load = () => {
+    const { InitializeElectricMeter, places } = this.props;
+    const { previousCamera } = this.state;
+
+    if (places.length !== 0 && !previousCamera) {
+      InitializeElectricMeter();
+    }
+
+    if (previousCamera) {
+      this.setState({ previousCamera: !previousCamera });
+    }
+  }
+
+  onLargeTariffChanged = (text) => {
+    const { LargeTariffChanged } = this.props;
+
+    this.setState({ err: '', saveBtnDisabledOpacity: 1 });
+    LargeTariffChanged(text);
+  }
+
+  onSmallTariffChanged = (text) => {
+    const { SmallTariffChanged } = this.props;
+
+    this.setState({ err: '', saveBtnDisabledOpacity: 1 });
+    SmallTariffChanged(text);
   }
 
   validateFields = () => {
     const reg = new RegExp('^[0-9]+$');
-    const { largeTariff, smallTariff } = this.state;
+    const { largeTariff, smallTariff } = this.props;
 
     if (!largeTariff.match(reg) || !smallTariff.match(reg)) {
       this.setState({
@@ -57,26 +126,51 @@ class MetricLocationData extends React.Component {
   };
 
   saveData = () => {
-    // save data to database
-    Keyboard.dismiss();
-    Alert.alert('INFO', 'Brojilo uspješno očitano!');
+    const {
+      largeTariff, smallTariff, currentPhoto, note, currentPlace, username, token, SaveMeasurement,
+    } = this.props;
+
+    SaveMeasurement({
+      largeTariff, smallTariff, currentPhoto, note, currentPlace, username, token,
+    });
   };
 
   saveNote = (note) => {
     this.setState({ openNotesModal: false, note });
-    // save data to database
+    const { NoteChanged } = this.props;
+
+    NoteChanged(note);
   };
 
   savePhoto = (photo) => {
-    const { navigation } = this.props;
+    const { navigation, PhotoChanged } = this.props;
 
-    this.setState({ currentPhoto: photo });
+    PhotoChanged(photo);
     navigation.navigate('ElectricMeter');
-    // save data to database
   };
 
+  clearNote = () => {
+    const { ClearNote } = this.props;
+
+    ClearNote();
+    this.setState({ openNotesModal: false });
+  }
+
+  navigateToCamera = () => {
+    const { navigation } = this.props;
+
+    this.setState({ previousCamera: true });
+
+    navigation.navigate(Screen.CAMERA,
+      {
+        savePhoto: this.savePhoto,
+        onBackButtonPressScreen: Screen.ELECTRIC_METER,
+      });
+  }
+
   checkPhotoAndNoteIconColors() {
-    const { note, currentPhoto } = this.state;
+    const { note } = this.state;
+    const { currentPhoto } = this.props;
     let noteColor = Colors.PRIMARY_WHITE;
     let cameraColor = Colors.PRIMARY_WHITE;
     let noteIconColor = 'black';
@@ -107,17 +201,15 @@ class MetricLocationData extends React.Component {
     };
   }
 
-
   render() {
-    const { flexStyle, navigation } = this.props;
+    const { flexStyle } = this.props;
     const {
-      largeTariff,
-      smallTariff,
       saveBtnDisabledOpacity,
       err,
       openNotesModal,
-      currentPhoto,
     } = this.state;
+    const { largeTariff, smallTariff, currentPhoto } = this.props;
+
     return (
       <View style={[styles.container, { flex: flexStyle }]}>
         <View style={styles.inputsWrapper}>
@@ -125,11 +217,7 @@ class MetricLocationData extends React.Component {
             <Text style={styles.labelInput}>Velika tarifa:</Text>
             <TextInput
               value={largeTariff}
-              onChangeText={text => this.setState({
-                largeTariff: text,
-                err: '',
-                saveBtnDisabledOpacity: 1,
-              })}
+              onChangeText={this.onLargeTariffChanged}
               underlineColorAndroid="transparent"
               keyboardType="numeric"
               style={styles.txtInput}
@@ -139,11 +227,7 @@ class MetricLocationData extends React.Component {
             <Text style={styles.labelInput}>Mala tarifa:</Text>
             <TextInput
               value={smallTariff}
-              onChangeText={text => this.setState({
-                smallTariff: text,
-                err: '',
-                saveBtnDisabledOpacity: 1,
-              })}
+              onChangeText={this.onSmallTariffChanged}
               underlineColorAndroid="transparent"
               keyboardType="numeric"
               style={styles.txtInput}
@@ -157,11 +241,7 @@ class MetricLocationData extends React.Component {
               {
                 backgroundColor: this.checkPhotoAndNoteIconColors().cameraColor,
               }]}
-            onPress={() => navigation.navigate('Camera',
-              {
-                savePhoto: this.savePhoto,
-                onBackButtonPressScreen: 'ElectricMeter',
-              })}
+            onPress={() => this.navigateToCamera()}
           >
             <Icon
               type="ionicon"
@@ -193,9 +273,9 @@ class MetricLocationData extends React.Component {
           </TouchableOpacity>
         </View>
         <NotesModal
-          onRequestClose={() => this.setState({ openNotesModal: false })}
+          onRequestClose={() => this.clearNote()}
           visible={openNotesModal}
-          onCloseButtonPress={() => this.setState({ openNotesModal: false })}
+          onCloseButtonPress={() => this.clearNote()}
           onSaveButtonPress={this.saveNote}
         />
       </View>
@@ -203,4 +283,26 @@ class MetricLocationData extends React.Component {
   }
 }
 
-export default MetricLocationData;
+const mapStateToProps = state => ({
+  largeTariff: state.electricMeter.largeTariff,
+  smallTariff: state.electricMeter.smallTariff,
+  currentPhoto: state.electricMeter.photo,
+  note: state.electricMeter.note,
+  currentPlace: state.electricMeter.selectedPlace,
+  username: state.signIn.id,
+  token: state.signIn.user,
+  infoText: state.electricMeter.infoText,
+  places: _.map(state.measurementPlaceModal.places, val => ({ ...val })),
+});
+
+export default connect(mapStateToProps,
+  {
+    LargeTariffChanged: largeTariffChanged,
+    SmallTariffChanged: smallTariffChanged,
+    PhotoChanged: photoChanged,
+    NoteChanged: noteChanged,
+    SaveMeasurement: saveMeasurement,
+    ClearInfoText: clearInfoText,
+    ClearNote: clearNote,
+    InitializeElectricMeter: initializeElectricMeter,
+  })(MetricLocationData);

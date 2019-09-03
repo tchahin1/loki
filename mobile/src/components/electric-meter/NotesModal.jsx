@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import {
   View,
   Modal,
@@ -7,8 +8,8 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import PropTypes from 'prop-types';
-
 import createStyles from './NotesModal.styles';
+import { noteChanged } from '../../features/electric-meter/ElectricMeterActions';
 
 const styles = createStyles();
 
@@ -18,14 +19,14 @@ class NotesModal extends React.Component {
     visible: PropTypes.bool.isRequired,
     onCloseButtonPress: PropTypes.func.isRequired,
     onSaveButtonPress: PropTypes.func.isRequired,
+    note: PropTypes.string.isRequired,
+    NoteChanged: PropTypes.func.isRequired,
   };
 
-  constructor(props) {
-    super(props);
+  onNoteChanged = (note) => {
+    const { NoteChanged } = this.props;
 
-    this.state = {
-      note: '',
-    };
+    NoteChanged(note);
   }
 
   render() {
@@ -34,8 +35,8 @@ class NotesModal extends React.Component {
       visible,
       onCloseButtonPress,
       onSaveButtonPress,
+      note,
     } = this.props;
-    const { note } = this.state;
     return (
       <Modal
         animationType="slide"
@@ -49,9 +50,8 @@ class NotesModal extends React.Component {
               <Text style={styles.modalTitle}>NAPOMENA</Text>
               <TextInput
                 value={note}
-                onChangeText={text => this.setState({ note: text })}
+                onChangeText={this.onNoteChanged}
                 multiline
-                maxLength={40}
                 numberOfLines={5}
                 autoFocus
                 underlineColorAndroid="transparent"
@@ -79,4 +79,8 @@ class NotesModal extends React.Component {
   }
 }
 
-export default NotesModal;
+const mapStateToProps = state => ({
+  note: state.electricMeter.note,
+});
+
+export default connect(mapStateToProps, { NoteChanged: noteChanged })(NotesModal);

@@ -11,7 +11,9 @@ import Background from '../../assets/images/epbih.jpg';
 import createStyles from './SignIn.styles';
 import Inputs from '../../assets/enum/LoginInputsEnum';
 import ScreenName from '../../navigation/ScreenName';
-import { usernameChanged, passwordChanged, loginUser } from './SignInActions';
+import {
+  usernameChanged, passwordChanged, loginUser, initializeLogin,
+} from './SignInActions';
 
 
 const styles = createStyles();
@@ -27,7 +29,14 @@ class SignIn extends React.Component {
     UsernameChanged: PropTypes.func.isRequired,
     PasswordChanged: PropTypes.func.isRequired,
     LoginUser: PropTypes.func.isRequired,
+    InitializeLogin: PropTypes.func.isRequired,
   };
+
+  componentWillMount() {
+    const { InitializeLogin } = this.props;
+
+    InitializeLogin();
+  }
 
   componentWillReceiveProps(nextProps) {
     const { navigation } = this.props;
@@ -117,7 +126,7 @@ class SignIn extends React.Component {
               <Button
                 buttonStyle={styles.btnSignIn}
                 title="PRIJAVI SE"
-                disabled={!{ username } || !{ password }}
+                disabled={username === '' || password === ''}
                 titleStyle={{ fontSize: 18 }}
                 onPress={this.onButtonPress}
               />
@@ -151,4 +160,5 @@ export default connect(mapStateToProps,
     UsernameChanged: usernameChanged,
     PasswordChanged: passwordChanged,
     LoginUser: loginUser,
+    InitializeLogin: initializeLogin,
   })(SignIn);

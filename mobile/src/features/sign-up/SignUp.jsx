@@ -14,6 +14,7 @@ import PropTypes from 'prop-types';
 import Background from '../../assets/images/epbih.jpg';
 import Colors from '../../assets/colors/AppColorsEnum';
 import Inputs from '../../assets/enum/LoginInputsEnum';
+import Screen from '../../navigation/ScreenName';
 import createStyles from './SignUp.styles';
 import {
   initializeRegistration,
@@ -58,9 +59,9 @@ class SignUp extends React.Component {
   }
 
   componentWillMount() {
-    const { InitializeRegistration, successFlag } = this.props;
+    const { InitializeRegistration } = this.props;
 
-    InitializeRegistration(successFlag);
+    InitializeRegistration();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -124,17 +125,25 @@ class SignUp extends React.Component {
     };
 
     switch (input) {
-      case LABELS.USERNAME:
+      case LABELS.USERNAME: {
+        const regExp = new RegExp(/^(?=.*\d)*(?=.*[a-zA-Z]).{4,}$/);
         this.onUsernameChange(value);
         if (value.length < 4) {
           errors.username = ERRORS.USERNAME_ERR;
+        } else if (!value.match(regExp)) {
+          errors.username = 'Korisnicko ime nije validno';
         } else {
           errors.username = '';
         }
         break;
+      }
 
       case LABELS.EMAIL: {
-        const regExp = new RegExp(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+        /* const regExp =
+        new RegExp(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@
+        ((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|
+        (([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/); */
+        const regExp = new RegExp(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@([a-zA-Z0-9-]+\.[a-zA-Z]{1,}){0,61}[a-zA-Z0-9]$/);
         this.onEmailChange(value);
         if (!value.match(regExp)) {
           errors.email = ERRORS.EMAIL_ERR;
@@ -144,24 +153,27 @@ class SignUp extends React.Component {
         break;
       }
 
-      case LABELS.PASSWORD:
+      case LABELS.PASSWORD: {
+        const regExp = new RegExp(/(?=^.{6,}$)((?=.*\d)*)((?=.*[a-z])*)((?=.*[A-Z])*)((?=.*[!@#$%^&amp;*()_+}{&quot;&quot;:;'?/&gt;.&lt;,])*).*$/);
         this.onPasswordChange(value);
         if (value.length < 6) {
           errors.password = ERRORS.PASS_LENGTH_ERR;
-        } else if (value !== confirmPass) {
+        } else if (!value.match(regExp)) {
+          errors.password = 'Password nije validan !';
+        } else if (value !== confirmPass && confirmPass !== '') {
           errors.password = '';
           errors.confirmPass = ERRORS.PASS_CONFIRM_ERR;
         } else if (value === confirmPass) {
-          errors.password = '';
           errors.confirmPass = '';
         } else {
           errors.password = '';
         }
         break;
+      }
 
       case LABELS.CONFIRM_PASS:
         this.onConfirmPasswordChange(value);
-        if (value !== password) {
+        if (value !== password && value !== '') {
           errors.confirmPass = ERRORS.PASS_CONFIRM_ERR;
         } else {
           errors.confirmPass = '';
@@ -173,12 +185,19 @@ class SignUp extends React.Component {
     this.setState({ error: errors });
   };
 
+  clearFields() {
+    const { InitializeRegistration } = this.props;
+    const { navigation } = this.props;
+
+    InitializeRegistration();
+    navigation.navigate(Screen.SIGN_IN);
+  }
+
   render() {
     const { LABELS } = Inputs;
     const { error } = this.state;
-    const { navigation } = this.props;
     const {
-      email, username, password, confirmPass, isLoading, userExistsErr,
+      email, username, password, confirmPass, isLoading, userExistsErr, successFlag,
     } = this.props;
 
     return (
@@ -282,7 +301,7 @@ class SignUp extends React.Component {
             type="clear"
             title="PRIJAVI SE"
             titleStyle={styles.btnSignInTitle}
-            onPress={() => navigation.navigate('SignIn')}
+            onPress={() => this.clearFields(successFlag)}
           />
         </View>
       </ImageBackground>

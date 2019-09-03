@@ -14,38 +14,62 @@ public class PlaceOfMeasurement {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "references")
-    private Integer references;
+    @Column(name = "reference")
+    private String reference;
 
-    public PlaceOfMeasurement(String name, Integer references, Integer numberOfMeasurement) {
-        this.name = name;
-        this.references = references;
-        this.numberOfMeasurement = numberOfMeasurement;
+    @Column(name = "place_number")
+    private Integer numberOfMeasurement;
+
+    @ManyToOne
+    private User user;
+
+    public PlaceOfMeasurement() {
+    }
+
+    public PlaceOfMeasurement(String name, String reference, Integer numberOfMeasurement, User user) {
+        this.setName(name);
+        this.setReference(reference);
+        this.setNumberOfMeasurement(numberOfMeasurement);
+        this.setUser(user);
     }
 
     public String getName() {
         return name;
     }
 
-    public Integer getReferences() {
-        return references;
+    public String getReference() {
+        return reference;
     }
 
     public Integer getNumberOfMeasurement() {
         return numberOfMeasurement;
     }
 
-    private Integer numberOfMeasurement;
-
     public void setName(String name) {
         this.name = name;
     }
 
-    public void setReferences(Integer references) {
-        this.references = references;
+    public void setReference(String reference) {
+        this.reference = reference;
     }
 
     public void setNumberOfMeasurement(Integer numberOfMeasurement) {
         this.numberOfMeasurement = numberOfMeasurement;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

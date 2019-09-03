@@ -45,6 +45,7 @@ class CameraScreen extends React.Component {
       const options = {
         quality: 0.5,
         skipProcessing: true,
+        base64: true,
       };
       const photo = await this.camera.takePictureAsync(options);
       this.setState({ currentPhoto: photo });

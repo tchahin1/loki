@@ -1,7 +1,7 @@
 package com.pragmatio.mojaepbih.hibernate.dao;
 
-import com.pragmatio.mojaepbih.hibernate.entity.User;
-import com.pragmatio.mojaepbih.hibernate.interfaces.UserDaoInterface;
+import com.pragmatio.mojaepbih.hibernate.entity.PlaceOfMeasurement;
+import com.pragmatio.mojaepbih.hibernate.interfaces.PlaceOfMeasurementDaoInterface;
 import com.pragmatio.mojaepbih.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -15,12 +15,12 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.List;
 
-public class UserDao implements UserDaoInterface<User, String> {
+public class PlaceOfMeasurementDao implements PlaceOfMeasurementDaoInterface<PlaceOfMeasurement, Integer> {
     private Session currentSession;
 
     private Transaction currentTransaction;
 
-    public UserDao() {
+    public PlaceOfMeasurementDao() {
     }
 
     public Session openCurrentSession() {
@@ -63,44 +63,56 @@ public class UserDao implements UserDaoInterface<User, String> {
         this.currentTransaction = currentTransaction;
     }
 
-    public void persist(User entity) {
+    public void persist(PlaceOfMeasurement entity) {
         getCurrentSession().save(entity);
     }
 
-    public void update(User entity) {
+    public void update(PlaceOfMeasurement entity) {
         getCurrentSession().update(entity);
     }
 
-    public User findById(String id) {
-        return (User) getCurrentSession().get(User.class, id);
+    public PlaceOfMeasurement findById(Integer id) {
+        return (PlaceOfMeasurement) getCurrentSession().get(PlaceOfMeasurement.class, id);
     }
 
-    public User findByUsername(String username) {
+    public PlaceOfMeasurement findByReference(String reference) {
         try {
             CriteriaBuilder criteriaBuilder = getCurrentSession().getCriteriaBuilder();
-            CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
-            Root<User> user = criteriaQuery.from(User.class);
-            Predicate predicate = criteriaBuilder.equal(user.get("username"), username);
+            CriteriaQuery<PlaceOfMeasurement> criteriaQuery = criteriaBuilder.createQuery(PlaceOfMeasurement.class);
+            Root<PlaceOfMeasurement> placeOfMeasurement = criteriaQuery.from(PlaceOfMeasurement.class);
+            Predicate predicate = criteriaBuilder.equal(placeOfMeasurement.get("reference"), reference);
             Query query = getCurrentSession().createQuery(criteriaQuery.where(predicate));
-            return (User) query.getSingleResult();
+            return (PlaceOfMeasurement) query.getSingleResult();
         } catch (NoResultException e) {
             return null;
         }
     }
 
-
-    public void delete(User entity) {
+    public void delete(PlaceOfMeasurement entity) {
         getCurrentSession().delete(entity);
     }
 
     @SuppressWarnings("unchecked")
-    public List<User> findAll() {
-        return (List<User>) getCurrentSession().createQuery("from User").list();
+    public List<PlaceOfMeasurement> findAll() {
+        return (List<PlaceOfMeasurement>) getCurrentSession().createQuery("from PlaceOfMeasurement").list();
+    }
+
+    public List<PlaceOfMeasurement> findAllByUserId(int id) {
+        try {
+            CriteriaBuilder criteriaBuilder = getCurrentSession().getCriteriaBuilder();
+            CriteriaQuery<PlaceOfMeasurement> criteriaQuery = criteriaBuilder.createQuery(PlaceOfMeasurement.class);
+            Root<PlaceOfMeasurement> placeOfMeasurement = criteriaQuery.from(PlaceOfMeasurement.class);
+            Predicate predicate = criteriaBuilder.equal(placeOfMeasurement.get("user"), id);
+            Query query = getCurrentSession().createQuery(criteriaQuery.where(predicate));
+            return (List<PlaceOfMeasurement>) query.getResultList();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
     public void deleteAll() {
-        List<User> entityList = findAll();
-        for (User entity : entityList) {
+        List<PlaceOfMeasurement> entityList = findAll();
+        for (PlaceOfMeasurement entity : entityList) {
             delete(entity);
         }
     }
