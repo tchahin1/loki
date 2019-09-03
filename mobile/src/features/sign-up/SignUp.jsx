@@ -14,6 +14,7 @@ import PropTypes from 'prop-types';
 import Background from '../../assets/images/epbih.jpg';
 import Colors from '../../assets/colors/AppColorsEnum';
 import Inputs from '../../assets/enum/LoginInputsEnum';
+import Screen from '../../navigation/ScreenName';
 import createStyles from './SignUp.styles';
 import {
   initializeRegistration,
@@ -189,7 +190,7 @@ class SignUp extends React.Component {
     const { navigation } = this.props;
 
     InitializeRegistration();
-    navigation.navigate('SignIn');
+    navigation.navigate(Screen.SIGN_IN);
   }
 
   render() {

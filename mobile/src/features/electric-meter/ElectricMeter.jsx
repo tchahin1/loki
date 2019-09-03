@@ -115,8 +115,6 @@ class ElectricMeterScreen extends React.Component {
       flexStyle,
     } = this.state;
 
-    // console.log('selected place', selectedPlace);
-
     return (
       <KeyboardAvoidingView
         style={styles.wrapper}

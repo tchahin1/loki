@@ -12,6 +12,7 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 import { Icon } from 'react-native-elements/src/index';
 import NotesModal from './NotesModal';
+import Screen from '../../navigation/ScreenName';
 import Colors from '../../assets/colors/AppColorsEnum';
 import createStyles from './MetricLocationData.styles';
 import {
@@ -86,11 +87,13 @@ class MetricLocationData extends React.Component {
     const { InitializeElectricMeter, places } = this.props;
     const { previousCamera } = this.state;
 
-    if (places.length !== 0 && previousCamera === false) {
+    if (places.length !== 0 && !previousCamera) {
       InitializeElectricMeter();
     }
 
-    if (previousCamera === true) this.setState({ previousCamera: !previousCamera });
+    if (previousCamera) {
+      this.setState({ previousCamera: !previousCamera });
+    }
   }
 
   onLargeTariffChanged = (text) => {
@@ -158,10 +161,10 @@ class MetricLocationData extends React.Component {
 
     this.setState({ previousCamera: true });
 
-    navigation.navigate('Camera',
+    navigation.navigate(Screen.CAMERA,
       {
         savePhoto: this.savePhoto,
-        onBackButtonPressScreen: 'ElectricMeter',
+        onBackButtonPressScreen: Screen.ELECTRIC_METER,
       });
   }
 
