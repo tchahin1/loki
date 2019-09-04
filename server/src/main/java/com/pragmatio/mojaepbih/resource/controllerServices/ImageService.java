@@ -20,39 +20,8 @@ import java.util.Base64;
 import java.util.zip.DeflaterOutputStream;
 import java.util.zip.InflaterOutputStream;
 
-public class MeasurementControllerServices {
-
-
-    MeasurementService measurementService;
-    UserService userService;
-    PlaceOfMeasurementService placeOfMeasurementService;
-
-    public MeasurementControllerServices(MeasurementService measurementService, UserService userService, PlaceOfMeasurementService placeOfMeasurementService) {
-        this.measurementService = measurementService;
-        this.userService = userService;
-        this.placeOfMeasurementService = placeOfMeasurementService;
-    }
-
-    public Response saveMeasurement(MeasurementDto measurementDto) {
-        Measurement alreadyInDb = this.measurementService.findByPlaceId(measurementDto.getMeasurementPlace());
-        if(alreadyInDb == null) {
-            User user = userService.findByUsername(measurementDto.getUsername());
-            if(user == null) return Response.status(400).entity("User does not exist!").build();
-            PlaceOfMeasurement placeOfMeasurement = placeOfMeasurementService.findById(measurementDto.getMeasurementPlace());
-            if(placeOfMeasurement == null) return Response.status(400).entity("Measurement place does not exist!").build();
-            String image = printDataToImage(measurementDto.getPhoto(), measurementDto.getLargeTariff(), measurementDto.getSmallTariff());
-            //decodeStringToImage(image);
-            Measurement newMeasurement = new Measurement(measurementDto.getLargeTariff(),
-                    measurementDto.getSmallTariff(), measurementDto.getNote(),
-                    image, user, placeOfMeasurement);
-            this.measurementService.persist(newMeasurement);
-            return Response.ok().entity("Successfully added new measurement for this place!").build();
-        } else {
-            return Response.status(400).entity("Measurement for this place already exists!").build();
-        }
-    }
-
-    private String printDataToImage(String data, String largeTariff, String smallTariff) {
+public class ImageService {
+    public String printDataToImage(String data, String largeTariff, String smallTariff) {
         BufferedImage image = null;
 
         try {
@@ -76,7 +45,7 @@ public class MeasurementControllerServices {
         return encodeImageToString(image, "jpg");
     }
 
-    public static String encodeImageToString(BufferedImage image, String type) {
+    private static String encodeImageToString(BufferedImage image, String type) {
         String imageString = null;
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
 
@@ -92,7 +61,7 @@ public class MeasurementControllerServices {
         return imageString;
     }
 
-    public static BufferedImage decodeStringToImage(String imageString) {
+    private static BufferedImage decodeStringToImage(String imageString) {
         BufferedImage image = null;
         byte[] imageByte;
         try {
@@ -109,7 +78,7 @@ public class MeasurementControllerServices {
         return null;
     }
 
-    public static byte[] compress(byte[] in) {
+    private static byte[] compress(byte[] in) {
         try {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             DeflaterOutputStream defl = new DeflaterOutputStream(out);
@@ -125,7 +94,7 @@ public class MeasurementControllerServices {
         }
     }
 
-    public static byte[] decompress(byte[] in) {
+    private static byte[] decompress(byte[] in) {
         try {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             InflaterOutputStream infl = new InflaterOutputStream(out);
