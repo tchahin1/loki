@@ -58,7 +58,7 @@ public class MeasurementService {
         measurementDao.closeCurrentSessionwithTransaction();
     }
 
-    public MeasurementDao userDao() {
+    public MeasurementDao measurementDao() {
         return measurementDao;
     }
 }

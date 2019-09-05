@@ -65,7 +65,7 @@ public class PlaceOfMeasurementService {
         placeOfMeasurementDao.closeCurrentSessionwithTransaction();
     }
 
-    public PlaceOfMeasurementDao userDao() {
+    public PlaceOfMeasurementDao placeOfMeasurementDao() {
         return placeOfMeasurementDao;
     }
 }

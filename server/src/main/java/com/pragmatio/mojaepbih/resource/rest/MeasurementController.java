@@ -6,6 +6,7 @@ import com.pragmatio.mojaepbih.hibernate.entity.User;
 import com.pragmatio.mojaepbih.hibernate.services.MeasurementService;
 import com.pragmatio.mojaepbih.hibernate.services.PlaceOfMeasurementService;
 import com.pragmatio.mojaepbih.hibernate.services.UserService;
+import com.pragmatio.mojaepbih.resource.controllerServices.ImageService;
 import com.pragmatio.mojaepbih.resource.dtos.MeasurementDto;
 
 import javax.ws.rs.Consumes;
@@ -20,6 +21,7 @@ public class MeasurementController {
     MeasurementService measurementService = new MeasurementService();
     UserService userService = new UserService();
     PlaceOfMeasurementService placeOfMeasurementService = new PlaceOfMeasurementService();
+    ImageService imageService = new ImageService();
 
     @POST
     @Path(value = "/save")
@@ -29,16 +31,17 @@ public class MeasurementController {
         return this.saveMeasurement(measurementDto);
     }
 
-    Response saveMeasurement(MeasurementDto measurementDto) {
+    private Response saveMeasurement(MeasurementDto measurementDto) {
         Measurement alreadyInDb = this.measurementService.findByPlaceId(measurementDto.getMeasurementPlace());
         if(alreadyInDb == null) {
             User user = userService.findByUsername(measurementDto.getUsername());
             if(user == null) return Response.status(400).entity("User does not exist!").build();
             PlaceOfMeasurement placeOfMeasurement = placeOfMeasurementService.findById(measurementDto.getMeasurementPlace());
             if(placeOfMeasurement == null) return Response.status(400).entity("Measurement place does not exist!").build();
+            String image = this.imageService.printDataToImage(measurementDto.getPhoto(), measurementDto.getLargeTariff(), measurementDto.getSmallTariff());
             Measurement newMeasurement = new Measurement(measurementDto.getLargeTariff(),
                     measurementDto.getSmallTariff(), measurementDto.getNote(),
-                    measurementDto.getPhoto(), user, placeOfMeasurement);
+                    image, user, placeOfMeasurement);
             this.measurementService.persist(newMeasurement);
             return Response.ok().entity("Successfully added new measurement for this place!").build();
         } else {
