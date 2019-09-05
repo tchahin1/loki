@@ -5,7 +5,9 @@ import {
   TouchableOpacity,
   View,
   ActivityIndicator,
+  Alert,
 } from 'react-native';
+import { Notifications, Permissions } from 'expo';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { Header } from 'react-native-elements/src/index';
@@ -26,6 +28,7 @@ import NotificationsModal from '../../components/helpers/NotificationsModal';
 import logoutUser from '../account/AccountActions';
 import { initializePlaceOfMeasurementModal } from '../../components/helpers/PlaceOfMeasurementModalActions';
 import { initializeElectricMeter } from '../electric-meter/ElectricMeterActions';
+import notificationRecieved from './HomeActions';
 
 const styles = createStyles();
 
@@ -37,9 +40,12 @@ class HomeScreen extends React.Component {
     receivedTextFromServer: PropTypes.func.isRequired,
     navigation: PropTypes.shape({}).isRequired,
     user: PropTypes.string.isRequired,
+    username: PropTypes.string.isRequired,
     LogoutUser: PropTypes.func.isRequired,
     InitializePlaceOfMeasurementModal: PropTypes.func.isRequired,
     InitializeElectricMeter: PropTypes.func.isRequired,
+    notification: PropTypes.bool.isRequired,
+    NotificationRecieved: PropTypes.func.isRequired,
   };
 
   constructor(props) {
@@ -56,12 +62,22 @@ class HomeScreen extends React.Component {
     getToken().then(token => this.setState({ token }, () => this.fetchServerText()));
   }
 
+  componentDidMount() {
+    this.registerForPushNotificationsAsync();
+
+    this.notificationSubscription = Notifications.addListener(this.handleNotification);
+  }
+
   componentWillReceiveProps(nextProps) {
     const { navigation } = this.props;
 
     if (nextProps.user === '') {
       onSignOut().then(navigation.navigate('SignedOut'));
     }
+  }
+
+  componentWillUnmount() {
+    this.notificationSubscription.remove();
   }
 
   onSignOutPressed = () => {
@@ -102,18 +118,80 @@ class HomeScreen extends React.Component {
   };
 
   openMenu = (option) => {
-    const { navigation, InitializeElectricMeter } = this.props;
+    const { navigation, InitializeElectricMeter, notification } = this.props;
 
     switch (option.key) {
       case 'ElectricMeter':
-        InitializeElectricMeter();
+        if (notification === false) {
+          Alert.alert(
+            'NO NOTIFICATION RECIEVED!',
+            'You can\'t access this feature until you recieve a notification from the provider!',
+            [
+              { text: 'OK', onPress: () => console.log('') },
+            ],
+            { cancelable: false },
+          );
+        } else {
+          InitializeElectricMeter();
+          navigation.navigate(option.key);
+        }
         break;
       default:
-        console.log('');
+        navigation.navigate(option.key);
+    }
+  }
+
+  registerForPushNotificationsAsync = async () => {
+    const { username, user } = this.props;
+    const { status: existingStatus } = await Permissions.getAsync(
+      Permissions.NOTIFICATIONS,
+    );
+    let finalStatus = existingStatus;
+
+    // only ask if permissions have not already been determined, because
+    // iOS won't necessarily prompt the user a second time.
+    if (existingStatus !== 'granted') {
+      // Android remote notification permissions are granted during the app
+      // install, so this will only ask on iOS
+      const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+      finalStatus = status;
     }
 
-    navigation.navigate(option.key);
+    // Stop here if the user did not grant permissions
+    if (finalStatus !== 'granted') {
+      return;
+    }
+
+    // Get the token that uniquely identifies this device
+    const pushToken = await Notifications.getExpoPushTokenAsync();
+
+    // POST the token to your backend server from where you
+    // can retrieve it to send push notifications.
+    fetch(`${api}/notifications/push_user`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        privateKey: user,
+      },
+      body: JSON.stringify({
+        token: pushToken,
+        username,
+      }),
+    }).then((response) => {
+      if (response.ok) {
+        // console.log(response);
+      } else {
+        // console.log(response);
+      }
+    });
   }
+
+  handleNotification = () => {
+    const { NotificationRecieved } = this.props;
+
+    NotificationRecieved();
+  };
 
   render() {
     const { serverText } = this.props;
@@ -173,6 +251,8 @@ class HomeScreen extends React.Component {
 const mapStateToProps = state => ({
   serverText: state.serverText,
   user: state.signIn.user,
+  username: state.signIn.id,
+  notification: state.home.notification,
 });
 
 const mapDispatchToProps = dispatch => (
@@ -183,6 +263,7 @@ const mapDispatchToProps = dispatch => (
     LogoutUser: logoutUser,
     InitializePlaceOfMeasurementModal: initializePlaceOfMeasurementModal,
     InitializeElectricMeter: initializeElectricMeter,
+    NotificationRecieved: notificationRecieved,
   }, dispatch)
 );
 
