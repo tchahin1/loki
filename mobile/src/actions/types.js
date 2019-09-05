@@ -56,3 +56,4 @@ export const RESET_FR_STATUS = 'reset_fr_status';
 
 // home part
 export const NOTIFICATION_RECIEVED = 'notification_received';
+export const RESET_NOTIFICATION = 'reset_notification';
