@@ -6,6 +6,7 @@ import SignUpReducer from '../features/sign-up/SignUpReducer';
 import ElectricMeterReducer from '../features/electric-meter/ElectricMeterReducer';
 import PlaceOfMeasurementModal from '../components/helpers/PlaceOfMeasurementModalReducer';
 import FailureReportReducer from '../features/failure-report/FailureReportReducer';
+import HomeReducer from '../features/home/HomeReducer';
 
 
 const changeServerText = text => ({
@@ -37,4 +38,5 @@ export default combineReducers({
   electricMeter: ElectricMeterReducer,
   measurementPlaceModal: PlaceOfMeasurementModal,
   failureReport: FailureReportReducer,
+  home: HomeReducer,
 });
