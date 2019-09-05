@@ -3,6 +3,7 @@ package com.pragmatio.mojaepbih.util;
 
 import java.util.Properties;
 
+import com.pragmatio.mojaepbih.hibernate.entity.Failure;
 import com.pragmatio.mojaepbih.hibernate.entity.Measurement;
 import com.pragmatio.mojaepbih.hibernate.entity.Notification;
 import com.pragmatio.mojaepbih.hibernate.entity.PlaceOfMeasurement;
@@ -34,7 +35,7 @@ public class HibernateUtil {
                 configuration.addAnnotatedClass(User.class);
                 configuration.addAnnotatedClass(Measurement.class);
                 configuration.addAnnotatedClass(PlaceOfMeasurement.class);
-                configuration.addAnnotatedClass(Notification.class);
+                configuration.addAnnotatedClass(Failure.class);
                 ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
                         .applySettings(configuration.getProperties()).build();
                 sessionFactory = configuration.buildSessionFactory(serviceRegistry);

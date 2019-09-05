@@ -4,8 +4,9 @@ import SignInReducer from '../features/sign-in/SignInReducer';
 import AccountReducer from '../features/account/AccountReducer';
 import SignUpReducer from '../features/sign-up/SignUpReducer';
 import ElectricMeterReducer from '../features/electric-meter/ElectricMeterReducer';
-import PlaceOfMeasurementModalReducer from '../components/helpers/PlaceOfMeasurementModalReducer';
-import HomeReducer from '../features/home/HomeReducer';
+import PlaceOfMeasurementModal from '../components/helpers/PlaceOfMeasurementModalReducer';
+import FailureReportReducer from '../features/failure-report/FailureReportReducer';
+
 
 const changeServerText = text => ({
   current: text,
@@ -34,6 +35,6 @@ export default combineReducers({
   account: AccountReducer,
   signUp: SignUpReducer,
   electricMeter: ElectricMeterReducer,
-  measurementPlaceModal: PlaceOfMeasurementModalReducer,
-  home: HomeReducer,
+  measurementPlaceModal: PlaceOfMeasurementModal,
+  failureReport: FailureReportReducer,
 });
