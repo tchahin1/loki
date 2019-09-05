@@ -30,8 +30,6 @@ import { initializeElectricMeter } from '../electric-meter/ElectricMeterActions'
 
 const styles = createStyles();
 
-// const PUSH_ENDPOINT = 'https://your-server.com/users/push-token';
-
 class HomeScreen extends React.Component {
   static propTypes = {
     serverText: PropTypes.shape({}).isRequired,
@@ -160,12 +158,6 @@ class HomeScreen extends React.Component {
         token: pushToken,
         username,
       }),
-    }).then((response) => {
-      if (response.ok) {
-        // console.log(response);
-      } else {
-        // console.log(response);
-      }
     });
   }
 
