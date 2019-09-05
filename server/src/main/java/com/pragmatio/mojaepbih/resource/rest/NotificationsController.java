@@ -51,7 +51,7 @@ public class NotificationsController {
         if(alreadyInDb == null) {
             User user = userService.findByUsername(userNotificationDto.getUsername());
             if(user == null) return Response.status(400).entity("User does not exist!").build();
-            String existingToken = getDeviceTokenFromUsername(user.getUsername());
+            String existingToken = this.gcmService.getDeviceTokenFromUsername(user.getUsername());
             if(!(existingToken.equals("")) && !(existingToken.equals(userNotificationDto.getToken()))) {
                 Notification notification = notificationService.findByUserId(user.getId());
                 notification.setDeviceToken(userNotificationDto.getToken());

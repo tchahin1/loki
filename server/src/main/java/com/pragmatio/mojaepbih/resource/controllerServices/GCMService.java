@@ -75,7 +75,7 @@ public class GCMService {
         else return Response.status(400).entity("Something went wrong!").build();
     }
 
-    private String getDeviceTokenFromUsername(String username){
+    public String getDeviceTokenFromUsername(String username){
         String token = "";
         User user = userService.findByUsername(username);
         if(user != null) {
