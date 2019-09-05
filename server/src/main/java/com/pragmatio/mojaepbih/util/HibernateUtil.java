@@ -36,6 +36,7 @@ public class HibernateUtil {
                 configuration.addAnnotatedClass(Measurement.class);
                 configuration.addAnnotatedClass(PlaceOfMeasurement.class);
                 configuration.addAnnotatedClass(Failure.class);
+                configuration.addAnnotatedClass(Notification.class);
                 ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
                         .applySettings(configuration.getProperties()).build();
                 sessionFactory = configuration.buildSessionFactory(serviceRegistry);
