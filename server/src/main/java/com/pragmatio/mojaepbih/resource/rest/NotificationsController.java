@@ -57,8 +57,8 @@ public class NotificationsController {
         String token = this.getDeviceTokenFromUsername(sendNotificationDto.getUsername());
 
         json.put("to", token.trim());
-        json.put("title", "ŠOKANTNO!!!"); // Notification title
-        json.put("body", "Osvojili ste milion maraka xD"); // Notification
+        json.put("title", "test"); // Notification title
+        json.put("body", "test"); // Notification
         json.put("sound", "default");
         try {
             OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
