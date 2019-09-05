@@ -12,7 +12,7 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 import { Icon } from 'react-native-elements/src/index';
 import NotesModal from './NotesModal';
-import ScreenName from '../../navigation/ScreenName';
+import Screen from '../../navigation/ScreenName';
 import Colors from '../../assets/colors/AppColorsEnum';
 import createStyles from './MetricLocationData.styles';
 import {
@@ -141,7 +141,7 @@ class MetricLocationData extends React.Component {
         'NO NOTIFICATION RECIEVED!',
         'You can\'t access this feature until you recieve a notification from the provider!',
         [
-          { text: 'OK', onPress: () => navigation.navigate(ScreenName.HOME) },
+          { text: 'OK', onPress: () => navigation.navigate(Screen.HOME) },
         ],
         { cancelable: false },
       );
