@@ -37,6 +37,10 @@ const saveMeasurementFailed = (dispatch, response) => {
   });
 };
 
+const resetNotification = (dispatch) => {
+  dispatch({ type: types.RESET_NOTIFICATION });
+};
+
 export const saveMeasurement = ({
   largeTariff, smallTariff, currentPhoto, note, currentPlace, username, token,
 }) => (dispatch) => {
@@ -60,6 +64,7 @@ export const saveMeasurement = ({
   }).then((response) => {
     if (response.ok) {
       saveMeasurementSuccess(dispatch);
+      resetNotification(dispatch);
     } else {
       saveMeasurementFailed(dispatch, response);
     }

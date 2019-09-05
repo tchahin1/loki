@@ -12,7 +12,7 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 import { Icon } from 'react-native-elements/src/index';
 import NotesModal from './NotesModal';
-import Screen from '../../navigation/ScreenName';
+import ScreenName from '../../navigation/ScreenName';
 import Colors from '../../assets/colors/AppColorsEnum';
 import createStyles from './MetricLocationData.styles';
 import {
@@ -49,6 +49,7 @@ class MetricLocationData extends React.Component {
     ClearInfoText: PropTypes.func.isRequired,
     ClearNote: PropTypes.func.isRequired,
     InitializeElectricMeter: PropTypes.func.isRequired,
+    notification: PropTypes.bool.isRequired,
   };
 
   static defaultProps = {
@@ -127,12 +128,24 @@ class MetricLocationData extends React.Component {
 
   saveData = () => {
     const {
-      largeTariff, smallTariff, currentPhoto, note, currentPlace, username, token, SaveMeasurement,
+      largeTariff, smallTariff, currentPhoto, note, currentPlace, username,
+      token, SaveMeasurement, notification, navigation,
     } = this.props;
 
-    SaveMeasurement({
-      largeTariff, smallTariff, currentPhoto, note, currentPlace, username, token,
-    });
+    if (notification) {
+      SaveMeasurement({
+        largeTariff, smallTariff, currentPhoto, note, currentPlace, username, token,
+      });
+    } else {
+      Alert.alert(
+        'NO NOTIFICATION RECIEVED!',
+        'You can\'t access this feature until you recieve a notification from the provider!',
+        [
+          { text: 'OK', onPress: () => navigation.navigate(ScreenName.HOME) },
+        ],
+        { cancelable: false },
+      );
+    }
   };
 
   saveNote = (note) => {
@@ -290,6 +303,7 @@ const mapStateToProps = state => ({
   note: state.electricMeter.note,
   currentPlace: state.electricMeter.selectedPlace,
   username: state.signIn.id,
+  notification: state.home.notification,
   token: state.signIn.user,
   infoText: state.electricMeter.infoText,
   places: _.map(state.measurementPlaceModal.places, val => ({ ...val })),

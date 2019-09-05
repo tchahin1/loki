@@ -43,3 +43,7 @@ export const FETCH_PLACES_SUCCESS = 'fetch_places_success';
 export const FETCH_PLACES_FAILED = 'fetch_places_failed';
 export const CHANGE_MADE_RESET = 'change_made_reset';
 export const INITIALIZE_ELECTRIC_METER = 'initialize_electric_meter';
+
+// home part
+export const NOTIFICATION_RECIEVED = 'notification_recieved';
+export const RESET_NOTIFICATION = 'reset_notification';
