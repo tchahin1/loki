@@ -88,11 +88,13 @@ class MetricLocationData extends React.Component {
     const { InitializeElectricMeter, places } = this.props;
     const { previousCamera } = this.state;
 
-    if (places.length !== 0 && previousCamera === false) {
+    if (places.length !== 0 && !previousCamera) {
       InitializeElectricMeter();
     }
 
-    if (previousCamera === true) this.setState({ previousCamera: !previousCamera });
+    if (previousCamera) {
+      this.setState({ previousCamera: !previousCamera });
+    }
   }
 
   onLargeTariffChanged = (text) => {
@@ -172,10 +174,10 @@ class MetricLocationData extends React.Component {
 
     this.setState({ previousCamera: true });
 
-    navigation.navigate('Camera',
+    navigation.navigate(Screen.CAMERA,
       {
         savePhoto: this.savePhoto,
-        onBackButtonPressScreen: 'ElectricMeter',
+        onBackButtonPressScreen: Screen.ELECTRIC_METER,
       });
   }
 

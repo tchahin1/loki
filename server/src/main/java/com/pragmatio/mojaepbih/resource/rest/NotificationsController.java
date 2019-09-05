@@ -4,6 +4,7 @@ import com.pragmatio.mojaepbih.hibernate.entity.Notification;
 import com.pragmatio.mojaepbih.hibernate.entity.User;
 import com.pragmatio.mojaepbih.hibernate.services.NotificationService;
 import com.pragmatio.mojaepbih.hibernate.services.UserService;
+import com.pragmatio.mojaepbih.resource.controllerServices.GCMService;
 import com.pragmatio.mojaepbih.resource.dtos.SendNotificationDto;
 import com.pragmatio.mojaepbih.resource.dtos.UserNotificationDto;
 import org.json.JSONException;
@@ -26,62 +27,14 @@ import java.net.URL;
 public class NotificationsController {
     NotificationService notificationService = new NotificationService();
     UserService userService = new UserService();
+    GCMService gcmService = new GCMService(notificationService, userService);
 
     @POST
     @Path(value = "/send_notification")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response sendNotification(SendNotificationDto sendNotificationDto) throws IOException, JSONException {
-        return this.sendNotificationToUser(sendNotificationDto);
-    }
-
-    Response sendNotificationToUser(SendNotificationDto sendNotificationDto) throws IOException, JSONException {
-        final String API_URL = "https://exp.host/--/api/v2/push/send";
-
-        String result = "";
-        URL url = new URL(API_URL);
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-
-        conn.setUseCaches(false);
-        conn.setDoInput(true);
-        conn.setDoOutput(true);
-
-        conn.setRequestMethod("POST");
-        conn.setRequestProperty("Content-Type", "application/json");
-        conn.setRequestProperty("Accept", "application/json");
-        conn.setRequestProperty("Accept-Encoding", "application/gzip");
-        conn.setRequestProperty("Host", "exp.host");
-
-        JSONObject json = new JSONObject();
-
-        String token = this.getDeviceTokenFromUsername(sendNotificationDto.getUsername());
-
-        json.put("to", token.trim());
-        json.put("title", "ŠOKANTNO!!!"); // Notification title
-        json.put("body", "Osvojili ste milion maraka xD"); // Notification
-        json.put("sound", "default");
-        try {
-            OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
-            wr.write(json.toString());
-            wr.flush();
-
-            BufferedReader br = new BufferedReader(new InputStreamReader(
-                    (conn.getInputStream())));
-
-            String output;
-            System.out.println("Output from Server .... \n");
-            while ((output = br.readLine()) != null) {
-                System.out.println(output);
-            }
-            result = "OK";
-        } catch (Exception e) {
-            e.printStackTrace();
-            result = "NOT OKAY";
-        }
-        System.out.println("GCM Notification is sent successfully");
-
-        if(result.equals("OK")) return Response.ok().entity("").build();
-        else return Response.status(400).entity("Something went wrong!").build();
+        return this.gcmService.sendNotificationToUser(sendNotificationDto);
     }
 
     @POST
@@ -113,15 +66,5 @@ public class NotificationsController {
         } else {
             return Response.status(400).entity("Something went wrong!").build();
         }
-    }
-
-    private String getDeviceTokenFromUsername(String username){
-        String token = "";
-        User user = userService.findByUsername(username);
-        if(user != null) {
-            Notification notification = notificationService.findByUserId(user.getId());
-            if(notification != null) token = notification.getDeviceToken();
-        }
-        return token;
     }
 }

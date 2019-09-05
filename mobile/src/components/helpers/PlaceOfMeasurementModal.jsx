@@ -19,6 +19,7 @@ import {
 } from './PlaceOfMeasurementModalActions';
 
 const styles = createStyles();
+const OKStatus = 'OK';
 
 class PlaceOfMeasurementModal extends React.Component {
   static propTypes = {
@@ -50,7 +51,7 @@ class PlaceOfMeasurementModal extends React.Component {
   componentWillMount() {
     const { InitializePlaceOfMeasurementModal, status } = this.props;
 
-    if (status === 'OK') {
+    if (status === OKStatus) {
       InitializePlaceOfMeasurementModal();
     }
   }
@@ -62,7 +63,7 @@ class PlaceOfMeasurementModal extends React.Component {
       FetchMeasurementPlaces, username, token,
     } = this.props;
 
-    if (status === 'OK') {
+    if (status === OKStatus) {
       InitializePlaceOfMeasurementModal();
       FetchMeasurementPlaces({ username, token });
     }

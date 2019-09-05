@@ -20,6 +20,7 @@ import {
 } from '../../actions/ServerTextActions';
 import ServerTextEnum from '../../assets/enum/ServerTextEnum';
 import MainMenuOptions from '../../assets/enum/MainMenuOptions';
+import Screen from '../../navigation/ScreenName';
 import Colors from '../../assets/colors/AppColorsEnum';
 import { getToken, onSignOut } from '../../../Auth';
 import PlaceOfMeasurementModal from '../../components/helpers/PlaceOfMeasurementModal';
@@ -31,8 +32,6 @@ import { initializeElectricMeter } from '../electric-meter/ElectricMeterActions'
 import notificationRecieved from './HomeActions';
 
 const styles = createStyles();
-
-// const PUSH_ENDPOINT = 'https://your-server.com/users/push-token';
 
 class HomeScreen extends React.Component {
   static propTypes = {
@@ -74,7 +73,7 @@ class HomeScreen extends React.Component {
     const { navigation } = this.props;
 
     if (nextProps.user === '') {
-      onSignOut().then(navigation.navigate('SignedOut'));
+      onSignOut().then(navigation.navigate(Screen.SIGN_OUT));
     }
   }
 
@@ -180,12 +179,6 @@ class HomeScreen extends React.Component {
         token: pushToken,
         username,
       }),
-    }).then((response) => {
-      if (response.ok) {
-        // console.log(response);
-      } else {
-        // console.log(response);
-      }
     });
   }
 
