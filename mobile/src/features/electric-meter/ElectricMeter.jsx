@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   Keyboard,
+  ActivityIndicator,
 } from 'react-native';
 import _ from 'lodash';
 import { Header, Icon } from 'react-native-elements/src/index';
@@ -30,6 +31,7 @@ class ElectricMeterScreen extends React.Component {
     navigation: PropTypes.shape({}).isRequired,
     user: PropTypes.string.isRequired,
     LogoutUser: PropTypes.func.isRequired,
+    loading: PropTypes.bool.isRequired,
     username: PropTypes.string.isRequired,
     FetchMeasurementPlaces: PropTypes.func.isRequired,
     places: PropTypes.instanceOf(Array).isRequired,
@@ -106,6 +108,19 @@ class ElectricMeterScreen extends React.Component {
     this.setState({ keyboardDidShow: false, flexStyle: 2 / 3 });
   };
 
+  isLoading = () => {
+    const { loading } = this.props;
+
+    if (loading) {
+      return (
+        <View style={styles.loading} pointerEvents="none">
+          <ActivityIndicator size={60} color="white" />
+        </View>
+      );
+    }
+    return null;
+  }
+
   render() {
     const { navigation, places, selectedPlace } = this.props;
     const {
@@ -175,6 +190,7 @@ class ElectricMeterScreen extends React.Component {
           onRequestClose={() => {}}
           toggle={() => this.setState({ openPOM: false })}
         />
+        {this.isLoading()}
       </KeyboardAvoidingView>
     );
   }
@@ -185,6 +201,7 @@ const mapStateToProps = state => ({
   username: state.signIn.id,
   places: _.map(state.measurementPlaceModal.places, val => ({ ...val })),
   selectedPlace: state.electricMeter.selectedPlace,
+  loading: state.electricMeter.loading,
 });
 
 export default connect(mapStateToProps,

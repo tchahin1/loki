@@ -7,6 +7,7 @@ const INITIAL_STATE = {
   selectedPlace: '',
   note: '',
   infoText: '',
+  loading: false,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -21,6 +22,9 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, note: action.payload };
     case types.PLACE_CHANGED:
       return { ...state, selectedPlace: action.payload };
+    case types.SAVE_MEASUREMENT: {
+      return { ...state, loading: true };
+    }
     case types.SAVE_MEASUREMENT_SUCCESS:
       return {
         ...state, ...INITIAL_STATE, infoText: 'Brojilo uspješno očitano!', selectedPlace: state.selectedPlace,

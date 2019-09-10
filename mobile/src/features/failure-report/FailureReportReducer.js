@@ -5,6 +5,7 @@ const INITIAL_STATE = {
   photo: null,
   anonymus: 0,
   status: '',
+  loading: false,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -16,11 +17,11 @@ export default (state = INITIAL_STATE, action) => {
     case types.SLIDER_VALUE_CHANGED:
       return { ...state, anonymus: action.payload };
     case types.SEND_FAILURE_REPORT:
-      return { ...state, status: '' };
+      return { ...state, status: '', loading: true };
     case types.SEND_FR_SUCCESS:
       return { ...state, ...INITIAL_STATE, status: 'OK' };
     case types.SEND_FR_FAIL:
-      return { ...state, status: 'ERROR' };
+      return { ...state, status: 'ERROR', loading: false };
     case types.RESET_FR_STATUS:
       return { ...state, status: '' };
     case types.INITIALIZE_FAILURE_REPORT:

@@ -42,10 +42,14 @@ const styles = {
     width: wp('97%'),
     borderWidth: 1,
     marginHorizontal: wp('1.5%'),
+    height: hp('97%'),
   },
   txtInput: {
     fontSize: 19,
     marginHorizontal: wp('1%'),
+    textAlignVertical: 'top',
+    width: wp('100%'),
+    height: hp('100%'),
   },
   btnsWrapper: {
     flexDirection: 'row',
@@ -78,6 +82,16 @@ const styles = {
   btnTxt: {
     fontSize: 17,
     fontWeight: 'bold',
+  },
+  loading: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(52, 52, 52, 0.6)',
   },
 };
 
