@@ -44,7 +44,7 @@ const resetNotification = (dispatch) => {
 export const saveMeasurement = ({
   largeTariff, smallTariff, currentPhoto, note, currentPlace, username, token,
 }) => (dispatch) => {
-  dispatch({ type: 'nothing' });
+  dispatch({ type: types.SAVE_MEASUREMENT });
 
   fetch(`${api}/measurement/save`, {
     method: 'POST',

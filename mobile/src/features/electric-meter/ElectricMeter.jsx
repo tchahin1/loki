@@ -16,6 +16,7 @@ import NotificationsButton from '../../components/helpers/NotificationsButton';
 import NotificationsModal from '../../components/helpers/NotificationsModal';
 import PlaceOfMeasurementModal from '../../components/helpers/PlaceOfMeasurementModal';
 import MetricLocationData from '../../components/electric-meter/MetricLocationData';
+import LargeActivityIndicator from '../../components/large-activity-indicator/LargeActivityIndicator';
 import { onSignOut } from '../../../Auth';
 import Colors from '../../assets/colors/AppColorsEnum';
 import createStyles from './ElectricMeter.styles';
@@ -30,6 +31,7 @@ class ElectricMeterScreen extends React.Component {
     navigation: PropTypes.shape({}).isRequired,
     user: PropTypes.string.isRequired,
     LogoutUser: PropTypes.func.isRequired,
+    loading: PropTypes.bool.isRequired,
     username: PropTypes.string.isRequired,
     FetchMeasurementPlaces: PropTypes.func.isRequired,
     places: PropTypes.instanceOf(Array).isRequired,
@@ -106,6 +108,17 @@ class ElectricMeterScreen extends React.Component {
     this.setState({ keyboardDidShow: false, flexStyle: 2 / 3 });
   };
 
+  isLoading = () => {
+    const { loading } = this.props;
+
+    if (loading) {
+      return (
+        <LargeActivityIndicator />
+      );
+    }
+    return null;
+  }
+
   render() {
     const { navigation, places, selectedPlace } = this.props;
     const {
@@ -175,6 +188,7 @@ class ElectricMeterScreen extends React.Component {
           onRequestClose={() => {}}
           toggle={() => this.setState({ openPOM: false })}
         />
+        {this.isLoading()}
       </KeyboardAvoidingView>
     );
   }
@@ -185,6 +199,7 @@ const mapStateToProps = state => ({
   username: state.signIn.id,
   places: _.map(state.measurementPlaceModal.places, val => ({ ...val })),
   selectedPlace: state.electricMeter.selectedPlace,
+  loading: state.electricMeter.loading,
 });
 
 export default connect(mapStateToProps,

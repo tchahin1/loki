@@ -15,6 +15,7 @@ import PropTypes from 'prop-types';
 import MenuButton from '../../components/helpers/MenuButton';
 import NotificationsButton from '../../components/helpers/NotificationsButton';
 import NotificationsModal from '../../components/helpers/NotificationsModal';
+import LargeActivityIndicator from '../../components/large-activity-indicator/LargeActivityIndicator';
 import { onSignOut } from '../../../Auth';
 import Colors from '../../assets/colors/AppColorsEnum';
 import createStyles from './FailureReport.styles';
@@ -34,6 +35,7 @@ class FailureReportScreen extends React.Component {
     anonymus: PropTypes.number.isRequired,
     token: PropTypes.string.isRequired,
     username: PropTypes.string.isRequired,
+    loading: PropTypes.bool.isRequired,
     status: PropTypes.string.isRequired,
     LogoutUser: PropTypes.func.isRequired,
     NoteChanged: PropTypes.func.isRequired,
@@ -204,6 +206,17 @@ class FailureReportScreen extends React.Component {
     this.setState({ sendBtnDisabledOpacity: 0.4 });
   }
 
+  isLoading = () => {
+    const { loading } = this.props;
+
+    if (loading) {
+      return (
+        <LargeActivityIndicator />
+      );
+    }
+    return null;
+  }
+
   render() {
     const {
       navigation, currentPhoto, failure, anonymus,
@@ -283,6 +296,7 @@ class FailureReportScreen extends React.Component {
           onRequestClose={() => this.setState({ openNotMod: false })}
           onSignOutPress={this.onSignOutPressed}
         />
+        {this.isLoading()}
       </KeyboardAvoidingView>
     );
   }
@@ -295,6 +309,7 @@ const mapStateToProps = state => ({
   currentPhoto: state.failureReport.photo,
   anonymus: state.failureReport.anonymus,
   status: state.failureReport.status,
+  loading: state.failureReport.loading,
 });
 
 export default connect(mapStateToProps, {

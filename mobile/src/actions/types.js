@@ -25,6 +25,7 @@ export const SMALL_TARIFF_CHANGED = 'small_tariff_changed';
 export const PHOTO_CHANGED = 'photo_changed';
 export const NOTE_CHANGED = 'note_changed';
 export const PLACE_CHANGED = 'place_changed';
+export const SAVE_MEASUREMENT = 'save_measurement';
 export const SAVE_MEASUREMENT_SUCCESS = 'save_measurement_success';
 export const SAVE_MEASUREMENT_FAILED = 'save_measurement_failed';
 export const CLEAR_INFO_TEXT = 'clear_info_text';

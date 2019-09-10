@@ -42,10 +42,14 @@ const styles = {
     width: wp('97%'),
     borderWidth: 1,
     marginHorizontal: wp('1.5%'),
+    height: hp('97%'),
   },
   txtInput: {
     fontSize: 19,
     marginHorizontal: wp('1%'),
+    textAlignVertical: 'top',
+    width: wp('100%'),
+    height: hp('100%'),
   },
   btnsWrapper: {
     flexDirection: 'row',

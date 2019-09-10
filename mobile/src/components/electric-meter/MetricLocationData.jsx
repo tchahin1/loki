@@ -27,6 +27,7 @@ import {
 } from '../../features/electric-meter/ElectricMeterActions';
 
 const styles = createStyles();
+const statusOK = 'Brojilo uspješno očitano!';
 
 class MetricLocationData extends React.Component {
   static propTypes = {
@@ -75,11 +76,22 @@ class MetricLocationData extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { ClearInfoText } = this.props;
+    const { ClearInfoText, navigation } = this.props;
 
     if (nextProps.infoText !== '') {
       Keyboard.dismiss();
-      Alert.alert('INFO', nextProps.infoText);
+      if (nextProps.infoText === statusOK) {
+        Alert.alert(
+          'INFO',
+          nextProps.infoText,
+          [
+            { text: 'OK', onPress: () => navigation.navigate(Screen.HOME) },
+          ],
+          { cancelable: false },
+        );
+      } else {
+        Alert.alert('INFO', nextProps.infoText);
+      }
       ClearInfoText();
     }
   }
