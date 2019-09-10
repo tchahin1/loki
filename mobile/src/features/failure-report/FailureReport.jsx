@@ -9,13 +9,13 @@ import {
   TextInput,
   TouchableOpacity,
   Alert,
-  ActivityIndicator,
 } from 'react-native';
 import { Header, Icon } from 'react-native-elements/src/index';
 import PropTypes from 'prop-types';
 import MenuButton from '../../components/helpers/MenuButton';
 import NotificationsButton from '../../components/helpers/NotificationsButton';
 import NotificationsModal from '../../components/helpers/NotificationsModal';
+import LargeActivityIndicator from '../../components/large-activity-indicator/LargeActivityIndicator';
 import { onSignOut } from '../../../Auth';
 import Colors from '../../assets/colors/AppColorsEnum';
 import createStyles from './FailureReport.styles';
@@ -211,9 +211,7 @@ class FailureReportScreen extends React.Component {
 
     if (loading) {
       return (
-        <View style={styles.loading} pointerEvents="none">
-          <ActivityIndicator size={60} color="white" />
-        </View>
+        <LargeActivityIndicator />
       );
     }
     return null;

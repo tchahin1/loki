@@ -89,7 +89,9 @@ class MetricLocationData extends React.Component {
           ],
           { cancelable: false },
         );
-      } else Alert.alert('INFO', nextProps.infoText);
+      } else {
+        Alert.alert('INFO', nextProps.infoText);
+      }
       ClearInfoText();
     }
   }

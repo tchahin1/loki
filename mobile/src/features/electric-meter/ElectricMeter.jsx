@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   Keyboard,
-  ActivityIndicator,
 } from 'react-native';
 import _ from 'lodash';
 import { Header, Icon } from 'react-native-elements/src/index';
@@ -17,6 +16,7 @@ import NotificationsButton from '../../components/helpers/NotificationsButton';
 import NotificationsModal from '../../components/helpers/NotificationsModal';
 import PlaceOfMeasurementModal from '../../components/helpers/PlaceOfMeasurementModal';
 import MetricLocationData from '../../components/electric-meter/MetricLocationData';
+import LargeActivityIndicator from '../../components/large-activity-indicator/LargeActivityIndicator';
 import { onSignOut } from '../../../Auth';
 import Colors from '../../assets/colors/AppColorsEnum';
 import createStyles from './ElectricMeter.styles';
@@ -113,9 +113,7 @@ class ElectricMeterScreen extends React.Component {
 
     if (loading) {
       return (
-        <View style={styles.loading} pointerEvents="none">
-          <ActivityIndicator size={60} color="white" />
-        </View>
+        <LargeActivityIndicator />
       );
     }
     return null;
