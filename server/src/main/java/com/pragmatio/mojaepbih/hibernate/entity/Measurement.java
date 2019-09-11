@@ -19,6 +19,12 @@ public class Measurement {
     @Column(name = "note")
     private String note;
 
+    @Column(name = "latitude")
+    private Double lat;
+
+    @Column(name = "longitude")
+    private Double lon;
+
     @Lob
     @Column(name = "photo")
     private String photo;
@@ -32,13 +38,16 @@ public class Measurement {
     public Measurement() {
     }
 
-    public Measurement(String highTariff, String lowTariff, String note, String photo, User user, PlaceOfMeasurement placeOfMeasurement) {
+    public Measurement(String highTariff, String lowTariff, String note, String photo, User user, PlaceOfMeasurement placeOfMeasurement,
+                        Double lat, Double lon) {
         this.setHighTariff(highTariff);
         this.setLowTariff(lowTariff);
         this.setNote(note);
         this.setPhoto(photo);
         this.setUser(user);
         this.setPlaceOfMeasurement(placeOfMeasurement);
+        this.setLat(lat);
+        this.setLon(lon);
     }
 
     public int getId() {
@@ -95,5 +104,21 @@ public class Measurement {
 
     public void setPlaceOfMeasurement(PlaceOfMeasurement placeOfMeasurement) {
         this.placeOfMeasurement = placeOfMeasurement;
+    }
+
+    public Double getLat() {
+        return lat;
+    }
+
+    public void setLat(Double lat) {
+        this.lat = lat;
+    }
+
+    public Double getLon() {
+        return lon;
+    }
+
+    public void setLon(Double lon) {
+        this.lon = lon;
     }
 }

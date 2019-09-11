@@ -41,7 +41,7 @@ public class MeasurementController {
             String image = this.imageService.printDataToImage(measurementDto.getPhoto(), measurementDto.getLargeTariff(), measurementDto.getSmallTariff());
             Measurement newMeasurement = new Measurement(measurementDto.getLargeTariff(),
                     measurementDto.getSmallTariff(), measurementDto.getNote(),
-                    image, user, placeOfMeasurement);
+                    image, user, placeOfMeasurement, measurementDto.getLat(), measurementDto.getLon());
             this.measurementService.persist(newMeasurement);
             return Response.ok().entity("Successfully added new measurement for this place!").build();
         } else {
