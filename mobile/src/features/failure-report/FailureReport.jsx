@@ -204,10 +204,6 @@ class FailureReportScreen extends React.Component {
   }
 
   saveData = () => {
-    const {
-      SendFailureReport, currentPhoto, failure, anonymus, token, username, location,
-    } = this.props;
-
     const geoOptions = {
       enableHighAccuracy: true,
       timeOut: 20000,
@@ -215,6 +211,14 @@ class FailureReportScreen extends React.Component {
     };
 
     global.navigator.geolocation.getCurrentPosition(this.geoSuccess, this.geoFailure, geoOptions);
+
+    this.continue();
+  }
+
+  continue = () => {
+    const {
+      SendFailureReport, currentPhoto, failure, anonymus, token, username, location,
+    } = this.props;
 
     if (anonymus === 0) {
       SendFailureReport({
