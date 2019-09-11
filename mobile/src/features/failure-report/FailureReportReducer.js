@@ -22,9 +22,13 @@ export default (state = INITIAL_STATE, action) => {
     case types.SEND_FAILURE_REPORT:
       return { ...state, status: '', loading: true };
     case types.SEND_FR_SUCCESS:
-      return { ...state, ...INITIAL_STATE, status: 'OK' };
+      return {
+        ...state, ...INITIAL_STATE, status: 'OK', location: state.location,
+      };
     case types.SEND_FR_FAIL:
-      return { ...state, status: 'ERROR', loading: false };
+      return {
+        ...state, status: 'ERROR', loading: false, location: state.location,
+      };
     case types.RESET_FR_STATUS:
       return { ...state, status: '' };
     case types.INITIALIZE_FAILURE_REPORT:

@@ -126,11 +126,14 @@ class FailureReportScreen extends React.Component {
   }
 
   setPhotoIconColors() {
-    const { failure, currentPhoto } = this.props;
+    const { failure, currentPhoto, loading } = this.props;
     let cameraColor = Colors.PRIMARY_WHITE;
     let cameraIconColor = 'black';
 
-    if (failure !== '' && currentPhoto !== null) {
+    if (loading) {
+      cameraColor = Colors.PRIMARY_WHITE;
+      cameraIconColor = 'black';
+    } else if (failure !== '' && currentPhoto !== null) {
       cameraColor = Colors.PRIMARY_BLUE;
       cameraIconColor = Colors.PRIMARY_WHITE;
     } else if (failure === '' && currentPhoto !== null) {
@@ -239,7 +242,7 @@ class FailureReportScreen extends React.Component {
 
   render() {
     const {
-      navigation, currentPhoto, failure, anonymus,
+      navigation, failure, anonymus,
     } = this.props;
     const {
       openNotMod,
@@ -302,7 +305,7 @@ class FailureReportScreen extends React.Component {
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.btnSend, { opacity: sendBtnDisabledOpacity }]}
-            disabled={failure === '' && currentPhoto === null}
+            disabled={failure === ''}
             onPress={this.saveData}
           >
             <Text style={styles.btnTxt}>Spremi</Text>
