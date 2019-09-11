@@ -6,6 +6,7 @@ const INITIAL_STATE = {
   anonymus: 0,
   status: '',
   loading: false,
+  location: { lat: null, lon: null },
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -16,6 +17,8 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, note: action.payload };
     case types.SLIDER_VALUE_CHANGED:
       return { ...state, anonymus: action.payload };
+    case types.UPDATE_GPS_LOCATION:
+      return { ...state, location: action.payload };
     case types.SEND_FAILURE_REPORT:
       return { ...state, status: '', loading: true };
     case types.SEND_FR_SUCCESS:

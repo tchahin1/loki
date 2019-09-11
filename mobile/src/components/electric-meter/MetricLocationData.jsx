@@ -23,7 +23,7 @@ import {
   saveMeasurement,
   clearInfoText,
   clearNote,
-  initializeElectricMeter,
+  initializeElectricMeter, updateGPSLocation,
 } from '../../features/electric-meter/ElectricMeterActions';
 
 const styles = createStyles();
@@ -39,6 +39,7 @@ class MetricLocationData extends React.Component {
     currentPhoto: PropTypes.shape({}),
     username: PropTypes.string.isRequired,
     token: PropTypes.string.isRequired,
+    location: PropTypes.shape({}).isRequired,
     infoText: PropTypes.string.isRequired,
     LargeTariffChanged: PropTypes.func.isRequired,
     SmallTariffChanged: PropTypes.func.isRequired,
@@ -50,6 +51,7 @@ class MetricLocationData extends React.Component {
     ClearInfoText: PropTypes.func.isRequired,
     ClearNote: PropTypes.func.isRequired,
     InitializeElectricMeter: PropTypes.func.isRequired,
+    UpdateGPSLocation: PropTypes.func.isRequired,
     notification: PropTypes.bool.isRequired,
   };
 
@@ -71,6 +73,14 @@ class MetricLocationData extends React.Component {
 
   componentDidMount() {
     const { navigation } = this.props;
+
+    const geoOptions = {
+      enableHighAccuracy: true,
+      timeOut: 20000,
+      maximumAge: 60 * 60 * 2,
+    };
+
+    global.navigator.geolocation.getCurrentPosition(this.geoSuccess, this.geoFailure, geoOptions);
 
     navigation.addListener('willFocus', this.load);
   }
@@ -141,12 +151,12 @@ class MetricLocationData extends React.Component {
   saveData = () => {
     const {
       largeTariff, smallTariff, currentPhoto, note, currentPlace, username,
-      token, SaveMeasurement, notification, navigation,
+      token, SaveMeasurement, notification, navigation, location,
     } = this.props;
 
     if (notification) {
       SaveMeasurement({
-        largeTariff, smallTariff, currentPhoto, note, currentPlace, username, token,
+        largeTariff, smallTariff, currentPhoto, note, currentPlace, username, token, location,
       });
     } else {
       Alert.alert(
@@ -173,6 +183,16 @@ class MetricLocationData extends React.Component {
     PhotoChanged(photo);
     navigation.navigate('ElectricMeter');
   };
+
+  geoSuccess = (position) => {
+    const { UpdateGPSLocation } = this.props;
+
+    UpdateGPSLocation({ lat: position.coords.latitude, lon: position.coords.longitude });
+  }
+
+  geoFailure = (err) => {
+    console.log(err);
+  }
 
   clearNote = () => {
     const { ClearNote } = this.props;
@@ -314,6 +334,7 @@ const mapStateToProps = state => ({
   currentPhoto: state.electricMeter.photo,
   note: state.electricMeter.note,
   currentPlace: state.electricMeter.selectedPlace,
+  location: state.failureReport.location,
   username: state.signIn.id,
   notification: state.home.notification,
   token: state.signIn.user,
@@ -331,4 +352,5 @@ export default connect(mapStateToProps,
     ClearInfoText: clearInfoText,
     ClearNote: clearNote,
     InitializeElectricMeter: initializeElectricMeter,
+    UpdateGPSLocation: updateGPSLocation,
   })(MetricLocationData);

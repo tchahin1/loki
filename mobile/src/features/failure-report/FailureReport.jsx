@@ -22,7 +22,7 @@ import createStyles from './FailureReport.styles';
 import logoutUser from '../account/AccountActions';
 import {
   noteChanged, photoChanged, sendFailureReport, sliderValueChanged,
-  initializeFailureReport, resetStatus,
+  initializeFailureReport, resetStatus, updateGPSLocation,
 } from './FailureReportActions';
 
 const styles = createStyles();
@@ -37,6 +37,7 @@ class FailureReportScreen extends React.Component {
     username: PropTypes.string.isRequired,
     loading: PropTypes.bool.isRequired,
     status: PropTypes.string.isRequired,
+    location: PropTypes.shape({}).isRequired,
     LogoutUser: PropTypes.func.isRequired,
     NoteChanged: PropTypes.func.isRequired,
     PhotoChanged: PropTypes.func.isRequired,
@@ -44,6 +45,7 @@ class FailureReportScreen extends React.Component {
     SliderValueChanged: PropTypes.func.isRequired,
     InitializeFailureReport: PropTypes.func.isRequired,
     ResetStatus: PropTypes.func.isRequired,
+    UpdateGPSLocation: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -66,6 +68,14 @@ class FailureReportScreen extends React.Component {
     const { navigation } = this.props;
 
     navigation.addListener('willFocus', this.load);
+
+    const geoOptions = {
+      enableHighAccuracy: true,
+      timeOut: 20000,
+      maximumAge: 60 * 60 * 2,
+    };
+
+    global.navigator.geolocation.getCurrentPosition(this.geoSuccess, this.geoFailure, geoOptions);
 
     this.keyboardDidShowListener = Keyboard.addListener(
       'keyboardDidShow',
@@ -170,6 +180,16 @@ class FailureReportScreen extends React.Component {
     navigation.navigate('FailureReport');
   }
 
+  geoSuccess = (position) => {
+    const { UpdateGPSLocation } = this.props;
+
+    UpdateGPSLocation({ lat: position.coords.latitude, lon: position.coords.longitude });
+  }
+
+  geoFailure = (err) => {
+    console.log(err);
+  }
+
   navigateToCamera = () => {
     const { navigation } = this.props;
 
@@ -190,16 +210,16 @@ class FailureReportScreen extends React.Component {
 
   saveData = () => {
     const {
-      SendFailureReport, currentPhoto, failure, anonymus, token, username,
+      SendFailureReport, currentPhoto, failure, anonymus, token, username, location,
     } = this.props;
 
     if (anonymus === 0) {
       SendFailureReport({
-        currentPhoto, failure, token, username,
+        currentPhoto, failure, token, username, location,
       });
     } else {
       SendFailureReport({
-        currentPhoto, failure, token, username: '',
+        currentPhoto, failure, token, username: '', location,
       });
     }
     Keyboard.dismiss();
@@ -310,6 +330,7 @@ const mapStateToProps = state => ({
   anonymus: state.failureReport.anonymus,
   status: state.failureReport.status,
   loading: state.failureReport.loading,
+  location: state.failureReport.location,
 });
 
 export default connect(mapStateToProps, {
@@ -320,4 +341,5 @@ export default connect(mapStateToProps, {
   SliderValueChanged: sliderValueChanged,
   InitializeFailureReport: initializeFailureReport,
   ResetStatus: resetStatus,
+  UpdateGPSLocation: updateGPSLocation,
 })(FailureReportScreen);

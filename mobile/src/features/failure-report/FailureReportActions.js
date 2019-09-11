@@ -24,6 +24,13 @@ export const sliderValueChanged = value => ({
   payload: value,
 });
 
+export const updateGPSLocation = ({ lat, lon }) => (dispatch) => {
+  dispatch({
+    type: types.UPDATE_GPS_LOCATION,
+    payload: { lat, lon },
+  });
+};
+
 const sendFailureReportSuccess = (dispatch) => {
   dispatch({ type: types.SEND_FR_SUCCESS });
 };
@@ -33,7 +40,7 @@ const sendFailureReportFail = (dispatch) => {
 };
 
 export const sendFailureReport = ({
-  currentPhoto, failure, token, username,
+  currentPhoto, failure, token, username, location,
 }) => (dispatch) => {
   dispatch({ type: types.SEND_FAILURE_REPORT });
 
@@ -51,6 +58,8 @@ export const sendFailureReport = ({
       username,
       photo: base64image,
       description: failure,
+      lat: location.lat,
+      lon: location.lon,
     }),
   }).then((response) => {
     if (response.ok) {

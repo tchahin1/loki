@@ -27,6 +27,13 @@ export const noteChanged = note => ({
   payload: note,
 });
 
+export const updateGPSLocation = ({ lat, lon }) => (dispatch) => {
+  dispatch({
+    type: types.UPDATE_GPS_LOCATION,
+    payload: { lat, lon },
+  });
+};
+
 const saveMeasurementSuccess = (dispatch) => {
   dispatch({ type: types.SAVE_MEASUREMENT_SUCCESS });
 };
@@ -42,7 +49,7 @@ const resetNotification = (dispatch) => {
 };
 
 export const saveMeasurement = ({
-  largeTariff, smallTariff, currentPhoto, note, currentPlace, username, token,
+  largeTariff, smallTariff, currentPhoto, note, currentPlace, username, token, location,
 }) => (dispatch) => {
   dispatch({ type: types.SAVE_MEASUREMENT });
 
@@ -60,6 +67,8 @@ export const saveMeasurement = ({
       photo: currentPhoto.base64,
       note,
       measurementPlace: currentPlace,
+      lat: location.lat,
+      lon: location.lon,
     }),
   }).then((response) => {
     if (response.ok) {
