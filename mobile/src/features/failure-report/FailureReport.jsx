@@ -176,13 +176,19 @@ class FailureReportScreen extends React.Component {
   }
 
   geoSuccess = (position) => {
-    const { UpdateGPSLocation } = this.props;
+    const { UpdateGPSLocation, location } = this.props;
 
-    UpdateGPSLocation({ lat: position.coords.latitude, lon: position.coords.longitude });
+    if (location.lat === null || location.lon === null) {
+      UpdateGPSLocation({ lat: position.coords.latitude, lon: position.coords.longitude });
+    }
+
+    this.continueSaveData(position);
   }
 
   geoFailure = (err) => {
     console.log(err);
+    const position = null;
+    this.continueSaveData(position);
   }
 
   navigateToCamera = () => {
@@ -206,31 +212,11 @@ class FailureReportScreen extends React.Component {
   saveData = () => {
     const geoOptions = {
       enableHighAccuracy: true,
-      timeOut: 20000,
+      timeOut: 1000,
       maximumAge: 60 * 60 * 2,
     };
 
     global.navigator.geolocation.getCurrentPosition(this.geoSuccess, this.geoFailure, geoOptions);
-
-    this.continue();
-  }
-
-  continue = () => {
-    const {
-      SendFailureReport, currentPhoto, failure, anonymus, token, username, location,
-    } = this.props;
-
-    if (anonymus === 0) {
-      SendFailureReport({
-        currentPhoto, failure, token, username, location,
-      });
-    } else {
-      SendFailureReport({
-        currentPhoto, failure, token, username: '', location,
-      });
-    }
-    Keyboard.dismiss();
-    this.setState({ sendBtnDisabledOpacity: 0.4 });
   }
 
   isLoading = () => {
@@ -242,6 +228,30 @@ class FailureReportScreen extends React.Component {
       );
     }
     return null;
+  }
+
+  continueSaveData(position) {
+    const {
+      SendFailureReport, currentPhoto, failure, anonymus, token, username,
+    } = this.props;
+
+    let GPSLocation = null;
+
+    if (position !== null) {
+      GPSLocation = { lat: position.coords.latitude, lon: position.coords.longitude };
+    }
+
+    if (anonymus === 0) {
+      SendFailureReport({
+        currentPhoto, failure, token, username, location: GPSLocation,
+      });
+    } else {
+      SendFailureReport({
+        currentPhoto, failure, token, username: '', location: GPSLocation,
+      });
+    }
+    Keyboard.dismiss();
+    this.setState({ sendBtnDisabledOpacity: 0.4 });
   }
 
   render() {

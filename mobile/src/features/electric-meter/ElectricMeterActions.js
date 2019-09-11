@@ -53,6 +53,14 @@ export const saveMeasurement = ({
 }) => (dispatch) => {
   dispatch({ type: types.SAVE_MEASUREMENT });
 
+  let latitude = null;
+  let longitude = null;
+  if (location !== null) {
+    const { lat, lon } = location;
+    latitude = lat;
+    longitude = lon;
+  }
+
   fetch(`${api}/measurement/save`, {
     method: 'POST',
     headers: {
@@ -67,8 +75,8 @@ export const saveMeasurement = ({
       photo: currentPhoto.base64,
       note,
       measurementPlace: currentPlace,
-      lat: location.lat,
-      lon: location.lon,
+      lat: latitude,
+      lon: longitude,
     }),
   }).then((response) => {
     if (response.ok) {

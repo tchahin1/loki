@@ -45,7 +45,17 @@ export const sendFailureReport = ({
   dispatch({ type: types.SEND_FAILURE_REPORT });
 
   let base64image = null;
-  if (currentPhoto !== null) base64image = currentPhoto.base64;
+  if (currentPhoto !== null) {
+    base64image = currentPhoto.base64;
+  }
+
+  let latitude = null;
+  let longitude = null;
+  if (location !== null) {
+    const { lat, lon } = location;
+    latitude = lat;
+    longitude = lon;
+  }
 
   fetch(`${api}/failure/save`, {
     method: 'POST',
@@ -58,8 +68,8 @@ export const sendFailureReport = ({
       username,
       photo: base64image,
       description: failure,
-      lat: location.lat,
-      lon: location.lon,
+      lat: latitude,
+      lon: longitude,
     }),
   }).then((response) => {
     if (response.ok) {
