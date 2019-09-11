@@ -69,14 +69,6 @@ class FailureReportScreen extends React.Component {
 
     navigation.addListener('willFocus', this.load);
 
-    const geoOptions = {
-      enableHighAccuracy: true,
-      timeOut: 20000,
-      maximumAge: 60 * 60 * 2,
-    };
-
-    global.navigator.geolocation.getCurrentPosition(this.geoSuccess, this.geoFailure, geoOptions);
-
     this.keyboardDidShowListener = Keyboard.addListener(
       'keyboardDidShow',
       this.keyboardDidShow,
@@ -215,6 +207,14 @@ class FailureReportScreen extends React.Component {
     const {
       SendFailureReport, currentPhoto, failure, anonymus, token, username, location,
     } = this.props;
+
+    const geoOptions = {
+      enableHighAccuracy: true,
+      timeOut: 20000,
+      maximumAge: 60 * 60 * 2,
+    };
+
+    global.navigator.geolocation.getCurrentPosition(this.geoSuccess, this.geoFailure, geoOptions);
 
     if (anonymus === 0) {
       SendFailureReport({
