@@ -22,7 +22,7 @@ import createStyles from './FailureReport.styles';
 import logoutUser from '../account/AccountActions';
 import {
   noteChanged, photoChanged, sendFailureReport, sliderValueChanged,
-  initializeFailureReport, resetStatus,
+  initializeFailureReport, resetStatus, updateGPSLocation,
 } from './FailureReportActions';
 
 const styles = createStyles();
@@ -37,6 +37,7 @@ class FailureReportScreen extends React.Component {
     username: PropTypes.string.isRequired,
     loading: PropTypes.bool.isRequired,
     status: PropTypes.string.isRequired,
+    location: PropTypes.shape({}).isRequired,
     LogoutUser: PropTypes.func.isRequired,
     NoteChanged: PropTypes.func.isRequired,
     PhotoChanged: PropTypes.func.isRequired,
@@ -44,6 +45,7 @@ class FailureReportScreen extends React.Component {
     SliderValueChanged: PropTypes.func.isRequired,
     InitializeFailureReport: PropTypes.func.isRequired,
     ResetStatus: PropTypes.func.isRequired,
+    UpdateGPSLocation: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -116,11 +118,14 @@ class FailureReportScreen extends React.Component {
   }
 
   setPhotoIconColors() {
-    const { failure, currentPhoto } = this.props;
+    const { failure, currentPhoto, loading } = this.props;
     let cameraColor = Colors.PRIMARY_WHITE;
     let cameraIconColor = 'black';
 
-    if (failure !== '' && currentPhoto !== null) {
+    if (loading) {
+      cameraColor = Colors.PRIMARY_WHITE;
+      cameraIconColor = 'black';
+    } else if (failure !== '' && currentPhoto !== null) {
       cameraColor = Colors.PRIMARY_BLUE;
       cameraIconColor = Colors.PRIMARY_WHITE;
     } else if (failure === '' && currentPhoto !== null) {
@@ -170,6 +175,22 @@ class FailureReportScreen extends React.Component {
     navigation.navigate('FailureReport');
   }
 
+  geoSuccess = (position) => {
+    const { UpdateGPSLocation, location } = this.props;
+
+    if (location.lat === null || location.lon === null) {
+      UpdateGPSLocation({ lat: position.coords.latitude, lon: position.coords.longitude });
+    }
+
+    this.continueSaveData(position);
+  }
+
+  geoFailure = (err) => {
+    console.log(err);
+    const position = null;
+    this.continueSaveData(position);
+  }
+
   navigateToCamera = () => {
     const { navigation } = this.props;
 
@@ -189,21 +210,13 @@ class FailureReportScreen extends React.Component {
   }
 
   saveData = () => {
-    const {
-      SendFailureReport, currentPhoto, failure, anonymus, token, username,
-    } = this.props;
+    const geoOptions = {
+      enableHighAccuracy: true,
+      timeOut: 1000,
+      maximumAge: 60 * 60 * 2,
+    };
 
-    if (anonymus === 0) {
-      SendFailureReport({
-        currentPhoto, failure, token, username,
-      });
-    } else {
-      SendFailureReport({
-        currentPhoto, failure, token, username: '',
-      });
-    }
-    Keyboard.dismiss();
-    this.setState({ sendBtnDisabledOpacity: 0.4 });
+    global.navigator.geolocation.getCurrentPosition(this.geoSuccess, this.geoFailure, geoOptions);
   }
 
   isLoading = () => {
@@ -217,9 +230,33 @@ class FailureReportScreen extends React.Component {
     return null;
   }
 
+  continueSaveData(position) {
+    const {
+      SendFailureReport, currentPhoto, failure, anonymus, token, username,
+    } = this.props;
+
+    let GPSLocation = null;
+
+    if (position !== null) {
+      GPSLocation = { lat: position.coords.latitude, lon: position.coords.longitude };
+    }
+
+    if (anonymus === 0) {
+      SendFailureReport({
+        currentPhoto, failure, token, username, location: GPSLocation,
+      });
+    } else {
+      SendFailureReport({
+        currentPhoto, failure, token, username: '', location: GPSLocation,
+      });
+    }
+    Keyboard.dismiss();
+    this.setState({ sendBtnDisabledOpacity: 0.4 });
+  }
+
   render() {
     const {
-      navigation, currentPhoto, failure, anonymus,
+      navigation, failure, anonymus,
     } = this.props;
     const {
       openNotMod,
@@ -282,7 +319,7 @@ class FailureReportScreen extends React.Component {
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.btnSend, { opacity: sendBtnDisabledOpacity }]}
-            disabled={failure === '' && currentPhoto === null}
+            disabled={failure === ''}
             onPress={this.saveData}
           >
             <Text style={styles.btnTxt}>Spremi</Text>
@@ -310,6 +347,7 @@ const mapStateToProps = state => ({
   anonymus: state.failureReport.anonymus,
   status: state.failureReport.status,
   loading: state.failureReport.loading,
+  location: state.failureReport.location,
 });
 
 export default connect(mapStateToProps, {
@@ -320,4 +358,5 @@ export default connect(mapStateToProps, {
   SliderValueChanged: sliderValueChanged,
   InitializeFailureReport: initializeFailureReport,
   ResetStatus: resetStatus,
+  UpdateGPSLocation: updateGPSLocation,
 })(FailureReportScreen);

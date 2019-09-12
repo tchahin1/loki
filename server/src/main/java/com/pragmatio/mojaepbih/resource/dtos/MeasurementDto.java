@@ -7,6 +7,8 @@ public class MeasurementDto {
     private String note;
     private String username;
     private int measurementPlace;
+    Double lat;
+    Double lon;
 
     public String getLargeTariff() {
         return largeTariff;
@@ -54,5 +56,21 @@ public class MeasurementDto {
 
     public void setMeasurementPlace(int measurementPlace) {
         this.measurementPlace = measurementPlace;
+    }
+
+    public Double getLat() {
+        return lat;
+    }
+
+    public void setLat(Double lat) {
+        this.lat = lat;
+    }
+
+    public Double getLon() {
+        return lon;
+    }
+
+    public void setLon(Double lon) {
+        this.lon = lon;
     }
 }

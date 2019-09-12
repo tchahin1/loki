@@ -13,6 +13,12 @@ public class Failure {
     @Column(name = "highTariff")
     private String description;
 
+    @Column(name = "latitude")
+    private Double lat;
+
+    @Column(name = "longitude")
+    private Double lon;
+
     @Lob
     @Column(name = "photo")
     private String photo;
@@ -24,10 +30,12 @@ public class Failure {
 
     }
 
-    public Failure(String description, String photo, User user) {
-        this.description = description;
-        this.photo = photo;
-        this.user = user;
+    public Failure(String description, String photo, User user, Double lat, Double lon) {
+        this.setDescription(description);
+        this.setPhoto(photo);
+        this.setUser(user);
+        this.setLat(lat);
+        this.setLon(lon);
     }
 
     public int getId() {
@@ -60,5 +68,21 @@ public class Failure {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Double getLat() {
+        return lat;
+    }
+
+    public void setLat(Double lat) {
+        this.lat = lat;
+    }
+
+    public Double getLon() {
+        return lon;
+    }
+
+    public void setLon(Double lon) {
+        this.lon = lon;
     }
 }
