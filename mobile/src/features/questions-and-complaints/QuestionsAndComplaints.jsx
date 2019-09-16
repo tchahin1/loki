@@ -8,6 +8,7 @@ import NotificationsButton from '../../components/helpers/NotificationsButton';
 import NotificationsModal from '../../components/helpers/NotificationsModal';
 import { onSignOut } from '../../../Auth';
 import Form from '../../components/questions-and-complaints/Form';
+import LargeActivityIndicator from '../../components/large-activity-indicator/LargeActivityIndicator';
 import createStyles from './QuestionsAndComplaints.styles';
 
 import logoutUser from '../account/AccountActions';
@@ -19,6 +20,7 @@ class QuestionsAndComplaintsScreen extends React.Component {
     navigation: PropTypes.shape({}).isRequired,
     user: PropTypes.string.isRequired,
     LogoutUser: PropTypes.func.isRequired,
+    loading: PropTypes.bool.isRequired,
   };
 
   constructor(props) {
@@ -40,6 +42,17 @@ class QuestionsAndComplaintsScreen extends React.Component {
     const { LogoutUser } = this.props;
 
     LogoutUser();
+  }
+
+  isLoading = () => {
+    const { loading } = this.props;
+
+    if (loading) {
+      return (
+        <LargeActivityIndicator />
+      );
+    }
+    return null;
   }
 
   render() {
@@ -70,6 +83,7 @@ class QuestionsAndComplaintsScreen extends React.Component {
           onRequestClose={() => this.setState({ openNotMod: false })}
           onSignOutPress={this.onSignOutPressed}
         />
+        {this.isLoading()}
       </View>
     );
   }
@@ -77,6 +91,8 @@ class QuestionsAndComplaintsScreen extends React.Component {
 
 const mapStateToProps = state => ({
   user: state.signIn.user,
+  username: state.signIn.id,
+  loading: state.qac.loading,
 });
 
 export default connect(mapStateToProps, { LogoutUser: logoutUser })(QuestionsAndComplaintsScreen);

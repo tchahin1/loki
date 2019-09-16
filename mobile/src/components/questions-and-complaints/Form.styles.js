@@ -14,6 +14,11 @@ const styles = {
   scrollContainer: {
     alignItems: 'center',
     justifyContent: 'center',
+    flex: 1,
+  },
+  scrollContainerNoFlex: {
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   pickersContainer: {
     width: wp('97%'),
@@ -53,7 +58,7 @@ const styles = {
   },
   btnReq: {
     backgroundColor: Colors.PRIMARY_BLUE,
-    marginTop: hp('5%'),
+    marginTop: hp('3%'),
     height: hp('8%'),
     width: wp('92%'),
     alignSelf: 'flex-end',
@@ -63,6 +68,20 @@ const styles = {
     fontWeight: 'bold',
     fontSize: 16,
     textAlign: 'center',
+  },
+  inputContainer: {
+    height: hp('30%'),
+    width: wp('97%'),
+    alignItems: 'center',
+  },
+  requestTxtInput: {
+    height: hp('20%'),
+    width: wp('92%'),
+    borderWidth: 1,
+    borderColor: 'black',
+    textAlignVertical: 'top',
+    fontSize: 18,
+    paddingLeft: 5,
   },
 };
 

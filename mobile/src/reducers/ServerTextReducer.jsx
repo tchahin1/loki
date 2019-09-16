@@ -7,6 +7,7 @@ import ElectricMeterReducer from '../features/electric-meter/ElectricMeterReduce
 import PlaceOfMeasurementModal from '../components/helpers/PlaceOfMeasurementModalReducer';
 import FailureReportReducer from '../features/failure-report/FailureReportReducer';
 import HomeReducer from '../features/home/HomeReducer';
+import QuestionsAndComplaintsReducer from '../features/questions-and-complaints/QuestionsAndComplaintsReducer';
 
 
 const changeServerText = text => ({
@@ -39,4 +40,5 @@ export default combineReducers({
   measurementPlaceModal: PlaceOfMeasurementModal,
   failureReport: FailureReportReducer,
   home: HomeReducer,
+  qac: QuestionsAndComplaintsReducer,
 });

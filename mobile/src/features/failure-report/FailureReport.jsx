@@ -281,50 +281,54 @@ class FailureReportScreen extends React.Component {
             />
           )}
         />
-        <View style={[styles.sliderContainer, { flex: flexFirstPart }]}>
-          <View style={styles.textContainer}>
-            <Text style={styles.label}>Anonimna prijava</Text>
+        <View style={{ flex: 1 }}>
+          <View style={{ flex: 1 }}>
+            <View style={[styles.sliderContainer, { flex: flexFirstPart }]}>
+              <View style={styles.textContainer}>
+                <Text style={styles.label}>Anonimna prijava</Text>
+              </View>
+              <Slider
+                step={1}
+                style={styles.slider}
+                value={anonymus}
+                onValueChange={this.onSliderValueChange}
+                maximumTrackTintColor={Colors.PRIMARY_BLUE}
+                thumbTintColor={Colors.PRIMARY_BLUE}
+                minimumTrackTintColor={Colors.NOTICE_COLOR}
+              />
+            </View>
+            <View style={[styles.txtInputContainer, { flex: flexSecondPart }]}>
+              <TextInput
+                placeholder="opiši kvar..."
+                value={failure}
+                onChangeText={text => this.setFailureText(text)}
+                style={styles.txtInput}
+                multiline
+              />
+            </View>
+            <View style={[styles.btnsWrapper, { flex: flexFirstPart }]}>
+              <TouchableOpacity
+                style={[styles.btnIcon, { backgroundColor: this.setPhotoIconColors().cameraColor }]}
+                onPress={() => this.navigateToCamera()}
+              >
+                <Icon
+                  type="ionicon"
+                  name="ios-camera"
+                  size={30}
+                  color={this.setPhotoIconColors().cameraIconColor}
+                />
+
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.btnSend, { opacity: sendBtnDisabledOpacity }]}
+                disabled={failure === ''}
+                onPress={this.saveData}
+              >
+                <Text style={styles.btnTxt}>Spremi</Text>
+              </TouchableOpacity>
+
+            </View>
           </View>
-          <Slider
-            step={1}
-            style={styles.slider}
-            value={anonymus}
-            onValueChange={this.onSliderValueChange}
-            maximumTrackTintColor={Colors.PRIMARY_BLUE}
-            thumbTintColor={Colors.PRIMARY_BLUE}
-            minimumTrackTintColor={Colors.NOTICE_COLOR}
-          />
-        </View>
-        <View style={[styles.txtInputContainer, { flex: flexSecondPart }]}>
-          <TextInput
-            placeholder="opiši kvar..."
-            value={failure}
-            onChangeText={text => this.setFailureText(text)}
-            style={styles.txtInput}
-            multiline
-          />
-        </View>
-        <View style={[styles.btnsWrapper, { flex: flexFirstPart }]}>
-          <TouchableOpacity
-            style={[styles.btnIcon, { backgroundColor: this.setPhotoIconColors().cameraColor }]}
-            onPress={() => this.navigateToCamera()}
-          >
-            <Icon
-              type="ionicon"
-              name="ios-camera"
-              size={30}
-              color={this.setPhotoIconColors().cameraIconColor}
-            />
-
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.btnSend, { opacity: sendBtnDisabledOpacity }]}
-            disabled={failure === ''}
-            onPress={this.saveData}
-          >
-            <Text style={styles.btnTxt}>Spremi</Text>
-          </TouchableOpacity>
-
         </View>
         <NotificationsModal
           animationType="fade"
