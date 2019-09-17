@@ -59,3 +59,15 @@ export const UPDATE_GPS_LOCATION = 'update_gps_location';
 // home part
 export const NOTIFICATION_RECIEVED = 'notification_received';
 export const RESET_NOTIFICATION = 'reset_notification';
+
+// myProfile part
+export const PROFILE_INITIALIZATION = 'profile_initialization';
+export const PROFILE_NAME_CHANGED = 'profile_name_changed';
+export const PROFILE_SURNAME_CHANGED = 'profile_surname_changed';
+export const PROFILE_PASSWORD_CHANGED = 'profile_password_changed';
+export const PROFILE_EMAIL_CHANGED = 'profile_email_changed';
+export const PROFILE_ID_CHANGED = 'profile_id_changed';
+export const PROFILE_CONF_PASS_CHANGED = 'profile_confirm_password_changed';
+export const EDIT_USER_SUCCESS = 'edit_user_success';
+export const EDIT_USER_FAIL = 'edit_user_fail';
+export const EDIT_USER = 'edit_user';
