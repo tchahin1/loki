@@ -59,3 +59,18 @@ export const UPDATE_GPS_LOCATION = 'update_gps_location';
 // home part
 export const NOTIFICATION_RECIEVED = 'notification_received';
 export const RESET_NOTIFICATION = 'reset_notification';
+
+// questions and complaints part
+export const QAC_NAME_CHANGED = 'qac_name_changed';
+export const QAC_LEGAL_NAME_CHANGED = 'qac_legal_name_changed';
+export const QAC_SURNAME_CHANGED = 'qac_surname_changed';
+export const QAC_ADDRESS_CHANGED = 'qac_address_changed';
+export const QAC_CODE_CHANGED = 'qac_code_changed';
+export const QAC_EMAIL_CHANGED = 'qac_email_changed';
+export const QAC_PHONE_CHANGED = 'qac_phone_changed';
+export const QAC_REQUEST_CHANGED = 'qac_request_changed';
+export const INITIALIZE_QAC = 'initialize_qac';
+export const SEND_QAC = 'send_qac';
+export const SEND_QAC_SUCCESS = 'send_qac_success';
+export const SEND_QAC_FAIL = 'send_qac_fail';
+export const RESET_QAC_STATUS = 'reset_qac_status';

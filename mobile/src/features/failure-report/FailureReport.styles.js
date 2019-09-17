@@ -64,7 +64,6 @@ const styles = {
     borderWidth: 2,
     borderColor: Colors.PRIMARY_BLUE,
     borderRadius: 1,
-    elevation: 3,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -77,7 +76,6 @@ const styles = {
     borderRadius: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    elevation: 3,
   },
   btnTxt: {
     fontSize: 17,

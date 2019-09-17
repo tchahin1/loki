@@ -10,6 +10,7 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'rgba(52, 52, 52, 0.6)',
+    zIndex: 25,
   },
 };
 
