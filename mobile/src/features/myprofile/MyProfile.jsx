@@ -83,6 +83,11 @@ class MyProfileScreen extends React.Component {
     }
   }
 
+  componentWillUnmount() {
+    this.keyboardDidHideListener.remove();
+    this.keyboardDidShowListener.remove();
+  }
+
   keyboardDidShow = () => {
     this.setState({
       scrollEnabled: true,
