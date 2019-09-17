@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {
-  KeyboardAvoidingView, Text, View,
+  Text, View, ScrollView, KeyboardAvoidingView, Keyboard,
 } from 'react-native';
 import { Header, Button } from 'react-native-elements/src/index';
 import { TextField } from 'react-native-material-textfield';
@@ -56,6 +56,7 @@ class MyProfileScreen extends React.Component {
         password: '',
         confirmPass: '',
       },
+      scrollEnabled: false,
     };
   }
 
@@ -63,6 +64,15 @@ class MyProfileScreen extends React.Component {
     const { navigation } = this.props;
 
     navigation.addListener('willFocus', this.load);
+
+    this.keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      this.keyboardDidShow,
+    );
+    this.keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      this.keyboardDidHide,
+    );
   }
 
   componentWillReceiveProps(nextProps) {
@@ -72,6 +82,19 @@ class MyProfileScreen extends React.Component {
       onSignOut().then(navigation.navigate('SignedOut'));
     }
   }
+
+  keyboardDidShow = () => {
+    this.setState({
+      scrollEnabled: true,
+    });
+  };
+
+  keyboardDidHide = () => {
+    this.setState({
+      scrollEnabled: false,
+    });
+    this.scroll.scrollTo({ x: 0, y: 0, animated: true });
+  };
 
   onSignOutPressed = () => {
     const { LogoutUser } = this.props;
@@ -141,7 +164,7 @@ class MyProfileScreen extends React.Component {
 
     switch (input) {
       case LABELS.NAME: {
-        const regExp = new RegExp(/^(?=.*\d)*(?=.*[a-zA-Z]).{2,}$/);
+        const regExp = new RegExp(/^[a-zA-Z]+$/);
         this.onNameChange(value);
         if (value.length < 2) {
           errors.name = ERRORS.NAME_ERR;
@@ -154,7 +177,7 @@ class MyProfileScreen extends React.Component {
       }
 
       case LABELS.SURNAME: {
-        const regExp = new RegExp(/^(?=.*\d)*(?=.*[a-zA-Z]).{2,}$/);
+        const regExp = new RegExp(/^[a-zA-Z]+$/);
         this.onSurnameChange(value);
         if (value.length < 2) {
           errors.surname = ERRORS.SURNAME_ERR;
@@ -226,7 +249,9 @@ class MyProfileScreen extends React.Component {
     const {
       name, password, surname, email, confirmPass,
     } = this.props;
-    const { openNotMod, error } = this.state;
+    const {
+      openNotMod, error, scrollEnabled,
+    } = this.state;
     return (
       <View style={{ flex: 1 }}>
         <Header
@@ -240,117 +265,121 @@ class MyProfileScreen extends React.Component {
             />
           )}
         />
-        <View style={styles.container}>
-          <View style={styles.wrapper}>
-            <KeyboardAvoidingView
-              behavior="position"
-              style={{ flexDirection: 'column' }}
+        <View style={{ flex: 1, padding: 10 }}>
+          <KeyboardAvoidingView
+            style={{
+              flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+            }}
+            behavior="padding"
+          >
+            <ScrollView
+              style={styles.inputsWrapper}
+              keyboardShouldPersistTaps="always"
+              scrollEnabled={scrollEnabled}
+              ref={(ref) => { this.scroll = ref; }}
             >
-              <View style={styles.inputsWrapper}>
-                <TextField
-                  label={LABELS.NAME}
-                  onChangeText={text => this.changeAndValidateValues(LABELS.NAME, text)}
-                  value={name}
-                  animationDuration={100}
-                  tintColor={Colors.BLACK}
-                  textColor={Colors.BLACK}
-                  baseColor={Colors.BLACK}
-                  lineWidth={2}
-                  activeLineWidth={3.5}
-                  fontSize={18}
-                  labelFontSize={15}
-                  error={error.name}
-                  errorColor={Colors.NOTICE_COLOR}
-                />
-                <TextField
-                  label={LABELS.SURNAME}
-                  onChangeText={text => this.changeAndValidateValues(LABELS.SURNAME, text)}
-                  value={surname}
-                  animationDuration={100}
-                  tintColor={Colors.BLACK}
-                  textColor={Colors.BLACK}
-                  baseColor={Colors.BLACK}
-                  lineWidth={2}
-                  activeLineWidth={3.5}
-                  fontSize={18}
-                  labelFontSize={15}
-                  error={error.surname}
-                  errorColor={Colors.NOTICE_COLOR}
-                />
-                <TextField
-                  label={LABELS.EMAIL}
-                  onChangeText={text => this.changeAndValidateValues(LABELS.EMAIL, text)}
-                  value={email}
-                  animationDuration={100}
-                  tintColor={Colors.BLACK}
-                  textColor={Colors.BLACK}
-                  baseColor={Colors.BLACK}
-                  lineWidth={2}
-                  activeLineWidth={3.5}
-                  fontSize={18}
-                  labelFontSize={15}
-                  error={error.email}
-                  errorColor={Colors.NOTICE_COLOR}
-                />
-                <TextField
-                  secureTextEntry
-                  label={LABELS.PASSWORD}
-                  onChangeText={text => this.changeAndValidateValues(LABELS.PASSWORD, text)}
-                  value={password}
-                  animationDuration={100}
-                  tintColor={Colors.BLACK}
-                  textColor={Colors.BLACK}
-                  baseColor={Colors.BLACK}
-                  lineWidth={2}
-                  activeLineWidth={3.5}
-                  fontSize={18}
-                  labelFontSize={15}
-                  error={error.password}
-                  errorColor={Colors.NOTICE_COLOR}
-                />
-                <TextField
-                  secureTextEntry
-                  label={LABELS.CONFIRM_PASS}
-                  onChangeText={text => this.changeAndValidateValues(LABELS.CONFIRM_PASS, text)}
-                  value={confirmPass}
-                  animationDuration={100}
-                  tintColor={Colors.BLACK}
-                  textColor={Colors.BLACK}
-                  baseColor={Colors.BLACK}
-                  lineWidth={2}
-                  activeLineWidth={3.5}
-                  fontSize={18}
-                  labelFontSize={15}
-                  error={error.confirmPass}
-                  errorColor={Colors.NOTICE_COLOR}
-                />
-              </View>
+              <TextField
+                label={LABELS.NAME}
+                onChangeText={text => this.changeAndValidateValues(LABELS.NAME, text)}
+                value={name}
+                animationDuration={100}
+                tintColor={Colors.BLACK}
+                textColor={Colors.BLACK}
+                baseColor={Colors.BLACK}
+                lineWidth={2}
+                activeLineWidth={3.5}
+                fontSize={18}
+                labelFontSize={15}
+                error={error.name}
+                errorColor={Colors.NOTICE_COLOR}
+              />
+              <TextField
+                label={LABELS.SURNAME}
+                onChangeText={text => this.changeAndValidateValues(LABELS.SURNAME, text)}
+                value={surname}
+                animationDuration={100}
+                tintColor={Colors.BLACK}
+                textColor={Colors.BLACK}
+                baseColor={Colors.BLACK}
+                lineWidth={2}
+                activeLineWidth={3.5}
+                fontSize={18}
+                labelFontSize={15}
+                error={error.surname}
+                errorColor={Colors.NOTICE_COLOR}
+              />
+              <TextField
+                label={LABELS.EMAIL}
+                onChangeText={text => this.changeAndValidateValues(LABELS.EMAIL, text)}
+                value={email}
+                animationDuration={100}
+                tintColor={Colors.BLACK}
+                textColor={Colors.BLACK}
+                baseColor={Colors.BLACK}
+                lineWidth={2}
+                activeLineWidth={3.5}
+                fontSize={18}
+                labelFontSize={15}
+                error={error.email}
+                errorColor={Colors.NOTICE_COLOR}
+              />
+              <TextField
+                secureTextEntry
+                label={LABELS.PASSWORD}
+                onChangeText={text => this.changeAndValidateValues(LABELS.PASSWORD, text)}
+                value={password}
+                animationDuration={100}
+                tintColor={Colors.BLACK}
+                textColor={Colors.BLACK}
+                baseColor={Colors.BLACK}
+                lineWidth={2}
+                activeLineWidth={3.5}
+                fontSize={18}
+                labelFontSize={15}
+                error={error.password}
+                errorColor={Colors.NOTICE_COLOR}
+              />
+              <TextField
+                secureTextEntry
+                label={LABELS.CONFIRM_PASS}
+                onChangeText={text => this.changeAndValidateValues(LABELS.CONFIRM_PASS, text)}
+                value={confirmPass}
+                animationDuration={100}
+                tintColor={Colors.BLACK}
+                textColor={Colors.BLACK}
+                baseColor={Colors.BLACK}
+                lineWidth={2}
+                activeLineWidth={3.5}
+                fontSize={18}
+                labelFontSize={15}
+                error={error.confirmPass}
+                errorColor={Colors.NOTICE_COLOR}
+              />
               <View style={styles.btnWrapper}>
                 <Text style={styles.error}>{error.name}</Text>
                 <Button
                   buttonStyle={styles.btnSignIn}
                   title="SPREMI PROMJENE"
                   disabled={
-                    name === '' || password === '' || surname === '' || email === '' || confirmPass === ''
-                    || error.name !== '' || error.password !== '' || error.surname !== '' || error.email !== ''
-                    || error.confirmPass !== ''
-                  }
-                  titleStyle={{ fontSize: 18 }}
+                      name === '' || password === '' || surname === '' || email === '' || confirmPass === ''
+                      || error.name !== '' || error.password !== '' || error.surname !== '' || error.email !== ''
+                      || error.confirmPass !== ''
+                    }
+                  titleStyle={{ fontSize: 18, marginLeft: -50 }}
                   onPress={this.onButtonPress}
                 />
               </View>
-              <View />
-              {this.isLoading()}
-            </KeyboardAvoidingView>
-          </View>
-          <NotificationsModal
-            animationType="fade"
-            transparent
-            visible={openNotMod}
-            onRequestClose={() => this.setState({ openNotMod: false })}
-            onSignOutPress={this.onSignOutPressed}
-          />
+            </ScrollView>
+            {this.isLoading()}
+          </KeyboardAvoidingView>
         </View>
+        <NotificationsModal
+          animationType="fade"
+          transparent
+          visible={openNotMod}
+          onRequestClose={() => this.setState({ openNotMod: false })}
+          onSignOutPress={this.onSignOutPressed}
+        />
       </View>
     );
   }

@@ -20,17 +20,16 @@ const styles = {
   inputsWrapper: {
     marginRight: wp('4%'),
     marginLeft: wp('4%'),
-    marginTop: hp('10%'),
+    marginTop: hp('5%'),
+    paddingTop: hp('2%'),
   },
   btnSignIn: {
     backgroundColor: Colors.PRIMARY_BLUE,
-    marginTop: hp('5%'),
+    marginTop: hp('10%'),
     height: hp('8%'),
-    width: wp('92%'),
+    width: wp('100%'),
   },
   btnWrapper: {
-    marginRight: wp('4%'),
-    marginLeft: wp('4%'),
     alignItems: 'center',
   },
   title: {
@@ -44,6 +43,7 @@ const styles = {
     color: Colors.NOTICE_COLOR,
     fontWeight: 'bold',
     fontSize: 18,
+    marginLeft: -50,
   },
 };
 
