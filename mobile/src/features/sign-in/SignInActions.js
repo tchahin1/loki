@@ -37,7 +37,7 @@ const loginUserFail = (dispatch) => {
 export const loginUser = ({ username, password }) => (dispatch) => {
   dispatch({ type: types.LOGIN_USER });
 
-  fetch(`${api}/auth`, {
+  fetch(`${api}/login`, {
     method: 'POST',
     headers: {
       Accept: 'application/json',

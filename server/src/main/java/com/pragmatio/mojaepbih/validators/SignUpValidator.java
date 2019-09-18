@@ -1,6 +1,6 @@
 package com.pragmatio.mojaepbih.validators;
 
-import com.pragmatio.mojaepbih.resource.model.SignUpData;
+import com.pragmatio.mojaepbih.model.SignUpData;
 
 import static com.pragmatio.mojaepbih.validators.UserValidator.*;
 
