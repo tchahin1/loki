@@ -98,7 +98,7 @@ class HomeScreen extends React.Component {
     fetch(`${api}/hello`, {
       method: 'GET',
       headers: {
-        privateKey: token,
+        Authorization: token,
         'Content-Type': 'application/json',
       },
     }).then((response) => {
@@ -173,7 +173,7 @@ class HomeScreen extends React.Component {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        privateKey: user,
+        Authorization: user,
       },
       body: JSON.stringify({
         token: pushToken,

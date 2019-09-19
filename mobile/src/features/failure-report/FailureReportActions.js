@@ -35,8 +35,9 @@ const sendFailureReportSuccess = (dispatch) => {
   dispatch({ type: types.SEND_FR_SUCCESS });
 };
 
-const sendFailureReportFail = (dispatch) => {
+const sendFailureReportFail = (dispatch, response) => {
   dispatch({ type: types.SEND_FR_FAIL });
+  console.log(response);
 };
 
 export const sendFailureReport = ({
@@ -62,7 +63,7 @@ export const sendFailureReport = ({
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
-      privateKey: token,
+      Authorization: token,
     },
     body: JSON.stringify({
       email,
@@ -75,7 +76,7 @@ export const sendFailureReport = ({
     if (response.ok) {
       sendFailureReportSuccess(dispatch);
     } else {
-      sendFailureReportFail(dispatch);
+      sendFailureReportFail(dispatch, response);
     }
   });
 };

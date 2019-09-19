@@ -69,7 +69,7 @@ export const sendQACForm = ({
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
-      privateKey: token,
+      Authorization: token,
     },
     body: JSON.stringify({
       customerType,

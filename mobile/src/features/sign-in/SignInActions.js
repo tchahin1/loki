@@ -21,7 +21,8 @@ export const passwordChanged = text => ({
 const loginUserSuccess = (dispatch, response) => {
   response.text().then((text) => {
     onSignIn(text).then(() => {
-      dispatch({ type: types.LOGIN_USER_SUCCESS, payload: text });
+      const token = `${JSON.parse(text).tokenType} ${JSON.parse(text).accessToken}`;
+      dispatch({ type: types.LOGIN_USER_SUCCESS, payload: token });
     });
   });
 };
