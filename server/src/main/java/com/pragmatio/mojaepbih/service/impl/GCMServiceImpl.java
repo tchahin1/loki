@@ -9,6 +9,7 @@ import com.pragmatio.mojaepbih.service.GCMService;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.ws.rs.core.Response;
@@ -32,7 +33,7 @@ public class GCMServiceImpl implements GCMService {
     }
 
     @Override
-    public Response sendNotificationToUser(SendNotificationDto sendNotificationDto) throws IOException, JSONException {
+    public ResponseEntity sendNotificationToUser(SendNotificationDto sendNotificationDto) throws IOException, JSONException {
         final String API_URL = "https://exp.host/--/api/v2/push/send";
 
         String result = "";
@@ -77,8 +78,8 @@ public class GCMServiceImpl implements GCMService {
         }
         System.out.println("GCM Notification is sent successfully");
 
-        if(result.equals("OK")) return Response.ok().entity("").build();
-        else return Response.status(400).entity("Something went wrong!").build();
+        if(result.equals("OK")) return ResponseEntity.ok().build();
+        else return ResponseEntity.status(400).body("Something went wrong!");
     }
 
     @Override

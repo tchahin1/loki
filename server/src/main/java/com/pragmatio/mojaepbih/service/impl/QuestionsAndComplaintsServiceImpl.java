@@ -7,6 +7,7 @@ import com.pragmatio.mojaepbih.model.entity.Subsidiary;
 import com.pragmatio.mojaepbih.repository.QuestionsAndComplaintsRepository;
 import com.pragmatio.mojaepbih.service.QuestionsAndComplaintsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.ws.rs.core.Response;
@@ -54,19 +55,19 @@ public class QuestionsAndComplaintsServiceImpl implements QuestionsAndComplaints
     }
 
     @Override
-    public Response saveQaC(QacDto qacDto) {
+    public ResponseEntity saveQaC(QacDto qacDto) {
         Customer customer = customerService.findById(qacDto.getCustomerType() + 1L);
-        if (customer == null) return Response.status(400).entity("Customer type does not exist!").build();
+        if (customer == null) return ResponseEntity.status(400).body("Customer type does not exist!");
         Subsidiary subsidiary = subsidiaryService.findById(qacDto.getSubsidiaryId() + 1L);
-        if (subsidiary == null) return Response.status(400).entity("Subsidiary does not exist!").build();
+        if (subsidiary == null) return ResponseEntity.status(400).body("Subsidiary does not exist!");
         QuestionsAndComplaints newQuestionsAndComplaints = new QuestionsAndComplaints(qacDto.getName(), qacDto.getLegalName(),
                 qacDto.getSurname(), qacDto.getAddress(), qacDto.getCode(), qacDto.getEmail(), qacDto.getPhone(),
                 qacDto.getRequest(), customer, subsidiary);
         try {
             save(newQuestionsAndComplaints);
-            return Response.ok().entity("Request saved successfully!").build();
+            return ResponseEntity.ok().body("Request saved successfully!");
         } catch (Exception exception) {
-            return Response.status(500).entity("Something went wrong!").build();
+            return ResponseEntity.status(500).body("Something went wrong!");
         }
     }
 

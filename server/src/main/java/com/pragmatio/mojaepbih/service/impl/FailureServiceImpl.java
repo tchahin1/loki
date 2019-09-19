@@ -7,6 +7,7 @@ import com.pragmatio.mojaepbih.repository.FailureRepository;
 import com.pragmatio.mojaepbih.repository.UserRepository;
 import com.pragmatio.mojaepbih.service.FailureService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.ws.rs.core.Response;
@@ -50,15 +51,15 @@ public class FailureServiceImpl implements FailureService {
     }
 
     @Override
-    public Response saveFailureReport(FailureDto failureDto) {
+    public ResponseEntity saveFailureReport(FailureDto failureDto) {
         User user = null;
         if (!failureDto.getEmail().equals("")) user = userRepository.findByEmail(failureDto.getEmail());
         if (user == null && (!failureDto.getEmail().equals("")))
-            return Response.status(400).entity("User does not exist!").build();
+            return ResponseEntity.status(400).body("User does not exist!");
         Failure newFailure = new Failure(failureDto.getDescription(), failureDto.getPhoto(),
                 user, failureDto.getLat(), failureDto.getLon());
         this.failureRepository.save(newFailure);
-        return Response.ok().entity("Successfully added new failure report!").build();
+        return ResponseEntity.ok().body("Successfully added new failure report!");
     }
 
 }

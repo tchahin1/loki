@@ -24,7 +24,7 @@ public class Failure {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "highTariff")
+    @Column(name = "description")
     private String description;
 
     @Column(name = "latitude")

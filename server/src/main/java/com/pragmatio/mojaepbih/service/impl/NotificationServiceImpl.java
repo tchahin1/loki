@@ -7,6 +7,7 @@ import com.pragmatio.mojaepbih.repository.NotificationRepository;
 import com.pragmatio.mojaepbih.repository.UserRepository;
 import com.pragmatio.mojaepbih.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.ws.rs.core.Response;
@@ -64,13 +65,13 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public Response pushUserWithToken(UserNotificationDto userNotificationDto) {
+    public ResponseEntity pushUserWithToken(UserNotificationDto userNotificationDto) {
         Notification alreadyInDb = null;
         if (!(userNotificationDto.getToken().equals("")))
             alreadyInDb = this.findByDeviceToken(userNotificationDto.getToken());
         if (alreadyInDb == null) {
             User user = userRepository.findByEmail(userNotificationDto.getEmail());
-            if (user == null) return Response.status(400).entity("User does not exist!").build();
+            if (user == null) return ResponseEntity.status(400).body("User does not exist!");
             String existingToken = this.gcmService.getDeviceTokenFromEmail(user.getEmail());
             if (!(existingToken.equals("")) && !(existingToken.equals(userNotificationDto.getToken()))) {
                 Notification notification = findByUserId(user.getId());
@@ -81,9 +82,9 @@ public class NotificationServiceImpl implements NotificationService {
                         user);
                 save(newNotification);
             }
-            return Response.ok().entity("Successfully added new notification for user!").build();
+            return ResponseEntity.ok().body("Successfully added new notification for user!");
         } else {
-            return Response.status(400).entity("Something went wrong!").build();
+            return ResponseEntity.status(400).body("Something went wrong!");
         }
     }
 }

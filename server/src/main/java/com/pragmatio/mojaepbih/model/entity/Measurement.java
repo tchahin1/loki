@@ -28,10 +28,10 @@ public class Measurement {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "highTariff")
+    @Column(name = "high_tariff")
     private String highTariff;
 
-    @Column(name = "lowTariff")
+    @Column(name = "low_tariff")
     private String lowTariff;
 
     @Column(name = "note")

@@ -8,6 +8,7 @@ import com.pragmatio.mojaepbih.repository.MeasurementRepository;
 import com.pragmatio.mojaepbih.repository.UserRepository;
 import com.pragmatio.mojaepbih.service.MeasurementService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.ws.rs.core.Response;
@@ -63,22 +64,22 @@ public class MeasurementServiceImpl implements MeasurementService {
     }
 
     @Override
-    public Response saveMeasurement(MeasurementDto measurementDto) {
+    public ResponseEntity saveMeasurement(MeasurementDto measurementDto) {
         Measurement alreadyInDb = this.measurementRepository.findByPlaceId(measurementDto.getMeasurementPlace());
         if (alreadyInDb == null) {
             User user = userRepository.findByEmail(measurementDto.getEmail());
-            if (user == null) return Response.status(400).entity("User does not exist!").build();
+            if (user == null) return ResponseEntity.status(400).body("User does not exist!");
             PlaceOfMeasurement placeOfMeasurement = placeOfMeasurementService.findById(measurementDto.getMeasurementPlace());
             if (placeOfMeasurement == null)
-                return Response.status(400).entity("Measurement place does not exist!").build();
+                return ResponseEntity.status(400).body("Measurement place does not exist!");
             String image = this.imageService.printDataToImage(measurementDto.getPhoto(), measurementDto.getLargeTariff(), measurementDto.getSmallTariff());
             Measurement newMeasurement = new Measurement(measurementDto.getLargeTariff(),
                     measurementDto.getSmallTariff(), measurementDto.getNote(),
                     image, user, placeOfMeasurement, measurementDto.getLat(), measurementDto.getLon());
             this.measurementRepository.save(newMeasurement);
-            return Response.ok().entity("Successfully added new measurement for this place!").build();
+            return ResponseEntity.ok().body("Successfully added new measurement for this place!");
         } else {
-            return Response.status(400).entity("Measurement for this place already exists!").build();
+            return ResponseEntity.status(400).body("Measurement for this place already exists!");
         }
     }
 }

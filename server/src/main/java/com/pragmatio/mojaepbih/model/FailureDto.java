@@ -1,8 +1,9 @@
 package com.pragmatio.mojaepbih.model;
 
-import lombok.Value;
+import lombok.Data;
 
-@Value
+
+@Data
 public class FailureDto {
     String photo;
     String email;
