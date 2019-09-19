@@ -8,8 +8,8 @@ export const initializeLogin = () => ({
   type: types.INITIALIZE_LOGIN,
 });
 
-export const usernameChanged = text => ({
-  type: types.USERNAME_CHANGED,
+export const emailChanged = text => ({
+  type: types.EMAIL_CHANGED,
   payload: text,
 });
 
@@ -34,7 +34,7 @@ const loginUserFail = (dispatch) => {
   Keyboard.dismiss();
 };
 
-export const loginUser = ({ username, password }) => (dispatch) => {
+export const loginUser = ({ email, password }) => (dispatch) => {
   dispatch({ type: types.LOGIN_USER });
 
   fetch(`${api}/login`, {
@@ -44,7 +44,7 @@ export const loginUser = ({ username, password }) => (dispatch) => {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      username,
+      email,
       password,
     }),
   }).then((response) => {

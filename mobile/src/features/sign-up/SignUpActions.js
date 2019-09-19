@@ -14,8 +14,13 @@ export const initializeRegistration = (successFlag) => {
   };
 };
 
-export const signupUsernameChanged = text => ({
-  type: types.SIGNUP_USERNAME_CHANGED,
+export const signupNameChanged = text => ({
+  type: types.SIGNUP_NAME_CHANGED,
+  payload: text,
+});
+
+export const signupSurnameChanged = text => ({
+  type: types.SIGNUP_SURNAME_CHANGED,
   payload: text,
 });
 
@@ -47,7 +52,8 @@ const registerUserFail = (dispatch) => {
 };
 
 export const registerUser = ({
-  username,
+  name,
+  surname,
   password,
   email,
   confirmPass,
@@ -61,7 +67,8 @@ export const registerUser = ({
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      username,
+      name,
+      surname,
       email,
       password,
       passwordRepeated: confirmPass,

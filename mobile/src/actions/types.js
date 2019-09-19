@@ -1,5 +1,5 @@
 // sign in part
-export const USERNAME_CHANGED = 'username_changed';
+export const EMAIL_CHANGED = 'email_changed';
 export const PASSWORD_CHANGED = 'password_changed';
 export const LOGIN_USER_SUCCESS = 'login_user_success';
 export const LOGIN_USER_FAIL = 'login_user_fail';
@@ -11,7 +11,8 @@ export const SIGN_OUT_USER = 'sign_out_user';
 
 // sign up part
 export const SIGNUP_INITIALIZATION = 'signup_initialization';
-export const SIGNUP_USERNAME_CHANGED = 'signup_username_changed';
+export const SIGNUP_NAME_CHANGED = 'signup_name_changed';
+export const SIGNUP_SURNAME_CHANGED = 'signup_surname_changed';
 export const SIGNUP_PASSWORD_CHANGED = 'signup_password_changed';
 export const SIGNUP_EMAIL_CHANGED = 'signup_email_changed';
 export const SIGNUP_CONF_PASS_CHANGED = 'signup_confirm_password_changed';
