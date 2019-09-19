@@ -138,7 +138,7 @@ class SignUp extends React.Component {
     switch (input) {
       case LABELS.NAME: {
         const regExp = new RegExp(/^(?=.*\d)*(?=.*[a-zA-Z]).{2,}$/);
-        this.onUsernameChange(value);
+        this.onNameChange(value);
         if (value.length < 2) {
           errors.name = ERRORS.NAME_ERR;
         } else if (!value.match(regExp)) {
@@ -151,7 +151,7 @@ class SignUp extends React.Component {
 
       case LABELS.SURNAME: {
         const regExp = new RegExp(/^(?=.*\d)*(?=.*[a-zA-Z]).{2,}$/);
-        this.onUsernameChange(value);
+        this.onSurnameChange(value);
         if (value.length < 2) {
           errors.surname = ERRORS.SURNAME_ERR;
         } else if (!value.match(regExp)) {

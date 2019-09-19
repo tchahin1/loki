@@ -41,7 +41,7 @@ class HomeScreen extends React.Component {
     receivedTextFromServer: PropTypes.func.isRequired,
     navigation: PropTypes.shape({}).isRequired,
     user: PropTypes.string.isRequired,
-    username: PropTypes.string.isRequired,
+    email: PropTypes.string.isRequired,
     LogoutUser: PropTypes.func.isRequired,
     InitializePlaceOfMeasurementModal: PropTypes.func.isRequired,
     InitializeElectricMeter: PropTypes.func.isRequired,
@@ -143,7 +143,7 @@ class HomeScreen extends React.Component {
   }
 
   registerForPushNotificationsAsync = async () => {
-    const { username, user } = this.props;
+    const { email, user } = this.props;
     const { status: existingStatus } = await Permissions.getAsync(
       Permissions.NOTIFICATIONS,
     );
@@ -177,7 +177,7 @@ class HomeScreen extends React.Component {
       },
       body: JSON.stringify({
         token: pushToken,
-        username,
+        email,
       }),
     });
   }
@@ -246,7 +246,7 @@ class HomeScreen extends React.Component {
 const mapStateToProps = state => ({
   serverText: state.serverText,
   user: state.signIn.user,
-  username: state.signIn.id,
+  email: state.signIn.id,
   notification: state.home.notification,
 });
 

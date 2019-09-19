@@ -403,7 +403,6 @@ class Form extends React.Component {
 
 const mapStateToProps = state => ({
   token: state.signIn.user,
-  username: state.signIn.id,
   name: state.qac.name,
   legalName: state.qac.legalName,
   surname: state.qac.surname,

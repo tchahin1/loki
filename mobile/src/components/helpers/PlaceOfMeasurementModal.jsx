@@ -30,7 +30,7 @@ class PlaceOfMeasurementModal extends React.Component {
     number: PropTypes.string.isRequired,
     token: PropTypes.string.isRequired,
     status: PropTypes.string.isRequired,
-    username: PropTypes.string.isRequired,
+    email: PropTypes.string.isRequired,
     reference: PropTypes.string.isRequired,
     PlaceNameChanged: PropTypes.func.isRequired,
     ReferenceChanged: PropTypes.func.isRequired,
@@ -60,12 +60,12 @@ class PlaceOfMeasurementModal extends React.Component {
     const { status } = nextProps;
     const {
       InitializePlaceOfMeasurementModal,
-      FetchMeasurementPlaces, username, token,
+      FetchMeasurementPlaces, email, token,
     } = this.props;
 
     if (status === OKStatus) {
       InitializePlaceOfMeasurementModal();
-      FetchMeasurementPlaces({ username, token });
+      FetchMeasurementPlaces({ email, token });
     }
   }
 
@@ -89,7 +89,7 @@ class PlaceOfMeasurementModal extends React.Component {
 
   validateFields = () => {
     const {
-      name, reference, number, SavePlaceDetails, token, username,
+      name, reference, number, SavePlaceDetails, token, email,
     } = this.props;
     const { errorText } = this.state;
     const { toggle } = this.props;
@@ -123,7 +123,7 @@ class PlaceOfMeasurementModal extends React.Component {
     this.setState({ errorText: '' });
 
     SavePlaceDetails({
-      name, reference: refCopy, number, token, username,
+      name, reference: refCopy, number, token, email,
     });
 
     if (errorText === '') toggle();
@@ -210,7 +210,7 @@ const mapStateToProps = state => ({
   number: state.measurementPlaceModal.placeNumber,
   token: state.signIn.user,
   status: state.measurementPlaceModal.status,
-  username: state.signIn.id,
+  email: state.signIn.id,
 });
 
 export default connect(mapStateToProps,

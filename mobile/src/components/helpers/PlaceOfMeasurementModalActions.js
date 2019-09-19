@@ -29,7 +29,7 @@ const savePlaceFailed = (dispatch) => {
 };
 
 export const savePlaceDetails = ({
-  name, reference, number, token, username,
+  name, reference, number, token, email,
 }) => (dispatch) => {
   dispatch({ type: 'nothing' });
 
@@ -46,7 +46,7 @@ export const savePlaceDetails = ({
       name,
       reference,
       placeNumber: num,
-      username,
+      email,
     }),
   }).then((response) => {
     if (response.ok) {
@@ -67,10 +67,10 @@ const fetchPlacesFailed = (dispatch) => {
   dispatch({ type: types.FETCH_PLACES_FAILED });
 };
 
-export const fetchMeasurementPlaces = ({ username, token }) => (dispatch) => {
+export const fetchMeasurementPlaces = ({ email, token }) => (dispatch) => {
   dispatch({ type: 'nothing' });
 
-  fetch(`${api}/place/all?username=${username}`, {
+  fetch(`${api}/place/all?email=${email}`, {
     method: 'GET',
     headers: {
       privateKey: token,

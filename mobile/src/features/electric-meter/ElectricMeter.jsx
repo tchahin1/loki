@@ -32,7 +32,7 @@ class ElectricMeterScreen extends React.Component {
     user: PropTypes.string.isRequired,
     LogoutUser: PropTypes.func.isRequired,
     loading: PropTypes.bool.isRequired,
-    username: PropTypes.string.isRequired,
+    email: PropTypes.string.isRequired,
     FetchMeasurementPlaces: PropTypes.func.isRequired,
     places: PropTypes.instanceOf(Array).isRequired,
     PlaceChanged: PropTypes.func.isRequired,
@@ -50,9 +50,9 @@ class ElectricMeterScreen extends React.Component {
   }
 
   componentWillMount() {
-    const { username, user, FetchMeasurementPlaces } = this.props;
+    const { email, user, FetchMeasurementPlaces } = this.props;
 
-    FetchMeasurementPlaces({ username, token: user });
+    FetchMeasurementPlaces({ email, token: user });
   }
 
   componentDidMount() {
@@ -196,7 +196,7 @@ class ElectricMeterScreen extends React.Component {
 
 const mapStateToProps = state => ({
   user: state.signIn.user,
-  username: state.signIn.id,
+  email: state.signIn.id,
   places: _.map(state.measurementPlaceModal.places, val => ({ ...val })),
   selectedPlace: state.electricMeter.selectedPlace,
   loading: state.electricMeter.loading,
