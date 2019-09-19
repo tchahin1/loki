@@ -4,5 +4,5 @@ import lombok.Value;
 
 @Value
 public class SendNotificationDto {
-    String username;
+    String email;
 }

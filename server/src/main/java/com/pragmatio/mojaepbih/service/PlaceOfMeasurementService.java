@@ -13,5 +13,5 @@ public interface PlaceOfMeasurementService extends IService<PlaceOfMeasurement> 
 
     Response saveMeasurementPlace(PlaceOfMeasurementDto placeOfMeasurementDto);
 
-    Response findMeasurementPlacesForUser(String username);
+    Response findMeasurementPlacesForUser(String email);
 }

@@ -65,7 +65,7 @@ public class PlaceOfMeasurementServiceImpl implements PlaceOfMeasurementService 
     public Response saveMeasurementPlace(PlaceOfMeasurementDto placeOfMeasurementDto) {
         PlaceOfMeasurement alreadyInDb = findByReference(placeOfMeasurementDto.getReference());
         if (alreadyInDb == null) {
-            User user = userRepository.findByEmail(placeOfMeasurementDto.getUsername());
+            User user = userRepository.findByEmail(placeOfMeasurementDto.getEmail());
             if (user == null) return Response.status(400).entity("User does not exist!").build();
             PlaceOfMeasurement newPlaceOfMeasurement = new PlaceOfMeasurement(placeOfMeasurementDto.getName(),
                     placeOfMeasurementDto.getReference(), placeOfMeasurementDto.getPlaceNumber(),
@@ -78,8 +78,8 @@ public class PlaceOfMeasurementServiceImpl implements PlaceOfMeasurementService 
     }
 
     @Override
-    public Response findMeasurementPlacesForUser(String username) {
-        User user = userRepository.findByEmail(username);
+    public Response findMeasurementPlacesForUser(String email) {
+        User user = userRepository.findByEmail(email);
         if (user == null) return Response.status(400).entity("User does not exist!").build();
         List<PlaceOfMeasurement> places = findAllByUserId(user.getId());
         return Response.ok(places, MediaType.APPLICATION_JSON).build();

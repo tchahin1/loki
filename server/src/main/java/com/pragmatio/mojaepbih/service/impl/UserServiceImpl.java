@@ -57,8 +57,8 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteById(id);
     }
 
-    public Response findUserData(String username) {
-        User user = findByEmail(username);
+    public Response findUserData(String email) {
+        User user = findByEmail(email);
         if(user == null) return Response.status(400).entity("User does not exist!").build();
         return Response.ok(user, MediaType.APPLICATION_JSON).build();
     }
@@ -67,8 +67,8 @@ public class UserServiceImpl implements UserService {
         User user = findById(userEditDataDto.getId());
         if(user != null) {
             user.setEmail(userEditDataDto.getEmail());
-            // user.setName(userEditDataDto.getName());
-            // user.setSurname(userEditDataDto.getSurname());
+             user.setName(userEditDataDto.getName());
+             user.setSurname(userEditDataDto.getSurname());
             user.setPassword(userEditDataDto.getPassword());
             save(user);
             return Response.ok().entity("Successfully edited user!").build();

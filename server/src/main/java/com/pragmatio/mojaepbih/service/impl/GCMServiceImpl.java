@@ -51,7 +51,7 @@ public class GCMServiceImpl implements GCMService {
 
         JSONObject json = new JSONObject();
 
-        String token = this.getDeviceTokenFromUsername(sendNotificationDto.getUsername());
+        String token = this.getDeviceTokenFromEmail(sendNotificationDto.getEmail());
 
         json.put("to", token.trim());
         json.put("title", "test"); // Notification title
@@ -82,9 +82,9 @@ public class GCMServiceImpl implements GCMService {
     }
 
     @Override
-    public String getDeviceTokenFromUsername(String username){
+    public String getDeviceTokenFromEmail(String email){
         String token = "";
-        User user = userRepository.findByEmail(username);
+        User user = userRepository.findByEmail(email);
         if(user != null) {
             Notification notification = notificationRepository.findByUserId(user.getId());
             if(notification != null) token = notification.getDeviceToken();

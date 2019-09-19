@@ -52,8 +52,8 @@ public class FailureServiceImpl implements FailureService {
     @Override
     public Response saveFailureReport(FailureDto failureDto) {
         User user = null;
-        if (!failureDto.getUsername().equals("")) user = userRepository.findByEmail(failureDto.getUsername());
-        if (user == null && (!failureDto.getUsername().equals("")))
+        if (!failureDto.getEmail().equals("")) user = userRepository.findByEmail(failureDto.getEmail());
+        if (user == null && (!failureDto.getEmail().equals("")))
             return Response.status(400).entity("User does not exist!").build();
         Failure newFailure = new Failure(failureDto.getDescription(), failureDto.getPhoto(),
                 user, failureDto.getLat(), failureDto.getLon());

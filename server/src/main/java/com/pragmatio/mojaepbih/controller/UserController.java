@@ -20,8 +20,8 @@ public class UserController {
 
     @GetMapping("/data")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response findDataForUser(@QueryParam("username") String username) {
-        return this.userService.findUserData(username);
+    public Response findDataForUser(@QueryParam("email") String email) {
+        return this.userService.findUserData(email);
     }
 
     @PostMapping("/edit")

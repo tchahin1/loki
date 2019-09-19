@@ -8,6 +8,5 @@ public class UserEditDataDto {
     String surname;
     String email;
     String password;
-    String confirmPass;
     Long id;
 }

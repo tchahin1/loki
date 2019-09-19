@@ -7,5 +7,5 @@ public class PlaceOfMeasurementDto {
     private String name;
     private String reference;
     private Integer placeNumber;
-    private String username;
+    private String email;
 }

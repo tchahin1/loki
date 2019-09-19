@@ -8,7 +8,7 @@ public class MeasurementDto {
     private String smallTariff;
     private String photo;
     private String note;
-    private String username;
+    private String email;
     private Long measurementPlace;
     Double lat;
     Double lon;

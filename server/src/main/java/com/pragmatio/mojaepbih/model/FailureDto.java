@@ -5,7 +5,7 @@ import lombok.Value;
 @Value
 public class FailureDto {
     String photo;
-    String username;
+    String email;
     String description;
     Double lat;
     Double lon;

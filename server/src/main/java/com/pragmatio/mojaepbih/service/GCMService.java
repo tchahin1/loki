@@ -9,5 +9,5 @@ import org.json.JSONException;
 public interface GCMService {
     Response sendNotificationToUser(SendNotificationDto sendNotificationDto) throws IOException, JSONException;
 
-    String getDeviceTokenFromUsername(String username);
+    String getDeviceTokenFromEmail(String email);
 }

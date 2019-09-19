@@ -66,7 +66,7 @@ public class MeasurementServiceImpl implements MeasurementService {
     public Response saveMeasurement(MeasurementDto measurementDto) {
         Measurement alreadyInDb = this.measurementRepository.findByPlaceId(measurementDto.getMeasurementPlace());
         if (alreadyInDb == null) {
-            User user = userRepository.findByEmail(measurementDto.getUsername());
+            User user = userRepository.findByEmail(measurementDto.getEmail());
             if (user == null) return Response.status(400).entity("User does not exist!").build();
             PlaceOfMeasurement placeOfMeasurement = placeOfMeasurementService.findById(measurementDto.getMeasurementPlace());
             if (placeOfMeasurement == null)

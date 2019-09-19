@@ -69,11 +69,7 @@ public class AuthRestController {
             return new ResponseEntity<String>("Fail -> Email is already taken!",
                     HttpStatus.BAD_REQUEST);
         }
-        if(userServiceImpl.existsByUsername(signUpRequest.getUsername())) {
-            return new ResponseEntity<String>("Fail -> Username is already taken!",
-                    HttpStatus.BAD_REQUEST);
-        }
-        User user = new User(signUpRequest.getEmail(), signUpRequest.getUsername(), encoder.encode(signUpRequest.getPassword()));
+        User user = new User(signUpRequest.getEmail(), signUpRequest.getName(), signUpRequest.getSurname(), encoder.encode(signUpRequest.getPassword()));
         userServiceImpl.save(user);
         return ResponseEntity.ok("Succesfully registered!");
     }

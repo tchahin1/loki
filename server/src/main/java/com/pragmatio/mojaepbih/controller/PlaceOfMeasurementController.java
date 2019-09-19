@@ -29,7 +29,7 @@ public class PlaceOfMeasurementController {
     @GetMapping("/all")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response findAllMeasurementPlacesForUser(@QueryParam("username") String username) {
-        return this.placeOfMeasurementService.findMeasurementPlacesForUser(username);
+    public Response findAllMeasurementPlacesForUser(@QueryParam("email") String email) {
+        return this.placeOfMeasurementService.findMeasurementPlacesForUser(email);
     }
 }
