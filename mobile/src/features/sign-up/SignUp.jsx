@@ -115,11 +115,11 @@ class SignUp extends React.Component {
 
   onButtonPress = () => {
     const {
-      name, surname, password, email, confirmPass, RegisterUser,
+      name, surname, password, email, RegisterUser,
     } = this.props;
 
     RegisterUser({
-      name, surname, password, email, confirmPass,
+      name, surname, password, email,
     });
   }
 
@@ -324,12 +324,10 @@ class SignUp extends React.Component {
                   || error.surname !== ''
                   || error.email !== ''
                   || error.password !== ''
-                  || error.confirmPass !== ''
                   || name === ''
                   || surname === ''
                   || password === ''
                   || email === ''
-                  || confirmPass === ''
                 }
                 onPress={this.onButtonPress}
               />
