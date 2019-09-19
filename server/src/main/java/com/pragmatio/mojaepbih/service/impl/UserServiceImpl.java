@@ -43,18 +43,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Boolean existsByUsername(String username) {
-        return userRepository.existsByUsername(username);
-    }
-
-    @Override
-    public Optional<User> findByEmail(String email) {
+    public User findByEmail(String email) {
         return userRepository.findByEmail(email);
-    }
-
-    @Override
-    public User findByUsername(String username) {
-        return userRepository.findByUsername(username);
     }
 
     @Override
@@ -68,7 +58,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public Response findUserData(String username) {
-        User user = findByUsername(username);
+        User user = findByEmail(username);
         if(user == null) return Response.status(400).entity("User does not exist!").build();
         return Response.ok(user, MediaType.APPLICATION_JSON).build();
     }

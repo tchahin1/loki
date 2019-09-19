@@ -84,7 +84,7 @@ public class GCMServiceImpl implements GCMService {
     @Override
     public String getDeviceTokenFromUsername(String username){
         String token = "";
-        User user = userRepository.findByUsername(username);
+        User user = userRepository.findByEmail(username);
         if(user != null) {
             Notification notification = notificationRepository.findByUserId(user.getId());
             if(notification != null) token = notification.getDeviceToken();

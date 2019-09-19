@@ -5,7 +5,8 @@ import lombok.Data;
 @Data
 public class SignUpData {
     private String email;
-    private String username;
+    private String name;
+    private String surname;
     private String password;
     private String passwordRepeated;
 }
