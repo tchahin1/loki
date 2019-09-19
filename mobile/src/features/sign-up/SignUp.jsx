@@ -321,7 +321,7 @@ class SignUp extends React.Component {
                 titleStyle={{ fontSize: 18 }}
                 disabled={
                   error.name !== ''
-                  || error.surname === ''
+                  || error.surname !== ''
                   || error.email !== ''
                   || error.password !== ''
                   || error.confirmPass !== ''
