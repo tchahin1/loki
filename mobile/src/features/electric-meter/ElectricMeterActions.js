@@ -66,7 +66,7 @@ export const saveMeasurement = ({
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
-      privateKey: token,
+      Authorization: token,
     },
     body: JSON.stringify({
       email,

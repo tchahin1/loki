@@ -3,6 +3,7 @@ package com.pragmatio.mojaepbih.controller;
 import com.pragmatio.mojaepbih.model.QacDto;
 import com.pragmatio.mojaepbih.service.impl.QuestionsAndComplaintsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.ws.rs.Consumes;
@@ -21,7 +22,7 @@ public class QuestionsAndComplaintsController {
     @PostMapping("/save")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response saveQaC(@RequestBody QacDto qacDto) {
+    public ResponseEntity saveQaC(@RequestBody QacDto qacDto) {
         return this.questionsAndComplaintsService.saveQaC(qacDto);
     }
 }

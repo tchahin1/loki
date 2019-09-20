@@ -43,12 +43,14 @@ const registerUserSuccess = (dispatch) => {
   dispatch({ type: types.REGISTER_USER_SUCCESS });
 };
 
-const registerUserFail = (dispatch) => {
+const registerUserFail = (dispatch, response) => {
   const { ERRORS } = Inputs;
 
   dispatch({ type: types.REGISTER_USER_FAIL, payload: ERRORS.USER_EXISTS_ERR });
 
   Keyboard.dismiss();
+
+  console.log(response);
 };
 
 export const registerUser = ({
@@ -56,7 +58,6 @@ export const registerUser = ({
   surname,
   password,
   email,
-  confirmPass,
 }) => (dispatch) => {
   dispatch({ type: types.REGISTER_USER });
 
@@ -71,13 +72,12 @@ export const registerUser = ({
       surname,
       email,
       password,
-      passwordRepeated: confirmPass,
     }),
   }).then((response) => {
     if (response.ok) {
       registerUserSuccess(dispatch, response);
     } else {
-      registerUserFail(dispatch);
+      registerUserFail(dispatch, response);
     }
   });
 };

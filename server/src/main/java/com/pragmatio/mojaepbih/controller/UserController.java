@@ -3,6 +3,7 @@ package com.pragmatio.mojaepbih.controller;
 import com.pragmatio.mojaepbih.model.UserEditDataDto;
 import com.pragmatio.mojaepbih.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.ws.rs.Consumes;
@@ -20,14 +21,14 @@ public class UserController {
 
     @GetMapping("/data")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response findDataForUser(@QueryParam("email") String email) {
+    public ResponseEntity findDataForUser(@QueryParam("email") String email) {
         return this.userService.findUserData(email);
     }
 
     @PostMapping("/edit")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response editUsersData(@RequestBody UserEditDataDto userEditDataDto) {
+    public ResponseEntity editUsersData(@RequestBody UserEditDataDto userEditDataDto) {
         return this.userService.editUser(userEditDataDto);
     }
 }

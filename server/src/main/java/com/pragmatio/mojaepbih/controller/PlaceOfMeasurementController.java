@@ -3,6 +3,7 @@ package com.pragmatio.mojaepbih.controller;
 import com.pragmatio.mojaepbih.model.PlaceOfMeasurementDto;
 import com.pragmatio.mojaepbih.service.impl.PlaceOfMeasurementServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.ws.rs.Consumes;
@@ -22,14 +23,14 @@ public class PlaceOfMeasurementController {
     @PostMapping("/save")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response savePlace(@RequestBody PlaceOfMeasurementDto placeDto) {
+    public ResponseEntity savePlace(@RequestBody PlaceOfMeasurementDto placeDto) {
         return this.placeOfMeasurementService.saveMeasurementPlace(placeDto);
     }
 
     @GetMapping("/all")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response findAllMeasurementPlacesForUser(@QueryParam("email") String email) {
+    public ResponseEntity findAllMeasurementPlacesForUser(@QueryParam("email") String email) {
         return this.placeOfMeasurementService.findMeasurementPlacesForUser(email);
     }
 }

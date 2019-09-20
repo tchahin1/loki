@@ -40,7 +40,7 @@ export const savePlaceDetails = ({
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
-      privateKey: token,
+      Authorization: token,
     },
     body: JSON.stringify({
       name,
@@ -73,7 +73,7 @@ export const fetchMeasurementPlaces = ({ email, token }) => (dispatch) => {
   fetch(`${api}/place/all?email=${email}`, {
     method: 'GET',
     headers: {
-      privateKey: token,
+      Authorization: token,
     },
   }).then((response) => {
     if (response.ok) {

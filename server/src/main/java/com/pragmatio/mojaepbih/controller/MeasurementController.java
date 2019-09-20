@@ -3,10 +3,8 @@ package com.pragmatio.mojaepbih.controller;
 import com.pragmatio.mojaepbih.model.MeasurementDto;
 import com.pragmatio.mojaepbih.service.impl.MeasurementServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
@@ -24,7 +22,7 @@ public class MeasurementController {
     @PostMapping("/save")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response addMeasurementPlace(MeasurementDto measurementDto) {
+    public ResponseEntity addMeasurementPlace(@RequestBody MeasurementDto measurementDto) {
         return this.measurementService.saveMeasurement(measurementDto);
     }
 }

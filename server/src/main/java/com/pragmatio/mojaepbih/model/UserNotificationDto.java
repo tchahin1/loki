@@ -1,8 +1,8 @@
 package com.pragmatio.mojaepbih.model;
 
-import lombok.Value;
+import lombok.Data;
 
-@Value
+@Data
 public class UserNotificationDto {
     String email;
     String token;
