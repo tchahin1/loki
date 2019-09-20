@@ -142,7 +142,7 @@ class MyProfileScreen extends React.Component {
     const { FetchUserData, email, user } = this.props;
 
     InitializeMyProfile();
-    FetchUserData({ username: email, token: user });
+    FetchUserData({ email, token: user });
   }
 
   onButtonPress = () => {

@@ -90,10 +90,10 @@ const fetchUserFailed = (dispatch) => {
   dispatch({ type: 'nothing' });
 };
 
-export const fetchUserData = ({ username, token }) => (dispatch) => {
+export const fetchUserData = ({ email, token }) => (dispatch) => {
   dispatch({ type: 'nothing' });
 
-  fetch(`${api}/user/data/?username=${username}`, {
+  fetch(`${api}/user/data/?email=${email}`, {
     method: 'GET',
     headers: {
       privateKey: token,

@@ -35,9 +35,8 @@ const sendFailureReportSuccess = (dispatch) => {
   dispatch({ type: types.SEND_FR_SUCCESS });
 };
 
-const sendFailureReportFail = (dispatch, response) => {
+const sendFailureReportFail = (dispatch) => {
   dispatch({ type: types.SEND_FR_FAIL });
-  console.log(response);
 };
 
 export const sendFailureReport = ({
@@ -76,7 +75,7 @@ export const sendFailureReport = ({
     if (response.ok) {
       sendFailureReportSuccess(dispatch);
     } else {
-      sendFailureReportFail(dispatch, response);
+      sendFailureReportFail(dispatch);
     }
   });
 };

@@ -37,7 +37,7 @@ const loginUserFail = (dispatch) => {
 
 export const loginUser = ({ email, password }) => (dispatch) => {
   dispatch({ type: types.LOGIN_USER });
-  dispatch({ type: types.PROFILE_EMAIL_CHANGED, payload: username });
+  dispatch({ type: types.PROFILE_EMAIL_CHANGED, payload: email });
 
   fetch(`${api}/login`, {
     method: 'POST',
