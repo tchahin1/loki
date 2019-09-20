@@ -9,6 +9,7 @@ import EServiceScreen from '../features/e-service';
 import CalculatorScreen from '../features/calculator';
 import InfoScreen from '../features/information';
 import ElectricMeterScreen from '../features/electric-meter/Navigator';
+import MyProfileScreen from '../features/myprofile';
 import Screen from './ScreenName';
 
 const getRouteConfigMap = () => {
@@ -65,6 +66,12 @@ const getRouteConfigMap = () => {
     screen: InfoScreen,
     navigationOptions: {
       title: 'Ostale informacije',
+    },
+  };
+  map[Screen.MYPROFILE] = {
+    screen: MyProfileScreen,
+    navigationOptions: {
+      title: 'Moj profil',
     },
   };
   return map;

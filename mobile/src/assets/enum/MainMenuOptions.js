@@ -7,6 +7,7 @@ const MainMenuOptions = [
   { key: 'EService', value: 'E-Usluge' },
   { key: 'Calculator', value: 'Kalkulator' },
   { key: 'Information', value: 'Ostale informacije' },
+  { key: 'MyProfile', value: 'Moj profil' },
 ];
 
 export default MainMenuOptions;
