@@ -18,7 +18,8 @@ import Screen from '../../navigation/ScreenName';
 import createStyles from './SignUp.styles';
 import {
   initializeRegistration,
-  signupUsernameChanged,
+  signupNameChanged,
+  signupSurnameChanged,
   signupPasswordChanged,
   signupEmailChanged,
   signupConfirmPasswordChanged,
@@ -30,7 +31,8 @@ const styles = createStyles();
 class SignUp extends React.Component {
   static propTypes = {
     navigation: PropTypes.shape({}).isRequired,
-    username: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    surname: PropTypes.string.isRequired,
     password: PropTypes.string.isRequired,
     email: PropTypes.string.isRequired,
     confirmPass: PropTypes.string.isRequired,
@@ -38,7 +40,8 @@ class SignUp extends React.Component {
     successFlag: PropTypes.bool.isRequired,
     isLoading: PropTypes.bool.isRequired,
     InitializeRegistration: PropTypes.func.isRequired,
-    SignupUsernameChanged: PropTypes.func.isRequired,
+    SignupNameChanged: PropTypes.func.isRequired,
+    SignupSurnameChanged: PropTypes.func.isRequired,
     SignupPasswordChanged: PropTypes.func.isRequired,
     SignupEmailChanged: PropTypes.func.isRequired,
     SignupConfirmPasswordChanged: PropTypes.func.isRequired,
@@ -50,7 +53,8 @@ class SignUp extends React.Component {
 
     this.state = {
       error: {
-        username: '',
+        name: '',
+        surname: '',
         email: '',
         password: '',
         confirmPass: '',
@@ -79,10 +83,16 @@ class SignUp extends React.Component {
     }
   }
 
-  onUsernameChange = (text) => {
-    const { SignupUsernameChanged } = this.props;
+  onNameChange = (text) => {
+    const { SignupNameChanged } = this.props;
 
-    SignupUsernameChanged(text);
+    SignupNameChanged(text);
+  }
+
+  onSurnameChange = (text) => {
+    const { SignupSurnameChanged } = this.props;
+
+    SignupSurnameChanged(text);
   }
 
   onPasswordChange = (text) => {
@@ -105,11 +115,11 @@ class SignUp extends React.Component {
 
   onButtonPress = () => {
     const {
-      username, password, email, confirmPass, RegisterUser,
+      name, surname, password, email, RegisterUser,
     } = this.props;
 
     RegisterUser({
-      username, password, email, confirmPass,
+      name, surname, password, email,
     });
   }
 
@@ -118,22 +128,36 @@ class SignUp extends React.Component {
     const { error } = this.state;
     const { ERRORS, LABELS } = Inputs;
     const errors = {
-      username: error.username,
+      name: error.name,
+      surname: error.surname,
       email: error.email,
       password: error.password,
       confirmPass: error.confirmPass,
     };
 
     switch (input) {
-      case LABELS.USERNAME: {
-        const regExp = new RegExp(/^(?=.*\d)*(?=.*[a-zA-Z]).{4,}$/);
-        this.onUsernameChange(value);
-        if (value.length < 4) {
-          errors.username = ERRORS.USERNAME_ERR;
+      case LABELS.NAME: {
+        const regExp = new RegExp(/^(?=.*\d)*(?=.*[a-zA-Z]).{2,}$/);
+        this.onNameChange(value);
+        if (value.length < 2) {
+          errors.name = ERRORS.NAME_ERR;
         } else if (!value.match(regExp)) {
-          errors.username = 'Korisnicko ime nije validno';
+          errors.name = 'Ime nije validno';
         } else {
-          errors.username = '';
+          errors.name = '';
+        }
+        break;
+      }
+
+      case LABELS.SURNAME: {
+        const regExp = new RegExp(/^(?=.*\d)*(?=.*[a-zA-Z]).{2,}$/);
+        this.onSurnameChange(value);
+        if (value.length < 2) {
+          errors.surname = ERRORS.SURNAME_ERR;
+        } else if (!value.match(regExp)) {
+          errors.surname = 'Prezime nije validno';
+        } else {
+          errors.surname = '';
         }
         break;
       }
@@ -197,7 +221,7 @@ class SignUp extends React.Component {
     const { LABELS } = Inputs;
     const { error } = this.state;
     const {
-      email, username, password, confirmPass, isLoading, userExistsErr, successFlag,
+      email, name, surname, password, confirmPass, isLoading, userExistsErr, successFlag,
     } = this.props;
 
     return (
@@ -209,9 +233,9 @@ class SignUp extends React.Component {
           >
             <View style={styles.inputsWrapper}>
               <TextField
-                label={LABELS.USERNAME}
-                value={username}
-                onChangeText={text => this.changeAndValidateValues(LABELS.USERNAME, text)}
+                label={LABELS.NAME}
+                value={name}
+                onChangeText={text => this.changeAndValidateValues(LABELS.NAME, text)}
                 animationDuration={100}
                 tintColor={Colors.PRIMARY_WHITE}
                 textColor={Colors.PRIMARY_WHITE}
@@ -220,7 +244,22 @@ class SignUp extends React.Component {
                 activeLineWidth={3.5}
                 fontSize={18}
                 labelFontSize={15}
-                error={error.username}
+                error={error.name}
+                errorColor={Colors.NOTICE_COLOR}
+              />
+              <TextField
+                label={LABELS.SURNAME}
+                value={surname}
+                onChangeText={text => this.changeAndValidateValues(LABELS.SURNAME, text)}
+                animationDuration={100}
+                tintColor={Colors.PRIMARY_WHITE}
+                textColor={Colors.PRIMARY_WHITE}
+                baseColor={Colors.PRIMARY_WHITE}
+                lineWidth={2}
+                activeLineWidth={3.5}
+                fontSize={18}
+                labelFontSize={15}
+                error={error.surname}
                 errorColor={Colors.NOTICE_COLOR}
               />
               <TextField
@@ -281,14 +320,14 @@ class SignUp extends React.Component {
                 title="REGISTRUJ SE"
                 titleStyle={{ fontSize: 18 }}
                 disabled={
-                  error.username !== ''
+                  error.name !== ''
+                  || error.surname !== ''
                   || error.email !== ''
                   || error.password !== ''
-                  || error.confirmPass !== ''
-                  || username === ''
+                  || name === ''
+                  || surname === ''
                   || password === ''
                   || email === ''
-                  || confirmPass === ''
                 }
                 onPress={this.onButtonPress}
               />
@@ -310,7 +349,8 @@ class SignUp extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  username: state.signUp.username,
+  name: state.signUp.name,
+  surname: state.signUp.surname,
   password: state.signUp.password,
   email: state.signUp.email,
   confirmPass: state.signUp.confirmPass,
@@ -325,6 +365,7 @@ export default connect(mapStateToProps,
     SignupConfirmPasswordChanged: signupConfirmPasswordChanged,
     SignupEmailChanged: signupEmailChanged,
     SignupPasswordChanged: signupPasswordChanged,
-    SignupUsernameChanged: signupUsernameChanged,
+    SignupNameChanged: signupNameChanged,
+    SignupSurnameChanged: signupSurnameChanged,
     RegisterUser: registerUser,
   })(SignUp);

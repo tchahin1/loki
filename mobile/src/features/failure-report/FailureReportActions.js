@@ -40,7 +40,7 @@ const sendFailureReportFail = (dispatch) => {
 };
 
 export const sendFailureReport = ({
-  currentPhoto, failure, token, username, location,
+  currentPhoto, failure, token, email, location,
 }) => (dispatch) => {
   dispatch({ type: types.SEND_FAILURE_REPORT });
 
@@ -62,10 +62,10 @@ export const sendFailureReport = ({
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
-      privateKey: token,
+      Authorization: token,
     },
     body: JSON.stringify({
-      username,
+      email,
       photo: base64image,
       description: failure,
       lat: latitude,

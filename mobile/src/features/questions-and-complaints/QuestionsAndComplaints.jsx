@@ -91,7 +91,7 @@ class QuestionsAndComplaintsScreen extends React.Component {
 
 const mapStateToProps = state => ({
   user: state.signIn.user,
-  username: state.signIn.id,
+  email: state.signIn.id,
   loading: state.qac.loading,
 });
 

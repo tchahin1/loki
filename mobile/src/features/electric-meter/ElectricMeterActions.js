@@ -49,7 +49,7 @@ const resetNotification = (dispatch) => {
 };
 
 export const saveMeasurement = ({
-  largeTariff, smallTariff, currentPhoto, note, currentPlace, username, token, location,
+  largeTariff, smallTariff, currentPhoto, note, currentPlace, email, token, location,
 }) => (dispatch) => {
   dispatch({ type: types.SAVE_MEASUREMENT });
 
@@ -66,10 +66,10 @@ export const saveMeasurement = ({
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
-      privateKey: token,
+      Authorization: token,
     },
     body: JSON.stringify({
-      username,
+      email,
       largeTariff,
       smallTariff,
       photo: currentPhoto.base64,

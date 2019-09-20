@@ -37,7 +37,7 @@ class MetricLocationData extends React.Component {
     largeTariff: PropTypes.string.isRequired,
     smallTariff: PropTypes.string.isRequired,
     currentPhoto: PropTypes.shape({}),
-    username: PropTypes.string.isRequired,
+    email: PropTypes.string.isRequired,
     token: PropTypes.string.isRequired,
     location: PropTypes.shape({}).isRequired,
     infoText: PropTypes.string.isRequired,
@@ -234,7 +234,7 @@ class MetricLocationData extends React.Component {
 
   continueSaveData(position) {
     const {
-      largeTariff, smallTariff, currentPhoto, note, currentPlace, username,
+      largeTariff, smallTariff, currentPhoto, note, currentPlace, email,
       token, SaveMeasurement, notification, navigation,
     } = this.props;
 
@@ -251,7 +251,7 @@ class MetricLocationData extends React.Component {
         currentPhoto,
         note,
         currentPlace,
-        username,
+        email,
         token,
         location: GPSLocation,
       });
@@ -356,7 +356,7 @@ const mapStateToProps = state => ({
   note: state.electricMeter.note,
   currentPlace: state.electricMeter.selectedPlace,
   location: state.failureReport.location,
-  username: state.signIn.id,
+  email: state.signIn.id,
   notification: state.home.notification,
   token: state.signIn.user,
   infoText: state.electricMeter.infoText,

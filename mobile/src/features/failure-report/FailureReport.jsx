@@ -34,7 +34,7 @@ class FailureReportScreen extends React.Component {
     currentPhoto: PropTypes.shape({}),
     anonymus: PropTypes.number.isRequired,
     token: PropTypes.string.isRequired,
-    username: PropTypes.string.isRequired,
+    email: PropTypes.string.isRequired,
     loading: PropTypes.bool.isRequired,
     status: PropTypes.string.isRequired,
     location: PropTypes.shape({}).isRequired,
@@ -232,7 +232,7 @@ class FailureReportScreen extends React.Component {
 
   continueSaveData(position) {
     const {
-      SendFailureReport, currentPhoto, failure, anonymus, token, username,
+      SendFailureReport, currentPhoto, failure, anonymus, token, email,
     } = this.props;
 
     let GPSLocation = null;
@@ -243,11 +243,11 @@ class FailureReportScreen extends React.Component {
 
     if (anonymus === 0) {
       SendFailureReport({
-        currentPhoto, failure, token, username, location: GPSLocation,
+        currentPhoto, failure, token, email, location: GPSLocation,
       });
     } else {
       SendFailureReport({
-        currentPhoto, failure, token, username: '', location: GPSLocation,
+        currentPhoto, failure, token, email: '', location: GPSLocation,
       });
     }
     Keyboard.dismiss();
@@ -345,7 +345,7 @@ class FailureReportScreen extends React.Component {
 
 const mapStateToProps = state => ({
   token: state.signIn.user,
-  username: state.signIn.id,
+  email: state.signIn.id,
   failure: state.failureReport.note,
   currentPhoto: state.failureReport.photo,
   anonymus: state.failureReport.anonymus,

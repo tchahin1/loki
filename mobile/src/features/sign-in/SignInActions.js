@@ -8,8 +8,8 @@ export const initializeLogin = () => ({
   type: types.INITIALIZE_LOGIN,
 });
 
-export const usernameChanged = text => ({
-  type: types.USERNAME_CHANGED,
+export const emailChanged = text => ({
+  type: types.EMAIL_CHANGED,
   payload: text,
 });
 
@@ -21,7 +21,8 @@ export const passwordChanged = text => ({
 const loginUserSuccess = (dispatch, response) => {
   response.text().then((text) => {
     onSignIn(text).then(() => {
-      dispatch({ type: types.LOGIN_USER_SUCCESS, payload: text });
+      const token = `${JSON.parse(text).tokenType} ${JSON.parse(text).accessToken}`;
+      dispatch({ type: types.LOGIN_USER_SUCCESS, payload: token });
     });
   });
 };
@@ -34,18 +35,18 @@ const loginUserFail = (dispatch) => {
   Keyboard.dismiss();
 };
 
-export const loginUser = ({ username, password }) => (dispatch) => {
+export const loginUser = ({ email, password }) => (dispatch) => {
   dispatch({ type: types.LOGIN_USER });
-  dispatch({ type: types.PROFILE_EMAIL_CHANGED, payload: username });
+  dispatch({ type: types.PROFILE_EMAIL_CHANGED, payload: email });
 
-  fetch(`${api}/auth`, {
+  fetch(`${api}/login`, {
     method: 'POST',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      username,
+      email,
       password,
     }),
   }).then((response) => {

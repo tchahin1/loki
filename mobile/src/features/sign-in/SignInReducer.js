@@ -1,7 +1,7 @@
 import * as types from '../../actions/types';
 
 const INITIAL_STATE = {
-  username: '',
+  email: '',
   password: '',
   user: '',
   error: '',
@@ -11,8 +11,8 @@ const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case types.USERNAME_CHANGED:
-      return { ...state, username: action.payload };
+    case types.EMAIL_CHANGED:
+      return { ...state, email: action.payload };
     case types.PASSWORD_CHANGED:
       return { ...state, password: action.payload };
     case types.LOGIN_USER_SUCCESS:
@@ -20,7 +20,7 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         ...INITIAL_STATE,
         user: action.payload,
-        id: state.username,
+        id: state.email,
       };
     case types.LOGIN_USER_FAIL:
       return {

@@ -1,7 +1,8 @@
 import * as types from '../../actions/types';
 
 const INITIAL_STATE = {
-  username: '',
+  name: '',
+  surname: '',
   password: '',
   error: '',
   isLoading: false,
@@ -14,8 +15,10 @@ export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case types.SIGNUP_INITIALIZATION:
       return INITIAL_STATE;
-    case types.SIGNUP_USERNAME_CHANGED:
-      return { ...state, username: action.payload };
+    case types.SIGNUP_NAME_CHANGED:
+      return { ...state, name: action.payload };
+    case types.SIGNUP_SURNAME_CHANGED:
+      return { ...state, surname: action.payload };
     case types.SIGNUP_PASSWORD_CHANGED:
       return { ...state, password: action.payload };
     case types.SIGNUP_CONF_PASS_CHANGED:

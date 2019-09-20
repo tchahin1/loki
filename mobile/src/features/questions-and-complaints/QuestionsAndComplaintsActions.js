@@ -45,13 +45,11 @@ export const requestChanged = text => ({
   payload: text,
 });
 
-const sendQACFormSuccess = (dispatch, response) => {
-  console.log(response);
+const sendQACFormSuccess = (dispatch) => {
   dispatch({ type: types.SEND_QAC_SUCCESS });
 };
 
-const sendQACFormFail = (dispatch, response) => {
-  console.log(response);
+const sendQACFormFail = (dispatch) => {
   dispatch({ type: types.SEND_QAC_FAIL });
 };
 
@@ -69,7 +67,7 @@ export const sendQACForm = ({
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
-      privateKey: token,
+      Authorization: token,
     },
     body: JSON.stringify({
       customerType,
@@ -85,9 +83,9 @@ export const sendQACForm = ({
     }),
   }).then((response) => {
     if (response.ok) {
-      sendQACFormSuccess(dispatch, response);
+      sendQACFormSuccess(dispatch);
     } else {
-      sendQACFormFail(dispatch, response);
+      sendQACFormFail(dispatch);
     }
   });
 };

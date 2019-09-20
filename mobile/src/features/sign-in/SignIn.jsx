@@ -12,7 +12,7 @@ import createStyles from './SignIn.styles';
 import Inputs from '../../assets/enum/LoginInputsEnum';
 import ScreenName from '../../navigation/ScreenName';
 import {
-  usernameChanged, passwordChanged, loginUser, initializeLogin,
+  emailChanged, passwordChanged, loginUser, initializeLogin,
 } from './SignInActions';
 
 
@@ -22,11 +22,11 @@ class SignIn extends React.Component {
   static propTypes = {
     navigation: PropTypes.shape({}).isRequired,
     user: PropTypes.string.isRequired,
-    username: PropTypes.string.isRequired,
+    email: PropTypes.string.isRequired,
     password: PropTypes.string.isRequired,
     error: PropTypes.string.isRequired,
     isLoading: PropTypes.bool.isRequired,
-    UsernameChanged: PropTypes.func.isRequired,
+    EmailChanged: PropTypes.func.isRequired,
     PasswordChanged: PropTypes.func.isRequired,
     LoginUser: PropTypes.func.isRequired,
     InitializeLogin: PropTypes.func.isRequired,
@@ -46,10 +46,10 @@ class SignIn extends React.Component {
     }
   }
 
-  onUsernameChange = (text) => {
-    const { UsernameChanged } = this.props;
+  onEmailChange = (text) => {
+    const { EmailChanged } = this.props;
 
-    UsernameChanged(text);
+    EmailChanged(text);
   }
 
   onPasswordChange = (text) => {
@@ -59,9 +59,9 @@ class SignIn extends React.Component {
   }
 
   onButtonPress = () => {
-    const { username, password, LoginUser } = this.props;
+    const { email, password, LoginUser } = this.props;
 
-    LoginUser({ username, password });
+    LoginUser({ email, password });
   }
 
   renderLoading() {
@@ -78,7 +78,7 @@ class SignIn extends React.Component {
     const { navigation } = this.props;
     const { LABELS } = Inputs;
     const {
-      username, password, error,
+      email, password, error,
     } = this.props;
 
     return (
@@ -93,9 +93,9 @@ class SignIn extends React.Component {
             </View>
             <View style={styles.inputsWrapper}>
               <TextField
-                label={LABELS.USERNAME}
-                onChangeText={this.onUsernameChange}
-                value={username}
+                label={LABELS.EMAIL}
+                onChangeText={this.onEmailChange}
+                value={email}
                 animationDuration={100}
                 tintColor={Colors.PRIMARY_WHITE}
                 textColor={Colors.PRIMARY_WHITE}
@@ -126,7 +126,7 @@ class SignIn extends React.Component {
               <Button
                 buttonStyle={styles.btnSignIn}
                 title="PRIJAVI SE"
-                disabled={username === '' || password === ''}
+                disabled={email === '' || password === ''}
                 titleStyle={{ fontSize: 18 }}
                 onPress={this.onButtonPress}
               />
@@ -148,7 +148,7 @@ class SignIn extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  username: state.signIn.username,
+  email: state.signIn.email,
   password: state.signIn.password,
   error: state.signIn.error,
   isLoading: state.signIn.isLoading,
@@ -157,7 +157,7 @@ const mapStateToProps = state => ({
 
 export default connect(mapStateToProps,
   {
-    UsernameChanged: usernameChanged,
+    EmailChanged: emailChanged,
     PasswordChanged: passwordChanged,
     LoginUser: loginUser,
     InitializeLogin: initializeLogin,
