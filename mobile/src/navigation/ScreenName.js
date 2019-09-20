@@ -12,6 +12,7 @@ const ScreenName = {
   E_SERVICE: 'EService',
   CALCULATOR: 'Calculator',
   INFORMATION: 'Information',
+  MYPROFILE: 'MyProfile',
 
   CAMERA: 'Camera',
 };

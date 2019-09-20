@@ -8,6 +8,7 @@ import PlaceOfMeasurementModal from '../components/helpers/PlaceOfMeasurementMod
 import FailureReportReducer from '../features/failure-report/FailureReportReducer';
 import HomeReducer from '../features/home/HomeReducer';
 import QuestionsAndComplaintsReducer from '../features/questions-and-complaints/QuestionsAndComplaintsReducer';
+import MyProfileReducer from '../features/myprofile/MyProfileReducer';
 
 
 const changeServerText = text => ({
@@ -41,4 +42,5 @@ export default combineReducers({
   failureReport: FailureReportReducer,
   home: HomeReducer,
   qac: QuestionsAndComplaintsReducer,
+  profile: MyProfileReducer,
 });
