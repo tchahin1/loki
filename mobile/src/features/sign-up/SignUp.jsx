@@ -11,6 +11,9 @@ import {
 import { Button } from 'react-native-elements/src/index';
 import { TextField } from 'react-native-material-textfield';
 import PropTypes from 'prop-types';
+import {
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 import Background from '../../assets/images/epbih.jpg';
 import Colors from '../../assets/colors/AppColorsEnum';
 import Inputs from '../../assets/enum/LoginInputsEnum';
@@ -58,6 +61,7 @@ class SignUp extends React.Component {
         email: '',
         password: '',
         confirmPass: '',
+        focused: false,
       },
     };
   }
@@ -219,21 +223,19 @@ class SignUp extends React.Component {
 
   render() {
     const { LABELS } = Inputs;
-    const { error } = this.state;
+    const { error, focused } = this.state;
     const {
       email, name, surname, password, confirmPass, isLoading, userExistsErr, successFlag,
     } = this.props;
 
     return (
-      <ImageBackground source={Background} style={styles.wrapper}>
+      <ImageBackground source={Background} style={styles.wrapper} resizeMode="cover">
         <View style={styles.wrapper}>
           <KeyboardAvoidingView
             behavior="padding"
             enabled
-            style={{ flexDirection: 'column', flex: 1 }}
-            keyboardVerticalOffset={100}
           >
-            <View style={styles.inputsWrapper}>
+            <View style={focused ? [styles.inputsWrapper, { marginTop: hp('5%') }] : [styles.inputsWrapper, { marginTop: hp('13%') }]}>
               <TextField
                 label={LABELS.NAME}
                 value={name}
@@ -248,6 +250,7 @@ class SignUp extends React.Component {
                 labelFontSize={15}
                 error={error.name}
                 errorColor={Colors.NOTICE_COLOR}
+                onFocus={() => this.setState({ focused: false })}
               />
               <TextField
                 label={LABELS.SURNAME}
@@ -263,6 +266,7 @@ class SignUp extends React.Component {
                 labelFontSize={15}
                 error={error.surname}
                 errorColor={Colors.NOTICE_COLOR}
+                onFocus={() => this.setState({ focused: false })}
               />
               <TextField
                 label={LABELS.EMAIL}
@@ -278,6 +282,7 @@ class SignUp extends React.Component {
                 labelFontSize={15}
                 error={error.email}
                 errorColor={Colors.NOTICE_COLOR}
+                onFocus={() => this.setState({ focused: false })}
               />
               <TextField
                 secureTextEntry
@@ -294,6 +299,7 @@ class SignUp extends React.Component {
                 labelFontSize={15}
                 error={error.password}
                 errorColor={Colors.NOTICE_COLOR}
+                onFocus={() => this.setState({ focused: false })}
               />
               <TextField
                 secureTextEntry
@@ -310,6 +316,7 @@ class SignUp extends React.Component {
                 labelFontSize={15}
                 error={error.confirmPass}
                 errorColor={Colors.NOTICE_COLOR}
+                onFocus={() => this.setState({ focused: true })}
               />
             </View>
             <View style={styles.btnWrapper}>
@@ -336,7 +343,7 @@ class SignUp extends React.Component {
                 onPress={this.onButtonPress}
               />
             </View>
-            <View />
+            <View style={{ height: 200 }} />
           </KeyboardAvoidingView>
         </View>
         <View style={{ justifyContent: 'flex-end' }}>

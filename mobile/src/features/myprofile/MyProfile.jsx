@@ -222,7 +222,7 @@ class MyProfileScreen extends React.Component {
           errors.password = ERRORS.PASS_LENGTH_ERR;
         } else if (!value.match(regExp)) {
           errors.password = 'Password nije validan !';
-        } else if (value !== confirmPass && confirmPass !== '') {
+        } else if (value !== confirmPass) {
           errors.password = '';
           errors.confirmPass = ERRORS.PASS_CONFIRM_ERR;
         } else if (value === confirmPass) {
@@ -280,7 +280,7 @@ class MyProfileScreen extends React.Component {
             />
           )}
         />
-        <View style={{ flex: 1, padding: 10 }}>
+        <View style={{ flex: 1, padding: 20 }}>
           <KeyboardAvoidingView
             style={{
               flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
@@ -380,7 +380,7 @@ class MyProfileScreen extends React.Component {
                       || error.name !== '' || error.password !== '' || error.surname !== '' || error.email !== ''
                       || error.confirmPass !== ''
                     }
-                  titleStyle={{ fontSize: 18, marginLeft: -50 }}
+                  titleStyle={{ fontSize: 18, marginLeft: -70 }}
                   onPress={this.onButtonPress}
                 />
               </View>
