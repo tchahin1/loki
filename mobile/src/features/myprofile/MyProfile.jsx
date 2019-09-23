@@ -153,6 +153,7 @@ class MyProfileScreen extends React.Component {
 
     InitializeMyProfile();
     FetchUserData({ email, token: user });
+    this.setState({ error: '' });
   }
 
   onButtonPress = () => {
