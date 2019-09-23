@@ -9,14 +9,13 @@ const INITIAL_STATE = {
   confirmPass: '',
   email: '',
   id: 0,
+  status: '',
 };
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case types.PROFILE_INITIALIZATION:
-      return {
-        ...state, ...INITIAL_STATE, email: state.email, id: state.id,
-      };
+      return { ...state, password: '', confirmPass: '' };
     case types.PROFILE_NAME_CHANGED:
       return { ...state, name: action.payload };
     case types.PROFILE_SURNAME_CHANGED:
@@ -30,9 +29,13 @@ export default (state = INITIAL_STATE, action) => {
     case types.PROFILE_ID_CHANGED:
       return { ...state, id: action.payload };
     case types.EDIT_USER_SUCCESS:
-      return { ...state, ...INITIAL_STATE, isLoading: false };
+      return { ...state, isLoading: false, status: 'OK' };
     case types.EDIT_USER_FAIL:
-      return { ...state, ...INITIAL_STATE, isLoading: false };
+      return {
+        ...state, ...INITIAL_STATE, isLoading: false, status: 'ERROR',
+      };
+    case types.RESET_PROFILE_STATUS:
+      return { ...state, status: '' };
     case types.EDIT_USER:
       return {
         ...state,

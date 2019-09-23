@@ -56,6 +56,7 @@ export const SEND_FR_FAIL = 'send_failure_report_fail';
 export const INITIALIZE_FAILURE_REPORT = 'initialize_failure_report';
 export const RESET_FR_STATUS = 'reset_fr_status';
 export const UPDATE_GPS_LOCATION = 'update_gps_location';
+export const SET_LOADING_TRUE = 'set_loading_true';
 
 // home part
 export const NOTIFICATION_RECIEVED = 'notification_received';
@@ -87,3 +88,4 @@ export const PROFILE_CONF_PASS_CHANGED = 'profile_confirm_password_changed';
 export const EDIT_USER_SUCCESS = 'edit_user_success';
 export const EDIT_USER_FAIL = 'edit_user_fail';
 export const EDIT_USER = 'edit_user';
+export const RESET_PROFILE_STATUS = 'reset_profile_status';

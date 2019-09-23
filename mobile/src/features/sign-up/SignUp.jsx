@@ -11,6 +11,9 @@ import {
 import { Button } from 'react-native-elements/src/index';
 import { TextField } from 'react-native-material-textfield';
 import PropTypes from 'prop-types';
+import {
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 import Background from '../../assets/images/epbih.jpg';
 import Colors from '../../assets/colors/AppColorsEnum';
 import Inputs from '../../assets/enum/LoginInputsEnum';
@@ -58,6 +61,7 @@ class SignUp extends React.Component {
         email: '',
         password: '',
         confirmPass: '',
+        focused: false,
       },
     };
   }
@@ -137,7 +141,7 @@ class SignUp extends React.Component {
 
     switch (input) {
       case LABELS.NAME: {
-        const regExp = new RegExp(/^(?=.*\d)*(?=.*[a-zA-Z]).{2,}$/);
+        const regExp = new RegExp(/^[a-zA-Z]+$/);
         this.onNameChange(value);
         if (value.length < 2) {
           errors.name = ERRORS.NAME_ERR;
@@ -150,7 +154,7 @@ class SignUp extends React.Component {
       }
 
       case LABELS.SURNAME: {
-        const regExp = new RegExp(/^(?=.*\d)*(?=.*[a-zA-Z]).{2,}$/);
+        const regExp = new RegExp(/^[a-zA-Z]+$/);
         this.onSurnameChange(value);
         if (value.length < 2) {
           errors.surname = ERRORS.SURNAME_ERR;
@@ -167,7 +171,7 @@ class SignUp extends React.Component {
         new RegExp(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@
         ((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|
         (([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/); */
-        const regExp = new RegExp(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@([a-zA-Z0-9-]+\.[a-zA-Z]{1,}){0,61}[a-zA-Z0-9]$/);
+        const regExp = new RegExp(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@([a-zA-Z0-9-]+\.[a-zA-Z]{2,})$/);
         this.onEmailChange(value);
         if (!value.match(regExp)) {
           errors.email = ERRORS.EMAIL_ERR;
@@ -219,19 +223,19 @@ class SignUp extends React.Component {
 
   render() {
     const { LABELS } = Inputs;
-    const { error } = this.state;
+    const { error, focused } = this.state;
     const {
       email, name, surname, password, confirmPass, isLoading, userExistsErr, successFlag,
     } = this.props;
 
     return (
-      <ImageBackground source={Background} style={styles.wrapper}>
+      <ImageBackground source={Background} style={styles.wrapper} resizeMode="cover">
         <View style={styles.wrapper}>
           <KeyboardAvoidingView
-            behavior="position"
-            style={{ flexDirection: 'column' }}
+            behavior="padding"
+            enabled
           >
-            <View style={styles.inputsWrapper}>
+            <View style={focused ? [styles.inputsWrapper, { marginTop: hp('5%') }] : [styles.inputsWrapper, { marginTop: hp('13%') }]}>
               <TextField
                 label={LABELS.NAME}
                 value={name}
@@ -246,6 +250,7 @@ class SignUp extends React.Component {
                 labelFontSize={15}
                 error={error.name}
                 errorColor={Colors.NOTICE_COLOR}
+                onFocus={() => this.setState({ focused: false })}
               />
               <TextField
                 label={LABELS.SURNAME}
@@ -261,6 +266,7 @@ class SignUp extends React.Component {
                 labelFontSize={15}
                 error={error.surname}
                 errorColor={Colors.NOTICE_COLOR}
+                onFocus={() => this.setState({ focused: false })}
               />
               <TextField
                 label={LABELS.EMAIL}
@@ -276,6 +282,7 @@ class SignUp extends React.Component {
                 labelFontSize={15}
                 error={error.email}
                 errorColor={Colors.NOTICE_COLOR}
+                onFocus={() => this.setState({ focused: false })}
               />
               <TextField
                 secureTextEntry
@@ -292,6 +299,7 @@ class SignUp extends React.Component {
                 labelFontSize={15}
                 error={error.password}
                 errorColor={Colors.NOTICE_COLOR}
+                onFocus={() => this.setState({ focused: false })}
               />
               <TextField
                 secureTextEntry
@@ -308,6 +316,7 @@ class SignUp extends React.Component {
                 labelFontSize={15}
                 error={error.confirmPass}
                 errorColor={Colors.NOTICE_COLOR}
+                onFocus={() => this.setState({ focused: true })}
               />
             </View>
             <View style={styles.btnWrapper}>
@@ -324,15 +333,17 @@ class SignUp extends React.Component {
                   || error.surname !== ''
                   || error.email !== ''
                   || error.password !== ''
+                  || error.confirmPass !== ''
                   || name === ''
                   || surname === ''
                   || password === ''
                   || email === ''
+                  || confirmPass === ''
                 }
                 onPress={this.onButtonPress}
               />
             </View>
-            <View />
+            <View style={{ height: 200 }} />
           </KeyboardAvoidingView>
         </View>
         <View style={{ justifyContent: 'flex-end' }}>

@@ -14,7 +14,7 @@ import javax.ws.rs.core.Response;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/")
+@RequestMapping("/user")
 public class UserController {
     @Autowired
     UserServiceImpl userService;

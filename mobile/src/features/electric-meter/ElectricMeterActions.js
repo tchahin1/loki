@@ -34,6 +34,10 @@ export const updateGPSLocation = ({ lat, lon }) => (dispatch) => {
   });
 };
 
+export const setLoading = () => ({
+  type: types.SET_LOADING_TRUE,
+});
+
 const saveMeasurementSuccess = (dispatch) => {
   dispatch({ type: types.SAVE_MEASUREMENT_SUCCESS });
 };

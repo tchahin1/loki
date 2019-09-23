@@ -13,7 +13,6 @@ const styles = {
   inputsWrapper: {
     marginRight: wp('4%'),
     marginLeft: wp('4%'),
-    marginTop: hp('13%'),
   },
   btnSignUp: {
     backgroundColor: Colors.PRIMARY_BLUE,
