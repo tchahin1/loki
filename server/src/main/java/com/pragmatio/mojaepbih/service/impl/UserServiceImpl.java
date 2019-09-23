@@ -68,10 +68,10 @@ public class UserServiceImpl implements UserService {
     public ResponseEntity editUser(UserEditDataDto userEditDataDto) {
         User user = findById(userEditDataDto.getId());
         if(user != null) {
-            user.setEmail(userEditDataDto.getEmail());
-             user.setName(userEditDataDto.getName());
-             user.setSurname(userEditDataDto.getSurname());
-            user.setPassword(userEditDataDto.getPassword());
+            if(!user.getEmail().equals(userEditDataDto.getEmail())) user.setEmail(userEditDataDto.getEmail());
+            if(!user.getName().equals(userEditDataDto.getName())) user.setName(userEditDataDto.getName());
+            if(!user.getSurname().equals(userEditDataDto.getSurname())) user.setSurname(userEditDataDto.getSurname());
+            if(!userEditDataDto.getPassword().equals("")) user.setPassword(userEditDataDto.getPassword());
             save(user);
             return ResponseEntity.ok().body("Successfully edited user!");
         }
