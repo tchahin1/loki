@@ -7,6 +7,7 @@ import com.pragmatio.mojaepbih.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.ws.rs.core.MediaType;
@@ -23,6 +24,9 @@ public class UserServiceImpl implements UserService {
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
+
+    @Autowired
+    PasswordEncoder encoder;
 
     @Override
     public User save(User user) {
@@ -71,7 +75,10 @@ public class UserServiceImpl implements UserService {
             if(!user.getEmail().equals(userEditDataDto.getEmail())) user.setEmail(userEditDataDto.getEmail());
             if(!user.getName().equals(userEditDataDto.getName())) user.setName(userEditDataDto.getName());
             if(!user.getSurname().equals(userEditDataDto.getSurname())) user.setSurname(userEditDataDto.getSurname());
-            if(!userEditDataDto.getPassword().equals("")) user.setPassword(userEditDataDto.getPassword());
+            if(!userEditDataDto.getPassword().equals("")) {
+                String password = encoder.encode(userEditDataDto.getPassword());
+                user.setPassword(password);
+            }
             save(user);
             return ResponseEntity.ok().body("Successfully edited user!");
         }
