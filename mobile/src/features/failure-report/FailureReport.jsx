@@ -22,7 +22,7 @@ import createStyles from './FailureReport.styles';
 import logoutUser from '../account/AccountActions';
 import {
   noteChanged, photoChanged, sendFailureReport, sliderValueChanged,
-  initializeFailureReport, resetStatus, updateGPSLocation,
+  initializeFailureReport, resetStatus, updateGPSLocation, setLoading,
 } from './FailureReportActions';
 
 const styles = createStyles();
@@ -46,6 +46,7 @@ class FailureReportScreen extends React.Component {
     InitializeFailureReport: PropTypes.func.isRequired,
     ResetStatus: PropTypes.func.isRequired,
     UpdateGPSLocation: PropTypes.func.isRequired,
+    SetLoading: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -215,7 +216,9 @@ class FailureReportScreen extends React.Component {
       timeOut: 1000,
       maximumAge: 60 * 60 * 2,
     };
+    const { SetLoading } = this.props;
 
+    SetLoading();
     global.navigator.geolocation.getCurrentPosition(this.geoSuccess, this.geoFailure, geoOptions);
   }
 
@@ -363,4 +366,5 @@ export default connect(mapStateToProps, {
   InitializeFailureReport: initializeFailureReport,
   ResetStatus: resetStatus,
   UpdateGPSLocation: updateGPSLocation,
+  SetLoading: setLoading,
 })(FailureReportScreen);

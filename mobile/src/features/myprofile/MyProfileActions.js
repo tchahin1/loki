@@ -31,6 +31,10 @@ export const profilePasswordChanged = text => ({
   payload: text,
 });
 
+export const resetStatus = () => ({
+  type: types.RESET_PROFILE_STATUS,
+});
+
 const editUserSuccess = (dispatch) => {
   dispatch({ type: types.EDIT_USER_SUCCESS });
 };
@@ -48,6 +52,7 @@ export const editUser = ({
   email,
   confirmPass,
   id,
+  token,
 }) => (dispatch) => {
   dispatch({ type: types.EDIT_USER });
 
@@ -56,6 +61,7 @@ export const editUser = ({
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
+      Authorization: token,
     },
     body: JSON.stringify({
       name,
@@ -69,7 +75,7 @@ export const editUser = ({
     if (response.ok) {
       editUserSuccess(dispatch, response);
     } else {
-      editUserFail(dispatch);
+      editUserFail(dispatch, response);
     }
   });
 };
@@ -78,10 +84,8 @@ const fetchUserSuccess = (dispatch, response) => {
   response.text().then((text) => {
     const res = JSON.parse(text);
     dispatch({ type: types.PROFILE_EMAIL_CHANGED, payload: res.email });
-    // dispatch({ type: types.PROFILE_NAME_CHANGED, payload: res.email });
-    // dispatch({ type: types.PROFILE_SURNAME_CHANGED, payload: res.email });
-    dispatch({ type: types.PROFILE_PASSWORD_CHANGED, payload: res.password });
-    dispatch({ type: types.PROFILE_CONF_PASS_CHANGED, payload: res.password });
+    dispatch({ type: types.PROFILE_NAME_CHANGED, payload: res.name });
+    dispatch({ type: types.PROFILE_SURNAME_CHANGED, payload: res.surname });
     dispatch({ type: types.PROFILE_ID_CHANGED, payload: res.id });
   });
 };
@@ -96,13 +100,13 @@ export const fetchUserData = ({ email, token }) => (dispatch) => {
   fetch(`${api}/user/data/?email=${email}`, {
     method: 'GET',
     headers: {
-      privateKey: token,
+      Authorization: token,
     },
   }).then((response) => {
     if (response.ok) {
       fetchUserSuccess(dispatch, response);
     } else {
-      fetchUserFailed(dispatch);
+      fetchUserFailed(dispatch, response);
     }
   });
 };

@@ -11,7 +11,6 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Button } from 'react-native-elements/src/index';
 import EDSubsidiaries from '../../assets/enum/EDSubsidiaries';
 import createStyles from './Form.styles';
@@ -179,25 +178,28 @@ class Form extends React.Component {
       // code,
       phone,
       legalName,
+      request,
     } = this.props;
     const { customerType } = this.state;
 
     const numReg = new RegExp('^[0-9]+$');
     const letReg = new RegExp('^[a-zA-Z]+$');
     const emailReg = new RegExp(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
-
+    const requestReg = new RegExp(/\S/);
 
     if (customerType === 0
       && (!phone.match(numReg)
         || !name.match(letReg)
         || !surname.match(letReg)
-        || !email.match(emailReg))) {
+        || !email.match(emailReg)
+        || !request.match(requestReg))) {
       // || !code.match(new RegExp('^[0-9]*$')))) {
       this.setState({ err: 'Polja nisu ispravno popunjena' });
     } else if (customerType === 1
       && (!phone.match(numReg)
         || !legalName.match(letReg)
-        || !email.match(emailReg))) {
+        || !email.match(emailReg)
+        || !request.match(requestReg))) {
       // || !code.match(new RegExp('^[0-9]*$')))) {
       this.setState({ err: 'Polja nisu ispravno popunjena' });
     } else {
@@ -346,7 +348,7 @@ class Form extends React.Component {
                 value={legalName}
                 onChangeText={text => this.onLegalNameChange(text)}
                 placeholder="Naziv*"
-                style={[styles.textInput, { marginTop: hp('4%') }]}
+                style={[styles.textInput, { marginTop: 0 }]}
               />
               )}
               <TextInput
@@ -382,7 +384,6 @@ class Form extends React.Component {
                 value={request}
                 onChangeText={text => this.onRequestChange(text)}
                 multiline
-                autoFocus
                 underlineColorAndroid="transparent"
                 style={styles.requestTxtInput}
               />

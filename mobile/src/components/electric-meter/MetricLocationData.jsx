@@ -23,7 +23,7 @@ import {
   saveMeasurement,
   clearInfoText,
   clearNote,
-  initializeElectricMeter, updateGPSLocation,
+  initializeElectricMeter, updateGPSLocation, setLoading,
 } from '../../features/electric-meter/ElectricMeterActions';
 
 const styles = createStyles();
@@ -52,6 +52,7 @@ class MetricLocationData extends React.Component {
     ClearNote: PropTypes.func.isRequired,
     InitializeElectricMeter: PropTypes.func.isRequired,
     UpdateGPSLocation: PropTypes.func.isRequired,
+    SetLoading: PropTypes.func.isRequired,
     notification: PropTypes.bool.isRequired,
   };
 
@@ -146,6 +147,9 @@ class MetricLocationData extends React.Component {
       timeOut: 20000,
       maximumAge: 60 * 60 * 2,
     };
+    const { SetLoading } = this.props;
+
+    SetLoading();
 
     global.navigator.geolocation.getCurrentPosition(this.geoSuccess, this.geoFailure, geoOptions);
   };
@@ -374,4 +378,5 @@ export default connect(mapStateToProps,
     ClearNote: clearNote,
     InitializeElectricMeter: initializeElectricMeter,
     UpdateGPSLocation: updateGPSLocation,
+    SetLoading: setLoading,
   })(MetricLocationData);

@@ -25,6 +25,8 @@ export default (state = INITIAL_STATE, action) => {
     case types.SAVE_MEASUREMENT: {
       return { ...state, loading: true };
     }
+    case types.SET_LOADING_TRUE:
+      return { ...state, loading: true };
     case types.SAVE_MEASUREMENT_SUCCESS:
       return {
         ...state, ...INITIAL_STATE, infoText: 'Brojilo uspješno očitano!', selectedPlace: state.selectedPlace,

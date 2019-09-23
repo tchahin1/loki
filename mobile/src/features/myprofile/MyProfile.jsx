@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {
-  Text, View, ScrollView, KeyboardAvoidingView, Keyboard,
+  Text, View, ScrollView, KeyboardAvoidingView, Keyboard, Alert,
 } from 'react-native';
 import { Header, Button } from 'react-native-elements/src/index';
 import { TextField } from 'react-native-material-textfield';
@@ -17,7 +17,7 @@ import createStyles from './MyProfile.styles';
 import logoutUser from '../account/AccountActions';
 import {
   initializeMyProfile, profileConfirmPasswordChanged, profileEmailChanged, profileNameChanged,
-  profilePasswordChanged, profileSurnameChanged, editUser, fetchUserData,
+  profilePasswordChanged, profileSurnameChanged, editUser, fetchUserData, resetStatus,
 } from './MyProfileActions';
 
 const styles = createStyles();
@@ -29,6 +29,7 @@ class MyProfileScreen extends React.Component {
     LogoutUser: PropTypes.func.isRequired,
     name: PropTypes.string.isRequired,
     surname: PropTypes.string.isRequired,
+    status: PropTypes.string.isRequired,
     email: PropTypes.string.isRequired,
     confirmPass: PropTypes.string.isRequired,
     password: PropTypes.string.isRequired,
@@ -42,6 +43,7 @@ class MyProfileScreen extends React.Component {
     ProfileSurnameChanged: PropTypes.func.isRequired,
     EditUser: PropTypes.func.isRequired,
     FetchUserData: PropTypes.func.isRequired,
+    ResetStatus: PropTypes.func.isRequired,
   };
 
   constructor(props) {
@@ -76,10 +78,18 @@ class MyProfileScreen extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { navigation } = this.props;
+    const { navigation, ResetStatus } = this.props;
 
     if (nextProps.user === '') {
       onSignOut().then(navigation.navigate('SignedOut'));
+    }
+
+    if (nextProps.status === 'OK') {
+      Alert.alert('INFO', 'Uspješno promijenjeni korisnički podaci!');
+      ResetStatus();
+    } else if (nextProps.status === 'ERROR') {
+      Alert.alert('GREŠKA', 'Nešto nije uredu, pokušajte ponovo!');
+      ResetStatus();
     }
   }
 
@@ -147,11 +157,11 @@ class MyProfileScreen extends React.Component {
 
   onButtonPress = () => {
     const {
-      name, surname, password, email, confirmPass, EditUser, id,
+      name, surname, password, email, confirmPass, EditUser, id, user,
     } = this.props;
 
     EditUser({
-      name, surname, password, email, confirmPass, id,
+      name, surname, password, email, confirmPass, id, token: user,
     });
   }
 
@@ -366,7 +376,7 @@ class MyProfileScreen extends React.Component {
                   buttonStyle={styles.btnSignIn}
                   title="SPREMI PROMJENE"
                   disabled={
-                      name === '' || password === '' || surname === '' || email === '' || confirmPass === ''
+                      name === '' || surname === '' || email === ''
                       || error.name !== '' || error.password !== '' || error.surname !== '' || error.email !== ''
                       || error.confirmPass !== ''
                     }
@@ -375,8 +385,8 @@ class MyProfileScreen extends React.Component {
                 />
               </View>
             </ScrollView>
-            {this.isLoading()}
           </KeyboardAvoidingView>
+          {this.isLoading()}
         </View>
         <NotificationsModal
           animationType="fade"
@@ -399,6 +409,7 @@ const mapStateToProps = state => ({
   user: state.signIn.user,
   loading: state.profile.isLoading,
   id: state.profile.id,
+  status: state.profile.status,
 });
 
 export default connect(mapStateToProps, {
@@ -411,4 +422,5 @@ export default connect(mapStateToProps, {
   ProfilePasswordChanged: profilePasswordChanged,
   EditUser: editUser,
   FetchUserData: fetchUserData,
+  ResetStatus: resetStatus,
 })(MyProfileScreen);

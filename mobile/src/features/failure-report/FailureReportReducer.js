@@ -25,6 +25,8 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state, ...INITIAL_STATE, status: 'OK', location: state.location,
       };
+    case types.SET_LOADING_TRUE:
+      return { ...state, loading: true };
     case types.SEND_FR_FAIL:
       return {
         ...state, status: 'ERROR', loading: false, location: state.location,

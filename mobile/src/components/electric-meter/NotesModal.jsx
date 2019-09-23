@@ -66,8 +66,9 @@ class NotesModal extends React.Component {
                 <Text style={styles.btnText}>Zatvori</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                style={styles.btnModal}
+                style={note === '' ? [styles.btnModal, { opacity: 0.4 }] : [styles.btnModal, { opacity: 1 }]}
                 onPress={() => onSaveButtonPress(note)}
+                disabled={note === ''}
               >
                 <Text style={styles.btnText}>Spremi</Text>
               </TouchableOpacity>

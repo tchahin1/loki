@@ -137,7 +137,7 @@ class SignUp extends React.Component {
 
     switch (input) {
       case LABELS.NAME: {
-        const regExp = new RegExp(/^(?=.*\d)*(?=.*[a-zA-Z]).{2,}$/);
+        const regExp = new RegExp(/^[a-zA-Z]+$/);
         this.onNameChange(value);
         if (value.length < 2) {
           errors.name = ERRORS.NAME_ERR;
@@ -150,7 +150,7 @@ class SignUp extends React.Component {
       }
 
       case LABELS.SURNAME: {
-        const regExp = new RegExp(/^(?=.*\d)*(?=.*[a-zA-Z]).{2,}$/);
+        const regExp = new RegExp(/^[a-zA-Z]+$/);
         this.onSurnameChange(value);
         if (value.length < 2) {
           errors.surname = ERRORS.SURNAME_ERR;
@@ -167,7 +167,7 @@ class SignUp extends React.Component {
         new RegExp(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@
         ((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|
         (([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/); */
-        const regExp = new RegExp(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@([a-zA-Z0-9-]+\.[a-zA-Z]{1,}){0,61}[a-zA-Z0-9]$/);
+        const regExp = new RegExp(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@([a-zA-Z0-9-]+\.[a-zA-Z]{2,})$/);
         this.onEmailChange(value);
         if (!value.match(regExp)) {
           errors.email = ERRORS.EMAIL_ERR;
@@ -228,8 +228,10 @@ class SignUp extends React.Component {
       <ImageBackground source={Background} style={styles.wrapper}>
         <View style={styles.wrapper}>
           <KeyboardAvoidingView
-            behavior="position"
-            style={{ flexDirection: 'column' }}
+            behavior="padding"
+            enabled
+            style={{ flexDirection: 'column', flex: 1 }}
+            keyboardVerticalOffset={100}
           >
             <View style={styles.inputsWrapper}>
               <TextField
@@ -324,10 +326,12 @@ class SignUp extends React.Component {
                   || error.surname !== ''
                   || error.email !== ''
                   || error.password !== ''
+                  || error.confirmPass !== ''
                   || name === ''
                   || surname === ''
                   || password === ''
                   || email === ''
+                  || confirmPass === ''
                 }
                 onPress={this.onButtonPress}
               />

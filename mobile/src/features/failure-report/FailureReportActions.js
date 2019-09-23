@@ -31,6 +31,10 @@ export const updateGPSLocation = ({ lat, lon }) => (dispatch) => {
   });
 };
 
+export const setLoading = () => ({
+  type: types.SET_LOADING_TRUE,
+});
+
 const sendFailureReportSuccess = (dispatch) => {
   dispatch({ type: types.SEND_FR_SUCCESS });
 };
