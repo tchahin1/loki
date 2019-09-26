@@ -69,21 +69,27 @@ public class NotificationServiceImpl implements NotificationService {
         Notification alreadyInDb = null;
         if (!(userNotificationDto.getToken().equals("")))
             alreadyInDb = this.findByDeviceToken(userNotificationDto.getToken());
+        User user = userRepository.findByEmail(userNotificationDto.getEmail());
         if (alreadyInDb == null) {
-            User user = userRepository.findByEmail(userNotificationDto.getEmail());
             if (user == null) return ResponseEntity.status(400).body("User does not exist!");
             String existingToken = this.gcmService.getDeviceTokenFromEmail(user.getEmail());
             if (!(existingToken.equals("")) && !(existingToken.equals(userNotificationDto.getToken()))) {
                 Notification notification = findByUserId(user.getId());
                 notification.setDeviceToken(userNotificationDto.getToken());
                 save(notification);
-            } else {
+            } else if (existingToken.equals("")) {
                 Notification newNotification = new Notification(userNotificationDto.getToken(),
                         user);
                 save(newNotification);
             }
             return ResponseEntity.ok().body("Successfully added new notification for user!");
-        } else {
+        }
+        else if (alreadyInDb != null && !alreadyInDb.getUser().getId().equals(user.getId())) {
+            alreadyInDb.setUser(user);
+            save(alreadyInDb);
+            return ResponseEntity.ok().body("Successfully added new notification for user!");
+        }
+        else {
             return ResponseEntity.status(400).body("Something went wrong!");
         }
     }
