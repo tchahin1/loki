@@ -4,14 +4,16 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Data
 @NoArgsConstructor
 @Entity
 @Table(name = "place_of_measurement")
-public class PlaceOfMeasurement {
+public class PlaceOfMeasurement implements Serializable {
 
     public PlaceOfMeasurement(String name, String reference, Integer numberOfMeasurement, User user) {
+        super();
         this.setName(name);
         this.setReference(reference);
         this.setNumberOfMeasurement(numberOfMeasurement);

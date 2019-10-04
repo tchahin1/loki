@@ -67,7 +67,7 @@ public class QuestionsAndComplaintsServiceImpl implements QuestionsAndComplaints
             save(newQuestionsAndComplaints);
             return ResponseEntity.ok().body("Request saved successfully!");
         } catch (Exception exception) {
-            return ResponseEntity.status(500).body("Something went wrong!");
+            return ResponseEntity.status(400).body("Something went wrong!");
         }
     }
 
