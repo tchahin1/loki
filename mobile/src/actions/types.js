@@ -89,3 +89,9 @@ export const EDIT_USER_SUCCESS = 'edit_user_success';
 export const EDIT_USER_FAIL = 'edit_user_fail';
 export const EDIT_USER = 'edit_user';
 export const RESET_PROFILE_STATUS = 'reset_profile_status';
+
+// consumptionReview part
+export const CONSUMPTION_PLACE_CHANGED = 'consumption_place_changed';
+export const FETCH_CONSUMPTION_SUCCESS = 'fetch_consumption_success';
+export const FETCH_CONSUMPTION_FAILED = 'fetch_consumption_failed';
+export const CONSUMPTION_YEAR_CHANGED = 'consumption_year_changed';

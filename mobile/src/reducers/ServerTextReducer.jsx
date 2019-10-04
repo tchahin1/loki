@@ -9,6 +9,7 @@ import FailureReportReducer from '../features/failure-report/FailureReportReduce
 import HomeReducer from '../features/home/HomeReducer';
 import QuestionsAndComplaintsReducer from '../features/questions-and-complaints/QuestionsAndComplaintsReducer';
 import MyProfileReducer from '../features/myprofile/MyProfileReducer';
+import ConsumptionReducer from '../features/consumption-review/ConsumptionReviewReducer';
 
 
 const changeServerText = text => ({
@@ -43,4 +44,5 @@ export default combineReducers({
   home: HomeReducer,
   qac: QuestionsAndComplaintsReducer,
   profile: MyProfileReducer,
+  consumption: ConsumptionReducer,
 });
