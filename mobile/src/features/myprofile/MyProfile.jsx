@@ -150,8 +150,15 @@ class MyProfileScreen extends React.Component {
   load = () => {
     const { InitializeMyProfile } = this.props;
     const { FetchUserData, email, user } = this.props;
+    const errors = {
+      name: '',
+      surname: '',
+      email: '',
+      password: '',
+      confirmPass: '',
+    };
 
-    this.setState({ error: '' });
+    this.setState({ error: errors });
     InitializeMyProfile();
     FetchUserData({ email, token: user });
   }
@@ -268,6 +275,9 @@ class MyProfileScreen extends React.Component {
     const {
       openNotMod, error, scrollEnabled,
     } = this.state;
+
+    console.log(error, name, surname, email);
+
     return (
       <View style={{ flex: 1 }}>
         <Header
