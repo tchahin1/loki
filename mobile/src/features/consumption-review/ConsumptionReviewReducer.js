@@ -5,6 +5,7 @@ const INITIAL_STATE = {
   HTData: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   years: [],
   selectedYear: 0,
+  xCoordinatesData: [],
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -17,6 +18,7 @@ export default (state = INITIAL_STATE, action) => {
         LTData: action.payload.lowTariffData,
         HTData: action.payload.highTariffData,
         years: action.payload.years,
+        xCoordinatesData: action.payload.xCoordinates,
       };
     case types.FETCH_CONSUMPTION_FAILED:
       return { ...state };

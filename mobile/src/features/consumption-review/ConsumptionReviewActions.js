@@ -4,23 +4,30 @@ import api from '../../api/network.config';
 
 let dataArray = [];
 let yearsArray = [];
-const highTariffData = Array(12);
-const lowTariffData = Array(12);
+let highTariffData = [];
+let lowTariffData = [];
 let years = [];
+let xCoordinates = [];
 
 export const setLoading = () => ({
   type: types.SET_LOADING_TRUE,
 });
 
 const getTariffData = () => {
+  highTariffData = new Array(dataArray.length);
+  lowTariffData = new Array(dataArray.length);
+  xCoordinates = new Array(dataArray.length);
+
   for (let i = 0; i < dataArray.length; i += 1) {
     highTariffData[dataArray[i].month - 1] = Number(dataArray[i].highTariff);
     lowTariffData[dataArray[i].month - 1] = Number(dataArray[i].lowTariff);
+    xCoordinates[dataArray[i].month - 1] = dataArray[i].month + (dataArray[i].day / 30);
   }
   for (let i = 0; i < highTariffData.length; i += 1) {
     if (highTariffData[i] === undefined) {
       highTariffData[i] = 0;
       lowTariffData[i] = 0;
+      xCoordinates[i] = i + 1;
     }
   }
 };
@@ -55,7 +62,9 @@ const fetchConsumptionDataSuccess = (dispatch, response) => {
     getYearsData();
     dispatch({
       type: types.FETCH_CONSUMPTION_SUCCESS,
-      payload: { highTariffData, lowTariffData, years },
+      payload: {
+        highTariffData, lowTariffData, years, xCoordinates,
+      },
     });
   });
 

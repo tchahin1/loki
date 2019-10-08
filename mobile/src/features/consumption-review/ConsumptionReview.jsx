@@ -41,6 +41,7 @@ class ConsumptionReviewScreen extends React.Component {
     FetchMeasurementPlaces: PropTypes.func.isRequired,
     lowTariffData: PropTypes.instanceOf(Array).isRequired,
     highTariffData: PropTypes.instanceOf(Array).isRequired,
+    xCoordinatesData: PropTypes.instanceOf(Array).isRequired,
     FetchConsumptionData: PropTypes.func.isRequired,
     selectedYear: PropTypes.number.isRequired,
   };
@@ -232,7 +233,7 @@ class ConsumptionReviewScreen extends React.Component {
 
   render() {
     const {
-      navigation, places, selectedPlace, lowTariffData, highTariffData,
+      navigation, places, selectedPlace, lowTariffData, highTariffData, xCoordinatesData,
     } = this.props;
     const {
       openNotMod, flexStyle, openPOM,
@@ -290,10 +291,14 @@ class ConsumptionReviewScreen extends React.Component {
                 datasets: [{
                   data: highTariffData,
                   color: (opacity = 0.2) => `rgba(0, 255, 0, ${opacity})`,
+                  xCoordinatesArray: xCoordinatesData,
                 },
                 {
                   data: lowTariffData,
                   color: (opacity = 0.2) => `rgba(0, 0, 255, ${opacity})`,
+                  xCoordinatesArray: [
+                    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
+                  ],
                 }],
               }}
               width={Dimensions.get('window').width} // from react-native
@@ -350,6 +355,7 @@ const mapStateToProps = state => ({
   years: state.consumption.years,
   lowTariffData: state.consumption.LTData,
   highTariffData: state.consumption.HTData,
+  xCoordinatesData: state.consumption.xCoordinatesData,
   selectedPlace: state.electricMeter.selectedPlace,
   selectedYear: state.consumption.selectedYear,
 });
