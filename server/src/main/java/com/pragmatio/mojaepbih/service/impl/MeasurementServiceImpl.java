@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.ws.rs.core.Response;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -25,6 +26,9 @@ public class MeasurementServiceImpl implements MeasurementService {
 
     @Autowired
     private PlaceOfMeasurementServiceImpl placeOfMeasurementService;
+
+    @Autowired
+    private ConsumptionServiceImpl consumptionService;
 
     @Autowired
     public MeasurementServiceImpl(MeasurementRepository measurementRepository,
@@ -72,11 +76,15 @@ public class MeasurementServiceImpl implements MeasurementService {
             PlaceOfMeasurement placeOfMeasurement = placeOfMeasurementService.findById(measurementDto.getMeasurementPlace());
             if (placeOfMeasurement == null)
                 return ResponseEntity.status(400).body("Measurement place does not exist!");
-            String image = this.imageService.printDataToImage(measurementDto.getPhoto(), measurementDto.getLargeTariff(), measurementDto.getSmallTariff());
+            // String image = this.imageService.printDataToImage(measurementDto.getPhoto(), measurementDto.getLargeTariff(), measurementDto.getSmallTariff());
+            String image = "";
+            LocalDate now = LocalDate.now();
+            String date = now.toString();
             Measurement newMeasurement = new Measurement(measurementDto.getLargeTariff(),
-                    measurementDto.getSmallTariff(), measurementDto.getNote(),
+                    measurementDto.getSmallTariff(), measurementDto.getNote(), date,
                     image, user, placeOfMeasurement, measurementDto.getLat(), measurementDto.getLon());
-            this.measurementRepository.save(newMeasurement);
+            this.consumptionService.saveMeasuredConsumption(now, newMeasurement);
+            //this.measurementRepository.save(newMeasurement);
             return ResponseEntity.ok().body("Successfully added new measurement for this place!");
         } else {
             return ResponseEntity.status(400).body("Measurement for this place already exists!");

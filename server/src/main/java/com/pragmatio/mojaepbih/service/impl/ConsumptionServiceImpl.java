@@ -3,20 +3,19 @@ package com.pragmatio.mojaepbih.service.impl;
 import com.pragmatio.mojaepbih.model.ConsumptionResponseDto;
 import com.pragmatio.mojaepbih.model.GetConsumptionDto;
 import com.pragmatio.mojaepbih.model.entity.Consumption;
+import com.pragmatio.mojaepbih.model.entity.Measurement;
 import com.pragmatio.mojaepbih.model.entity.PlaceOfMeasurement;
 import com.pragmatio.mojaepbih.model.entity.User;
 import com.pragmatio.mojaepbih.repository.ConsumptionRepository;
 import com.pragmatio.mojaepbih.service.ConsumptionService;
 import org.json.JSONException;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.time.LocalDate;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -77,5 +76,14 @@ public class ConsumptionServiceImpl implements ConsumptionService {
             else return ResponseEntity.status(400).body("Something went wrong!");
         }
         return ResponseEntity.status(400).body("User does not exist!");
+    }
+
+    public void saveMeasuredConsumption(LocalDate now, Measurement measurement) {
+        Integer day = now.getDayOfMonth();
+        Integer month = now.getMonthValue();
+        Integer year = now.getYear();
+        Consumption consumption = new Consumption(year, month, day, measurement.getHighTariff(),
+                measurement.getLowTariff(), measurement.getUser(), measurement.getPlaceOfMeasurement());
+        this.save(consumption);
     }
 }

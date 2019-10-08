@@ -22,6 +22,9 @@ public class Consumption {
     @Column(name = "month")
     private Integer month;
 
+    @Column(name = "day")
+    private Integer day;
+
     @Column(name = "high_tariff")
     private String highTariff;
 
@@ -35,9 +38,10 @@ public class Consumption {
     @JsonIgnore
     private PlaceOfMeasurement placeOfMeasurement;
 
-    public Consumption(Integer year, Integer month, String highTariff, String lowTariff, User user, PlaceOfMeasurement placeOfMeasurement) {
+    public Consumption(Integer year, Integer month, Integer day, String highTariff, String lowTariff, User user, PlaceOfMeasurement placeOfMeasurement) {
         this.year = year;
         this.month = month;
+        this.day = day;
         this.highTariff = highTariff;
         this.lowTariff = lowTariff;
         this.user = user;

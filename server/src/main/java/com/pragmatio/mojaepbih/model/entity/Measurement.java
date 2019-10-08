@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Table(name = "measurement")
 public class Measurement {
 
-    public Measurement(String highTariff, String lowTariff, String note, String photo, User user, PlaceOfMeasurement placeOfMeasurement,
+    public Measurement(String highTariff, String lowTariff, String note, String date, String photo, User user, PlaceOfMeasurement placeOfMeasurement,
                        Double lat, Double lon) {
         this.setHighTariff(highTariff);
         this.setLowTariff(lowTariff);
@@ -21,6 +21,7 @@ public class Measurement {
         this.setPlaceOfMeasurement(placeOfMeasurement);
         this.setLat(lat);
         this.setLon(lon);
+        this.date = date;
     }
 
     @Id
@@ -42,6 +43,9 @@ public class Measurement {
 
     @Column(name = "longitude")
     private Double lon;
+
+    @Column(name = "date")
+    private String date;
 
     @Lob
     @Column(name = "photo")
