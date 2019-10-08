@@ -296,9 +296,7 @@ class ConsumptionReviewScreen extends React.Component {
                 {
                   data: lowTariffData,
                   color: (opacity = 0.2) => `rgba(0, 0, 255, ${opacity})`,
-                  xCoordinatesArray: [
-                    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
-                  ],
+                  xCoordinatesArray: xCoordinatesData,
                 }],
               }}
               width={Dimensions.get('window').width} // from react-native
@@ -313,6 +311,7 @@ class ConsumptionReviewScreen extends React.Component {
                   borderRadius: 16,
                 },
               }}
+              withShadow={false}
               style={{
                 marginVertical: 8,
                 borderRadius: 16,
