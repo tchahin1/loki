@@ -136,14 +136,17 @@ class ConsumptionReviewScreen extends React.Component {
   }
 
   renderButtons = () => {
-    const { years, yearArray } = this.props;
+    const { years, yearArray, selectedYear } = this.props;
 
     if (years.length === 1) {
       return (
         <Button
           buttonStyle={[styles.btnReq, { width: wp('94%') }]}
           title={`${years[0]}.`}
+          disabled={selectedYear === years[0]}
+          disabledStyle={[styles.btnReq, { width: wp('94%'), backgroundColor: Colors.NOTICE_COLOR }]}
           titleStyle={{ fontSize: 18, color: 'white' }}
+          disabledTitleStyle={{ fontSize: 18, color: 'white' }}
           onPress={() => this.yearSelected(years[0])}
         />
       );
@@ -155,13 +158,19 @@ class ConsumptionReviewScreen extends React.Component {
           <Button
             buttonStyle={[styles.btnReq, { width: wp('46%') }]}
             title={`${years[1]}.`}
+            disabled={selectedYear === years[1]}
+            disabledStyle={[styles.btnReq, { width: wp('46%'), backgroundColor: Colors.NOTICE_COLOR }]}
             titleStyle={{ fontSize: 18, color: 'white' }}
+            disabledTitleStyle={{ fontSize: 18, color: 'white' }}
             onPress={() => this.yearSelected(years[1])}
           />
           <Button
             buttonStyle={[styles.btnReq, { width: wp('46%') }]}
             title={`${years[0]}.`}
+            disabled={selectedYear === years[0]}
+            disabledStyle={[styles.btnReq, { width: wp('46%'), backgroundColor: Colors.NOTICE_COLOR }]}
             titleStyle={{ fontSize: 18, color: 'white' }}
+            disabledTitleStyle={{ fontSize: 18, color: 'white' }}
             onPress={() => this.yearSelected(years[0])}
           />
         </View>
@@ -198,12 +207,18 @@ class ConsumptionReviewScreen extends React.Component {
             buttonStyle={[styles.btnReq, { width: wp('30%') }]}
             title={`${years[1]}.`}
             titleStyle={{ fontSize: 18, color: 'white' }}
+            disabled={selectedYear === years[1]}
+            disabledStyle={[styles.btnReq, { width: wp('30%'), backgroundColor: Colors.NOTICE_COLOR }]}
+            disabledTitleStyle={{ fontSize: 18, color: 'white' }}
             onPress={() => this.yearSelected(years[1])}
           />
           <Button
             buttonStyle={[styles.btnReq, { width: wp('30%') }]}
             title={`${years[0]}.`}
             titleStyle={{ fontSize: 18, color: 'white' }}
+            disabled={selectedYear === years[0]}
+            disabledStyle={[styles.btnReq, { width: wp('30%'), backgroundColor: Colors.NOTICE_COLOR }]}
+            disabledTitleStyle={{ fontSize: 18, color: 'white' }}
             onPress={() => this.yearSelected(years[0])}
           />
         </View>

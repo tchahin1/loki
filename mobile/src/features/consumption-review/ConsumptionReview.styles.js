@@ -43,7 +43,7 @@ const styles = {
     height: hp('100%'),
   },
   btnReq: {
-    backgroundColor: 'gray',
+    backgroundColor: Colors.PRIMARY_BLUE,
     marginTop: hp('0%'),
     marginHorizontal: wp('1%'),
     height: hp('8%'),
