@@ -10,6 +10,6 @@ public interface ConsumptionRepository extends JpaRepository<Consumption, Long> 
     @Query("FROM Consumption WHERE user.id = ?1 AND year = ?2 AND placeOfMeasurement.id = ?3")
     List<Consumption> findAllByUserIdAndYearAndPlaceId(Long userId, Integer year, Long placeId);
 
-    @Query("SELECT DISTINCT year FROM Consumption WHERE user.id = ?1")
-    List<Integer> findAllYearsForUser(Long userId);
+    @Query("SELECT DISTINCT year FROM Consumption WHERE user.id = ?1 AND placeOfMeasurement.id = ?2")
+    List<Integer> findAllYearsForUserAndPlaceOfMeasurement(Long userId, Long placeId);
 }

@@ -67,7 +67,8 @@ public class ConsumptionServiceImpl implements ConsumptionService {
                 List<Consumption> consumptions = consumptionRepository.findAllByUserIdAndYearAndPlaceId(
                         user.getId(), getConsumptionDto.getYear(), placeOfMeasurement.getId()
                 );
-                List<Integer> years = consumptionRepository.findAllYearsForUser(user.getId());
+                List<Integer> years = consumptionRepository.findAllYearsForUserAndPlaceOfMeasurement(user.getId(),
+                        placeOfMeasurement.getId());
                 years.sort(Comparator.reverseOrder());
                 ConsumptionResponseDto response = new ConsumptionResponseDto(
                         consumptions, years);

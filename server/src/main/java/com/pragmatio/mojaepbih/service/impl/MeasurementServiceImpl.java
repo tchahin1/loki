@@ -76,15 +76,14 @@ public class MeasurementServiceImpl implements MeasurementService {
             PlaceOfMeasurement placeOfMeasurement = placeOfMeasurementService.findById(measurementDto.getMeasurementPlace());
             if (placeOfMeasurement == null)
                 return ResponseEntity.status(400).body("Measurement place does not exist!");
-            // String image = this.imageService.printDataToImage(measurementDto.getPhoto(), measurementDto.getLargeTariff(), measurementDto.getSmallTariff());
-            String image = "";
+            String image = this.imageService.printDataToImage(measurementDto.getPhoto(), measurementDto.getLargeTariff(), measurementDto.getSmallTariff());
             LocalDate now = LocalDate.now();
             String date = now.toString();
             Measurement newMeasurement = new Measurement(measurementDto.getLargeTariff(),
                     measurementDto.getSmallTariff(), measurementDto.getNote(), date,
                     image, user, placeOfMeasurement, measurementDto.getLat(), measurementDto.getLon());
             this.consumptionService.saveMeasuredConsumption(now, newMeasurement);
-            //this.measurementRepository.save(newMeasurement);
+            this.measurementRepository.save(newMeasurement);
             return ResponseEntity.ok().body("Successfully added new measurement for this place!");
         } else {
             return ResponseEntity.status(400).body("Measurement for this place already exists!");
