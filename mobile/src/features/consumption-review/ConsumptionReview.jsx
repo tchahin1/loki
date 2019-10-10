@@ -44,6 +44,8 @@ class ConsumptionReviewScreen extends React.Component {
     xCoordinatesData: PropTypes.instanceOf(Array).isRequired,
     FetchConsumptionData: PropTypes.func.isRequired,
     selectedYear: PropTypes.number.isRequired,
+    yearArray: PropTypes.instanceOf(Array).isRequired,
+    dates: PropTypes.instanceOf(Array).isRequired,
   };
 
   constructor(props) {
@@ -120,11 +122,11 @@ class ConsumptionReviewScreen extends React.Component {
       if (selectedPlace === null || selectedPlace === undefined || selectedPlace === '') {
         setTimeout(() => FetchConsumptionData({
           email, token: user, placeId: place, year: Number(currentYear),
-        }), 1000);
+        }), 500);
       } else {
         setTimeout(() => FetchConsumptionData({
           email, token: user, placeId: selectedPlace, year: Number(currentYear),
-        }), 1000);
+        }), 500);
       }
     }
 
@@ -134,13 +136,13 @@ class ConsumptionReviewScreen extends React.Component {
   }
 
   renderButtons = () => {
-    const { years, selectedYear } = this.props;
+    const { years, yearArray } = this.props;
 
     if (years.length === 1) {
       return (
         <Button
           buttonStyle={[styles.btnReq, { width: wp('94%') }]}
-          title={`${years[0]}`}
+          title={`${years[0]}.`}
           titleStyle={{ fontSize: 18, color: 'white' }}
           onPress={() => this.yearSelected(years[0])}
         />
@@ -152,13 +154,13 @@ class ConsumptionReviewScreen extends React.Component {
         <View style={{ flexDirection: 'row' }}>
           <Button
             buttonStyle={[styles.btnReq, { width: wp('46%') }]}
-            title={`${years[1]}`}
+            title={`${years[1]}.`}
             titleStyle={{ fontSize: 18, color: 'white' }}
             onPress={() => this.yearSelected(years[1])}
           />
           <Button
             buttonStyle={[styles.btnReq, { width: wp('46%') }]}
-            title={`${years[0]}`}
+            title={`${years[0]}.`}
             titleStyle={{ fontSize: 18, color: 'white' }}
             onPress={() => this.yearSelected(years[0])}
           />
@@ -167,10 +169,6 @@ class ConsumptionReviewScreen extends React.Component {
     }
 
     if (years.length >= 3) {
-      const yearArray = Array(years.length() - 1);
-      for (let i = 2; i < years.length(); i += 1) {
-        yearArray[i - 2] = years[i];
-      }
       return (
         <View style={{ flexDirection: 'row' }}>
           <View style={{ borderWidth: 0 }}>
@@ -183,13 +181,14 @@ class ConsumptionReviewScreen extends React.Component {
               style={{
                 position: 'absolute', top: 0, width: 1000, height: 1000,
               }}
-              selectedValue={selectedYear}
-              onValueChange={itemValue => this.yearSelected(Number(itemValue))}
+              onValueChange={(itemValue, itemIndex) => this.yearSelected(itemValue, itemIndex)}
+              itemStyle={{ textAlign: 'center' }}
             >
+              <Picker.Item label="Odaberi godinu.." style={{ position: 'center' }} />
               {yearArray.map(data => (
                 <Picker.Item
                   key={data.toString()}
-                  label={data.toString()}
+                  label={`${data}.`}
                   value={data.toString()}
                 />
               ))}
@@ -197,13 +196,13 @@ class ConsumptionReviewScreen extends React.Component {
           </View>
           <Button
             buttonStyle={[styles.btnReq, { width: wp('30%') }]}
-            title={`${years[1]}`}
+            title={`${years[1]}.`}
             titleStyle={{ fontSize: 18, color: 'white' }}
             onPress={() => this.yearSelected(years[1])}
           />
           <Button
             buttonStyle={[styles.btnReq, { width: wp('30%') }]}
-            title={`${years[0]}`}
+            title={`${years[0]}.`}
             titleStyle={{ fontSize: 18, color: 'white' }}
             onPress={() => this.yearSelected(years[0])}
           />
@@ -233,7 +232,7 @@ class ConsumptionReviewScreen extends React.Component {
 
   render() {
     const {
-      navigation, places, selectedPlace, lowTariffData, highTariffData, xCoordinatesData,
+      navigation, places, selectedPlace, lowTariffData, highTariffData, xCoordinatesData, dates,
     } = this.props;
     const {
       openNotMod, flexStyle, openPOM,
@@ -286,8 +285,8 @@ class ConsumptionReviewScreen extends React.Component {
           <View style={{ marginLeft: wp('-8%') }}>
             <LineChart
               data={{
-                labels: ['Jan', 'Feb', 'Mart', 'April', 'Maj', 'Juni',
-                  'Juli', 'Aug', 'Sept', 'Okt', 'Nov', 'Dec'],
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Maj', 'Jun',
+                  'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dec'],
                 datasets: [{
                   data: highTariffData,
                   color: (opacity = 0.2) => `rgba(0, 255, 0, ${opacity})`,
@@ -318,7 +317,7 @@ class ConsumptionReviewScreen extends React.Component {
               }}
               onDataPointClick={obj => showMessage({
                 message: obj.getColor() === 'rgba(0, 255, 0, 0.2)' ? 'Velika tarifa' : 'Mala tarifa',
-                description: `${obj.value}kWh`,
+                description: `Za ${dates[obj.index]} je ${obj.value}kWh`,
                 type: 'info',
                 position: 'center',
                 floating: true,
@@ -328,6 +327,24 @@ class ConsumptionReviewScreen extends React.Component {
             }
             />
             <FlashMessage duration={1000} style={{ width: wp('90%'), marginLeft: wp('10%') }} />
+          </View>
+          <View style={{ flexDirection: 'row' }}>
+            <View style={{ flexDirection: 'row', marginLeft: wp('-1%') }}>
+              <Button
+                buttonStyle={{ backgroundColor: 'rgba(0, 255, 0, 1)', width: 4, height: 4 }}
+                disabled
+                disabledStyle={{ backgroundColor: 'rgba(0, 255, 0, 1)', width: 4, height: 4 }}
+              />
+              <Text style={{ marginLeft: wp('2%') }}>Velika tarifa</Text>
+            </View>
+            <View style={{ flexDirection: 'row', marginLeft: wp('5%') }}>
+              <Button
+                buttonStyle={{ backgroundColor: 'blue', width: 4, height: 4 }}
+                disabled
+                disabledStyle={{ backgroundColor: 'blue', width: 4, height: 4 }}
+              />
+              <Text style={{ marginLeft: wp('2%') }}>Mala tarifa</Text>
+            </View>
           </View>
           <NotificationsModal
             animationType="fade"
@@ -357,6 +374,8 @@ const mapStateToProps = state => ({
   xCoordinatesData: state.consumption.xCoordinatesData,
   selectedPlace: state.electricMeter.selectedPlace,
   selectedYear: state.consumption.selectedYear,
+  yearArray: state.consumption.yearPickerData,
+  dates: state.consumption.dates,
 });
 
 export default connect(mapStateToProps, {

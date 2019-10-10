@@ -7,49 +7,132 @@ let yearsArray = [];
 let highTariffData = [];
 let lowTariffData = [];
 let years = [];
+let yearPickerData = [];
 let xCoordinates = [];
+let months = [];
+let dates = [];
+let selectedYear = 0;
 
 export const setLoading = () => ({
   type: types.SET_LOADING_TRUE,
 });
 
-const getTariffData = () => {
-  highTariffData = new Array(dataArray.length);
-  lowTariffData = new Array(dataArray.length);
-  xCoordinates = new Array(dataArray.length);
-
-  for (let i = 0; i < dataArray.length; i += 1) {
-    highTariffData[dataArray[i].month - 1] = Number(dataArray[i].highTariff);
-    lowTariffData[dataArray[i].month - 1] = Number(dataArray[i].lowTariff);
-    xCoordinates[dataArray[i].month - 1] = dataArray[i].month + (dataArray[i].day / 30);
-  }
-  for (let i = 0; i < highTariffData.length; i += 1) {
-    if (highTariffData[i] === undefined) {
-      highTariffData[i] = 0;
-      lowTariffData[i] = 0;
-      xCoordinates[i] = i + 1;
-    }
-  }
-};
-
-const getYearsData = () => {
-  for (let i = 0; i < yearsArray.length; i += 1) {
-    years.push(Number(yearsArray[i].year));
-  }
-};
-
 const resetData = () => {
   for (let i = 0; i < highTariffData.length; i += 1) {
     highTariffData[i] = 0;
     lowTariffData[i] = 0;
+    xCoordinates[i] = i + 1;
   }
   years = [];
+  yearPickerData = [];
 };
 
-const fetchConsumptionDataFailed = (dispatch, response) => {
-  dispatch({ type: types.FETCH_CONSUMPTION_FAILED });
+const sortArrays = () => {
+  for (let i = 0; i < xCoordinates.length - 1; i += 1) {
+    let min = xCoordinates[i];
+    let minIndex = i;
+    for (let j = i + 1; j < xCoordinates.length; j += 1) {
+      if (xCoordinates[j] < min) {
+        min = xCoordinates[j];
+        minIndex = j;
+      }
+    }
+    let tmp = xCoordinates[i];
+    xCoordinates[i] = min;
+    xCoordinates[minIndex] = tmp;
 
-  console.log('failed', response);
+    tmp = highTariffData[i];
+    highTariffData[i] = highTariffData[minIndex];
+    highTariffData[minIndex] = tmp;
+
+    tmp = lowTariffData[i];
+    lowTariffData[i] = lowTariffData[minIndex];
+    lowTariffData[minIndex] = tmp;
+
+    tmp = months[i];
+    months[i] = months[minIndex];
+    months[minIndex] = tmp;
+  }
+};
+
+const getTariffData = () => {
+  highTariffData = [];
+  lowTariffData = [];
+  xCoordinates = [];
+  months = [];
+
+  for (let i = 0; i < dataArray.length; i += 1) {
+    if (dataArray[i].month !== undefined) {
+      highTariffData.push(Number(dataArray[i].highTariff));
+      lowTariffData.push(Number(dataArray[i].lowTariff));
+      xCoordinates.push(dataArray[i].month + (dataArray[i].day / 30.5));
+      months.push(dataArray[i].month);
+    }
+  }
+
+  for (let i = 1; i <= 12; i += 1) {
+    let exists = false;
+    for (let j = 0; j < months.length; j += 1) {
+      if (i === months[j]) {
+        exists = true;
+        break;
+      }
+    }
+    if (!exists) {
+      highTariffData.push(0);
+      lowTariffData.push(0);
+      xCoordinates.push(i);
+      months.push(i);
+    }
+  }
+
+  sortArrays();
+};
+
+const getYearsData = () => {
+  for (let i = 0; i < yearsArray.length; i += 1) {
+    if (i === 0 && Number(yearsArray[0].year) !== 2019) {
+      years.push(2019);
+    }
+    years.push(Number(yearsArray[i].year));
+  }
+
+  if (years.length >= 3) {
+    for (let i = 2; i < years.length; i += 1) {
+      yearPickerData.push(years[i]);
+    }
+  }
+};
+
+const findIndexOfData = (month) => {
+  let result = -1;
+  for (let i = 0; i < dataArray.length; i += 1) {
+    if (dataArray[i].month === month) {
+      result = i;
+      break;
+    }
+  }
+  return result;
+};
+
+const getDates = () => {
+  dates = [];
+
+  for (let i = 0; i < months.length; i += 1) {
+    const index = findIndexOfData(months[i]);
+    if (index !== -1) {
+      const date = `${dataArray[index].day}.${months[i]}.${selectedYear}.`;
+      dates.push(date);
+      dataArray.splice(index, 1);
+    } else {
+      const date = `1.${months[i]}.${selectedYear}.`;
+      dates.push(date);
+    }
+  }
+};
+
+const fetchConsumptionDataFailed = (dispatch) => {
+  dispatch({ type: types.FETCH_CONSUMPTION_FAILED });
 };
 
 const fetchConsumptionDataSuccess = (dispatch, response) => {
@@ -60,10 +143,11 @@ const fetchConsumptionDataSuccess = (dispatch, response) => {
     yearsArray = _.map(obj.years, val => ({ ...val }));
     getTariffData();
     getYearsData();
+    getDates();
     dispatch({
       type: types.FETCH_CONSUMPTION_SUCCESS,
       payload: {
-        highTariffData, lowTariffData, years, xCoordinates,
+        highTariffData, lowTariffData, years, xCoordinates, yearPickerData, dates,
       },
     });
   });
@@ -78,6 +162,8 @@ export const fetchConsumptionData = ({
     type: types.CONSUMPTION_YEAR_CHANGED,
     payload: year,
   });
+
+  selectedYear = year;
 
   fetch(`${api}/consumption/all_by_year?email=${email}&year=${year}&placeId=${placeId}`, {
     method: 'GET',
