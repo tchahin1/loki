@@ -6,6 +6,7 @@ import {
 import { LineChart } from 'react-native-chart-kit';
 import {
   widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import FlashMessage, { showMessage } from 'react-native-flash-message';
 import { Header, Icon, Button } from 'react-native-elements/src/index';
@@ -144,7 +145,7 @@ class ConsumptionReviewScreen extends React.Component {
           buttonStyle={[styles.btnReq, { width: wp('94%') }]}
           title={`${years[0]}.`}
           disabled={selectedYear === years[0]}
-          disabledStyle={[styles.btnReq, { width: wp('94%'), backgroundColor: Colors.NOTICE_COLOR }]}
+          disabledStyle={[styles.btnReq, { width: wp('94%'), backgroundColor: Colors.PRIMARY_BLUE, opacity: 0.5 }]}
           titleStyle={{ fontSize: 18, color: 'white' }}
           disabledTitleStyle={{ fontSize: 18, color: 'white' }}
           onPress={() => this.yearSelected(years[0])}
@@ -159,7 +160,7 @@ class ConsumptionReviewScreen extends React.Component {
             buttonStyle={[styles.btnReq, { width: wp('46%') }]}
             title={`${years[1]}.`}
             disabled={selectedYear === years[1]}
-            disabledStyle={[styles.btnReq, { width: wp('46%'), backgroundColor: Colors.NOTICE_COLOR }]}
+            disabledStyle={[styles.btnReq, { width: wp('46%'), backgroundColor: Colors.PRIMARY_BLUE, opacity: 0.5 }]}
             titleStyle={{ fontSize: 18, color: 'white' }}
             disabledTitleStyle={{ fontSize: 18, color: 'white' }}
             onPress={() => this.yearSelected(years[1])}
@@ -168,7 +169,7 @@ class ConsumptionReviewScreen extends React.Component {
             buttonStyle={[styles.btnReq, { width: wp('46%') }]}
             title={`${years[0]}.`}
             disabled={selectedYear === years[0]}
-            disabledStyle={[styles.btnReq, { width: wp('46%'), backgroundColor: Colors.NOTICE_COLOR }]}
+            disabledStyle={[styles.btnReq, { width: wp('46%'), backgroundColor: Colors.PRIMARY_BLUE, opacity: 0.5 }]}
             titleStyle={{ fontSize: 18, color: 'white' }}
             disabledTitleStyle={{ fontSize: 18, color: 'white' }}
             onPress={() => this.yearSelected(years[0])}
@@ -188,7 +189,7 @@ class ConsumptionReviewScreen extends React.Component {
             />
             <Picker
               style={{
-                position: 'absolute', top: 0, width: 1000, height: 1000,
+                position: 'absolute', top: hp('-2%'), height: 50, width: 1000, left: wp('-40%'),
               }}
               onValueChange={(itemValue, itemIndex) => this.yearSelected(itemValue, itemIndex)}
               itemStyle={{ textAlign: 'center' }}
@@ -208,7 +209,7 @@ class ConsumptionReviewScreen extends React.Component {
             title={`${years[1]}.`}
             titleStyle={{ fontSize: 18, color: 'white' }}
             disabled={selectedYear === years[1]}
-            disabledStyle={[styles.btnReq, { width: wp('30%'), backgroundColor: Colors.NOTICE_COLOR }]}
+            disabledStyle={[styles.btnReq, { width: wp('30%'), backgroundColor: Colors.PRIMARY_BLUE, opacity: 0.5 }]}
             disabledTitleStyle={{ fontSize: 18, color: 'white' }}
             onPress={() => this.yearSelected(years[1])}
           />
@@ -217,7 +218,7 @@ class ConsumptionReviewScreen extends React.Component {
             title={`${years[0]}.`}
             titleStyle={{ fontSize: 18, color: 'white' }}
             disabled={selectedYear === years[0]}
-            disabledStyle={[styles.btnReq, { width: wp('30%'), backgroundColor: Colors.NOTICE_COLOR }]}
+            disabledStyle={[styles.btnReq, { width: wp('30%'), backgroundColor: Colors.PRIMARY_BLUE, opacity: 0.5 }]}
             disabledTitleStyle={{ fontSize: 18, color: 'white' }}
             onPress={() => this.yearSelected(years[0])}
           />
@@ -232,7 +233,7 @@ class ConsumptionReviewScreen extends React.Component {
     const { selectedYear } = this.props;
 
     if (selectedYear !== 0) {
-      chartTitle = `Potrošnja za ${selectedYear} godinu:`;
+      chartTitle = `Potrošnja za ${selectedYear}. godinu:`;
     } else {
       chartTitle = '';
     }
@@ -292,7 +293,7 @@ class ConsumptionReviewScreen extends React.Component {
             </TouchableOpacity>
           </View>
         </View>
-        <View style={{ marginLeft: wp('2%') }}>
+        <View style={{ marginLeft: wp('2%'), marginTop: hp('2%') }}>
           {this.renderButtons()}
         </View>
         <View style={styles.container} flexStyle={flexStyle}>
@@ -304,12 +305,12 @@ class ConsumptionReviewScreen extends React.Component {
                   'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dec'],
                 datasets: [{
                   data: highTariffData,
-                  color: (opacity = 0.2) => `rgba(0, 255, 0, ${opacity})`,
+                  color: (opacity = 1) => `rgba(143, 207, 14, ${opacity})`,
                   xCoordinatesArray: xCoordinatesData,
                 },
                 {
                   data: lowTariffData,
-                  color: (opacity = 0.2) => `rgba(0, 0, 255, ${opacity})`,
+                  color: (opacity = 1) => `rgba(0, 0, 255, ${opacity})`,
                   xCoordinatesArray: xCoordinatesData,
                 }],
               }}
@@ -331,7 +332,7 @@ class ConsumptionReviewScreen extends React.Component {
                 borderRadius: 16,
               }}
               onDataPointClick={obj => showMessage({
-                message: obj.getColor() === 'rgba(0, 255, 0, 0.2)' ? 'Velika tarifa' : 'Mala tarifa',
+                message: obj.getColor() === 'rgba(143, 207, 14, 1)' ? 'Velika tarifa' : 'Mala tarifa',
                 description: `Za ${dates[obj.index]} je ${obj.value}kWh`,
                 type: 'info',
                 position: 'center',
@@ -346,9 +347,9 @@ class ConsumptionReviewScreen extends React.Component {
           <View style={{ flexDirection: 'row' }}>
             <View style={{ flexDirection: 'row', marginLeft: wp('-1%') }}>
               <Button
-                buttonStyle={{ backgroundColor: 'rgba(0, 255, 0, 1)', width: 4, height: 4 }}
+                buttonStyle={{ backgroundColor: 'rgba(143, 207, 14, 1)', width: 4, height: 4 }}
                 disabled
-                disabledStyle={{ backgroundColor: 'rgba(0, 255, 0, 1)', width: 4, height: 4 }}
+                disabledStyle={{ backgroundColor: 'rgba(143, 207, 14, 1)', width: 4, height: 4 }}
               />
               <Text style={{ marginLeft: wp('2%') }}>Velika tarifa</Text>
             </View>
