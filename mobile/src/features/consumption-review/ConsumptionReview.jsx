@@ -189,7 +189,7 @@ class ConsumptionReviewScreen extends React.Component {
             />
             <Picker
               style={{
-                position: 'absolute', top: hp('-2%'), height: 50, width: 1000, left: wp('-40%'),
+                position: 'absolute', top: hp('-2%'), height: 60, width: 1000, left: wp('-40%'),
               }}
               onValueChange={(itemValue, itemIndex) => this.yearSelected(itemValue, itemIndex)}
               itemStyle={{ textAlign: 'center' }}

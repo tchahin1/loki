@@ -1,8 +1,8 @@
 import * as types from '../../actions/types';
 
 const INITIAL_STATE = {
-  LTData: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  HTData: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  LTData: [],
+  HTData: [],
   years: [],
   selectedYear: 0,
   xCoordinatesData: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
