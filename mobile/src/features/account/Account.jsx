@@ -57,6 +57,32 @@ class AccountScreen extends React.Component {
             />
           )}
         />
+        <View style={styles.metricPlacesContainer}>
+          <Text style={styles.label}>Moja mjerna mjesta:</Text>
+          <View style={styles.firstPart}>
+            <Picker
+              selectedValue={selectedPlace}
+              style={styles.picker}
+              onValueChange={itemValue => this.onPlaceChanged(itemValue)}
+            >
+              {places.map(data => (
+                <Picker.Item
+                  key={data.id.toString()}
+                  label={data.name}
+                  value={data.id.toString()}
+                />
+              ))}
+            </Picker>
+            <TouchableOpacity onPress={() => this.setState({ openPOM: true, previousPOM: true })}>
+              <Icon
+                type="ionicon"
+                name="ios-add"
+                color={Colors.NOTICE_COLOR}
+                size={35}
+              />
+            </TouchableOpacity>
+          </View>
+        </View>
         <View style={styles.container}>
           <Text>AccountScreen</Text>
           <NotificationsModal
