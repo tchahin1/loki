@@ -1,6 +1,7 @@
 package com.pragmatio.mojaepbih.controller;
 
 import com.pragmatio.mojaepbih.model.MeasurementDto;
+import com.pragmatio.mojaepbih.model.MeasurementGrantDto;
 import com.pragmatio.mojaepbih.service.impl.MeasurementServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,5 +25,12 @@ public class MeasurementController {
     @Produces(MediaType.APPLICATION_JSON)
     public ResponseEntity addMeasurementPlace(@RequestBody MeasurementDto measurementDto) {
         return this.measurementService.saveMeasurement(measurementDto);
+    }
+
+    @PostMapping("/grant")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public ResponseEntity saveMeasurementToConsumption(@RequestBody MeasurementGrantDto measurementGrantDto) {
+        return this.measurementService.addMeasurementToConsumption(measurementGrantDto);
     }
 }

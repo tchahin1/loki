@@ -1,5 +1,6 @@
 package com.pragmatio.mojaepbih.service.impl;
 
+import com.pragmatio.mojaepbih.model.ConsumptionDto;
 import com.pragmatio.mojaepbih.model.ConsumptionResponseDto;
 import com.pragmatio.mojaepbih.model.GetConsumptionDto;
 import com.pragmatio.mojaepbih.model.entity.Consumption;
@@ -86,5 +87,22 @@ public class ConsumptionServiceImpl implements ConsumptionService {
         Consumption consumption = new Consumption(year, month, day, measurement.getHighTariff(),
                 measurement.getLowTariff(), measurement.getUser(), measurement.getPlaceOfMeasurement());
         this.save(consumption);
+    }
+
+    @Override
+    public ResponseEntity saveConsumption(ConsumptionDto consumptionDto) {
+        User user = this.userService.findByEmail(consumptionDto.getEmail());
+        if (user.getId() == null) return ResponseEntity.status(400).body("User does not exist!");
+        PlaceOfMeasurement placeOfMeasurement = placeOfMeasurementService.findById(consumptionDto.getPlaceOfMeasurement());
+        if (placeOfMeasurement.getId() == null)
+            return ResponseEntity.status(400).body("Measurement place does not exist!");
+        String date = consumptionDto.getDate();
+        String year = date.split("-")[0];
+        String month = date.split("-")[1];
+        String day = date.split("-")[2];
+        Consumption consumption = new Consumption(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(day),
+            consumptionDto.getHighTariff(), consumptionDto.getLowTariff(), user, placeOfMeasurement);
+        this.consumptionRepository.save(consumption);
+        return ResponseEntity.ok().body("Successfully added new measurement for this place!");
     }
 }

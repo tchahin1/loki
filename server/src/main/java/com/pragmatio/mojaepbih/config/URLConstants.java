@@ -8,4 +8,5 @@ public class URLConstants {
     public static final String EDIT_USER_DATA = "/user/edit";
     public static final String GET_USER_CONSUMPTION = "/consumption/all_by_year";
     public static final String SAVE_MEASUREMENT = "/measurement/save";
+    public static final String GRANT_MEASUREMENT = "/measurement/grant";
 }

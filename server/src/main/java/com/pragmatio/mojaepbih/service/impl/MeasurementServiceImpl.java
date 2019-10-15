@@ -1,6 +1,7 @@
 package com.pragmatio.mojaepbih.service.impl;
 
 import com.pragmatio.mojaepbih.model.MeasurementDto;
+import com.pragmatio.mojaepbih.model.MeasurementGrantDto;
 import com.pragmatio.mojaepbih.model.entity.Measurement;
 import com.pragmatio.mojaepbih.model.entity.PlaceOfMeasurement;
 import com.pragmatio.mojaepbih.model.entity.User;
@@ -82,11 +83,29 @@ public class MeasurementServiceImpl implements MeasurementService {
             Measurement newMeasurement = new Measurement(measurementDto.getLargeTariff(),
                     measurementDto.getSmallTariff(), measurementDto.getNote(), date,
                     image, user, placeOfMeasurement, measurementDto.getLat(), measurementDto.getLon());
-            this.consumptionService.saveMeasuredConsumption(now, newMeasurement);
             this.measurementRepository.save(newMeasurement);
             return ResponseEntity.ok().body("Successfully added new measurement for this place!");
         } else {
             return ResponseEntity.status(400).body("Measurement for this place already exists!");
         }
+    }
+
+    public ResponseEntity addMeasurementToConsumption(MeasurementGrantDto measurementGrantDto) {
+        Measurement measurement = null;
+        if(measurementGrantDto.getMeasurementId() != null) measurement = findById(measurementGrantDto.getMeasurementId());
+        else return ResponseEntity.status(400).body("Measurement Id not provided!");
+        if(measurement.getId() != null) {
+            String date = measurement.getDate();
+            String year = date.split("-")[0];
+            String month = date.split("-")[1];
+            String day = date.split("-")[2];
+            LocalDate measurementDate = LocalDate.of(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(day));
+            if(measurementGrantDto.getGranted() != null && measurementGrantDto.getGranted()) {
+                this.consumptionService.saveMeasuredConsumption(measurementDate, measurement);
+                return ResponseEntity.status(200).body("Measurement successfully added to consumptions!");
+            }
+            else return ResponseEntity.status(400).body("Measurement is not granted the permission to be moved to consumptions!");
+        }
+        return ResponseEntity.status(500).body("Measurement does not exist!");
     }
 }

@@ -1,14 +1,12 @@
 package com.pragmatio.mojaepbih.controller;
 
+import com.pragmatio.mojaepbih.model.ConsumptionDto;
 import com.pragmatio.mojaepbih.model.GetConsumptionDto;
 import com.pragmatio.mojaepbih.service.impl.ConsumptionServiceImpl;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
@@ -28,5 +26,12 @@ public class ConsumptionController {
     public ResponseEntity findAllConsumptionsForUser(@QueryParam("email") String email, @QueryParam("year") Integer year, @QueryParam("placeId") Long placeId) throws JSONException {
         GetConsumptionDto getConsumptionDto = new GetConsumptionDto(email, placeId, year);
         return this.consumptionService.findConsumptionsByUserAndYearAndPlaceId(getConsumptionDto);
+    }
+
+    @PostMapping("/save")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public ResponseEntity addMeasurementPlace(@RequestBody ConsumptionDto consumptionDto) {
+        return this.consumptionService.saveConsumption(consumptionDto);
     }
 }
