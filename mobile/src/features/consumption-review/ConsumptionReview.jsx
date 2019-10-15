@@ -189,7 +189,7 @@ class ConsumptionReviewScreen extends React.Component {
             />
             <Picker
               style={{
-                position: 'absolute', top: hp('-2%'), height: 60, width: 1000, left: wp('-40%'),
+                position: 'absolute', top: hp('-2%'), height: 65, width: 1000, left: wp('-40%'),
               }}
               onValueChange={(itemValue, itemIndex) => this.yearSelected(itemValue, itemIndex)}
               itemStyle={{ textAlign: 'center' }}
@@ -271,6 +271,7 @@ class ConsumptionReviewScreen extends React.Component {
           <Text style={styles.label}>Moja mjerna mjesta:</Text>
           <View style={styles.firstPart}>
             <Picker
+              enabled={places.length !== 0}
               selectedValue={selectedPlace}
               style={styles.picker}
               onValueChange={itemValue => this.onPlaceChanged(itemValue)}
@@ -315,7 +316,7 @@ class ConsumptionReviewScreen extends React.Component {
                 }],
               }}
               width={Dimensions.get('window').width} // from react-native
-              height={250}
+              height={hp('37%')}
               chartConfig={{
                 backgroundColor: 'white',
                 backgroundGradientFrom: 'white',

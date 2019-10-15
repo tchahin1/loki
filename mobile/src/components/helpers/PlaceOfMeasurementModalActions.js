@@ -20,6 +20,33 @@ export const placeNumberChanged = text => ({
   payload: text,
 });
 
+const fetchPlacesSuccess = (dispatch, response) => {
+  response.text().then((text) => {
+    dispatch({ type: types.FETCH_PLACES_SUCCESS, payload: text });
+  });
+};
+
+const fetchPlacesFailed = (dispatch) => {
+  dispatch({ type: types.FETCH_PLACES_FAILED });
+};
+
+export const fetchMeasurementPlaces = ({ email, token }) => (dispatch) => {
+  dispatch({ type: 'nothing' });
+
+  fetch(`${api}/place/all?email=${email}`, {
+    method: 'GET',
+    headers: {
+      Authorization: token,
+    },
+  }).then((response) => {
+    if (response.ok) {
+      fetchPlacesSuccess(dispatch, response);
+    } else {
+      fetchPlacesFailed(dispatch, response);
+    }
+  });
+};
+
 const savePlaceSuccess = (dispatch) => {
   dispatch({ type: types.SAVE_PLACE_SUCCESS });
 };
@@ -55,31 +82,6 @@ export const savePlaceDetails = ({
       savePlaceFailed(dispatch);
     }
   });
-};
 
-const fetchPlacesSuccess = (dispatch, response) => {
-  response.text().then((text) => {
-    dispatch({ type: types.FETCH_PLACES_SUCCESS, payload: text });
-  });
-};
-
-const fetchPlacesFailed = (dispatch) => {
-  dispatch({ type: types.FETCH_PLACES_FAILED });
-};
-
-export const fetchMeasurementPlaces = ({ email, token }) => (dispatch) => {
-  dispatch({ type: 'nothing' });
-
-  fetch(`${api}/place/all?email=${email}`, {
-    method: 'GET',
-    headers: {
-      Authorization: token,
-    },
-  }).then((response) => {
-    if (response.ok) {
-      fetchPlacesSuccess(dispatch, response);
-    } else {
-      fetchPlacesFailed(dispatch, response);
-    }
-  });
+  fetchMeasurementPlaces(email, token);
 };

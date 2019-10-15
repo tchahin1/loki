@@ -36,17 +36,16 @@ const styles = {
     marginTop: hp('2%'),
   },
   metricPlacesContainer: {
-    flex: 1 / 3,
     borderWidth: 1,
     marginHorizontal: hp('1%'),
     marginVertical: wp('4%'),
-    height: hp('100%'),
+    height: hp('20%'),
   },
   btnReq: {
     backgroundColor: Colors.PRIMARY_BLUE,
     marginTop: hp('0%'),
     marginHorizontal: wp('1%'),
-    height: hp('8%'),
+    height: hp('7%'),
   },
 };
 
