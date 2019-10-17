@@ -82,6 +82,4 @@ export const savePlaceDetails = ({
       savePlaceFailed(dispatch);
     }
   });
-
-  fetchMeasurementPlaces(email, token);
 };

@@ -56,6 +56,7 @@ class ConsumptionReviewScreen extends React.Component {
       flexStyle: 2 / 3,
       openPOM: false,
       previousPOM: false,
+      screenLoaded: false,
     };
   }
 
@@ -115,9 +116,15 @@ class ConsumptionReviewScreen extends React.Component {
 
   load = () => {
     const {
-      selectedPlace, user, email, FetchConsumptionData,
+      selectedPlace, user, email, FetchConsumptionData, FetchMeasurementPlaces,
     } = this.props;
-    const { previousPOM } = this.state;
+    const { previousPOM, screenLoaded } = this.state;
+
+    if (screenLoaded) {
+      FetchMeasurementPlaces({ email, token: user });
+    } else {
+      this.setState({ screenLoaded: true });
+    }
 
     if (!previousPOM) {
       if (selectedPlace === null || selectedPlace === undefined || selectedPlace === '') {
@@ -229,6 +236,28 @@ class ConsumptionReviewScreen extends React.Component {
     return null;
   }
 
+  renderPickerItems = () => {
+    const { places } = this.props;
+
+    if (places.length !== 0) {
+      return (
+        places.map(data => (
+          <Picker.Item
+            key={data.id.toString()}
+            label={data.name}
+            value={data.id.toString()}
+          />
+        )));
+    }
+    return (
+      <Picker.Item
+        key={0}
+        label="Nema mjernih mjesta.."
+        value={0}
+      />
+    );
+  }
+
   renderChartTitle = () => {
     const { selectedYear } = this.props;
 
@@ -276,13 +305,7 @@ class ConsumptionReviewScreen extends React.Component {
               style={styles.picker}
               onValueChange={itemValue => this.onPlaceChanged(itemValue)}
             >
-              {places.map(data => (
-                <Picker.Item
-                  key={data.id.toString()}
-                  label={data.name}
-                  value={data.id.toString()}
-                />
-              ))}
+              {this.renderPickerItems()}
             </Picker>
             <TouchableOpacity onPress={() => this.setState({ openPOM: true, previousPOM: true })}>
               <Icon
