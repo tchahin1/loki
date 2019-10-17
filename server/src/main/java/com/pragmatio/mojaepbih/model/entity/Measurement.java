@@ -12,7 +12,7 @@ import javax.persistence.*;
 public class Measurement {
 
     public Measurement(String highTariff, String lowTariff, String note, String date, String photo, User user, PlaceOfMeasurement placeOfMeasurement,
-                       Double lat, Double lon) {
+                       Double lat, Double lon, Boolean granted) {
         this.setHighTariff(highTariff);
         this.setLowTariff(lowTariff);
         this.setNote(note);
@@ -22,6 +22,7 @@ public class Measurement {
         this.setLat(lat);
         this.setLon(lon);
         this.date = date;
+        this.granted = granted;
     }
 
     @Id
@@ -46,6 +47,9 @@ public class Measurement {
 
     @Column(name = "date")
     private String date;
+
+    @Column(name = "granted")
+    private Boolean granted;
 
     @Lob
     @Column(name = "photo")

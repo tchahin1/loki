@@ -82,7 +82,7 @@ public class MeasurementServiceImpl implements MeasurementService {
             String date = now.toString();
             Measurement newMeasurement = new Measurement(measurementDto.getLargeTariff(),
                     measurementDto.getSmallTariff(), measurementDto.getNote(), date,
-                    image, user, placeOfMeasurement, measurementDto.getLat(), measurementDto.getLon());
+                    image, user, placeOfMeasurement, measurementDto.getLat(), measurementDto.getLon(), false);
             this.measurementRepository.save(newMeasurement);
             return ResponseEntity.ok().body("Successfully added new measurement for this place!");
         } else {
@@ -101,10 +101,14 @@ public class MeasurementServiceImpl implements MeasurementService {
             String day = date.split("-")[2];
             LocalDate measurementDate = LocalDate.of(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(day));
             if(measurementGrantDto.getGranted() != null && measurementGrantDto.getGranted()) {
-                this.consumptionService.saveMeasuredConsumption(measurementDate, measurement);
-                return ResponseEntity.status(200).body("Measurement successfully added to consumptions!");
+                if(!measurement.getGranted()) {
+                    measurement.setGranted(true);
+                    this.consumptionService.saveMeasuredConsumption(measurementDate, measurement);
+                    return ResponseEntity.status(200).body("Measurement successfully added to consumptions!");
+                }
+                return ResponseEntity.status(400).body("Measurement already added to consumptions!");
             }
-            else return ResponseEntity.status(400).body("Measurement is not granted the permission to be moved to consumptions!");
+            else return ResponseEntity.status(400).body("The request for this measurement, to be moved to consumptions, is denied!");
         }
         return ResponseEntity.status(500).body("Measurement does not exist!");
     }
