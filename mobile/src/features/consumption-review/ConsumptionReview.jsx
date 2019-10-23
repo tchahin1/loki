@@ -22,7 +22,7 @@ import createStyles from './ConsumptionReview.styles';
 import logoutUser from '../account/AccountActions';
 import { placeChanged } from '../electric-meter/ElectricMeterActions';
 import { fetchMeasurementPlaces } from '../../components/helpers/PlaceOfMeasurementModalActions';
-import { fetchConsumptionData } from './ConsumptionReviewActions';
+import { fetchConsumptionData, initializeConsumptionReview } from './ConsumptionReviewActions';
 
 const styles = createStyles();
 let place = 0;
@@ -47,6 +47,7 @@ class ConsumptionReviewScreen extends React.Component {
     selectedYear: PropTypes.number.isRequired,
     yearArray: PropTypes.instanceOf(Array).isRequired,
     dates: PropTypes.instanceOf(Array).isRequired,
+    InitializeConsumptionReview: PropTypes.func.isRequired,
   };
 
   constructor(props) {
@@ -92,7 +93,9 @@ class ConsumptionReviewScreen extends React.Component {
       PlaceChanged, FetchConsumptionData, user, email,
     } = this.props;
 
-    PlaceChanged(item);
+    if (item !== 0) {
+      PlaceChanged(item);
+    }
     FetchConsumptionData({
       email, token: user, placeId: Number(item), year: Number(currentYear),
     });
@@ -116,9 +119,12 @@ class ConsumptionReviewScreen extends React.Component {
 
   load = () => {
     const {
-      selectedPlace, user, email, FetchConsumptionData, FetchMeasurementPlaces,
+      selectedPlace, user, email, FetchConsumptionData,
+      FetchMeasurementPlaces, InitializeConsumptionReview,
     } = this.props;
     const { previousPOM, screenLoaded } = this.state;
+
+    InitializeConsumptionReview();
 
     if (screenLoaded) {
       FetchMeasurementPlaces({ email, token: user });
@@ -423,4 +429,5 @@ export default connect(mapStateToProps, {
   PlaceChanged: placeChanged,
   FetchMeasurementPlaces: fetchMeasurementPlaces,
   FetchConsumptionData: fetchConsumptionData,
+  InitializeConsumptionReview: initializeConsumptionReview,
 })(ConsumptionReviewScreen);

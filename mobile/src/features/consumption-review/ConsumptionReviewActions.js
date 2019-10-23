@@ -17,6 +17,25 @@ export const setLoading = () => ({
   type: types.SET_LOADING_TRUE,
 });
 
+export const initializeConsumptionReview = () => {
+  dataArray = [];
+  yearsArray = [];
+  highTariffData = [];
+  lowTariffData = [];
+  years = [];
+  yearPickerData = [];
+  xCoordinates = [];
+  months = [];
+  dates = [];
+  selectedYear = 0;
+  return {
+    type: types.FETCH_CONSUMPTION_SUCCESS,
+    payload: {
+      highTariffData, lowTariffData, years, xCoordinates, yearPickerData, dates,
+    },
+  };
+};
+
 const resetData = () => {
   for (let i = 0; i < highTariffData.length; i += 1) {
     highTariffData[i] = 0;
@@ -90,16 +109,20 @@ const getTariffData = () => {
 };
 
 const getYearsData = () => {
-  for (let i = 0; i < yearsArray.length; i += 1) {
-    if (i === 0 && Number(yearsArray[0].year) !== 2019) {
-      years.push(2019);
+  if (yearsArray.length === 0) {
+    years.push(Number(new Date().getFullYear()));
+  } else {
+    for (let i = 0; i < yearsArray.length; i += 1) {
+      if (i === 0 && Number(yearsArray[0].year) !== 2019) {
+        years.push(2019);
+      }
+      years.push(Number(yearsArray[i].year));
     }
-    years.push(Number(yearsArray[i].year));
-  }
 
-  if (years.length >= 3) {
-    for (let i = 2; i < years.length; i += 1) {
-      yearPickerData.push(years[i]);
+    if (years.length >= 3) {
+      for (let i = 2; i < years.length; i += 1) {
+        yearPickerData.push(years[i]);
+      }
     }
   }
 };
